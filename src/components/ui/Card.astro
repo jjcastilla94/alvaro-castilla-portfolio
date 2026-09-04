@@ -8,12 +8,14 @@ const { variant = 'default', class: className = '' } = Astro.props;
 
 const variantClasses = {
   default:
-    'bg-surface dark:bg-surface border border-border dark:border-border hover:border-border-hover dark:hover:border-border-hover',
+    'bg-surface border border-border hover:border-border-hover shadow-[0_1px_3px_0_rgba(15,23,42,0.05)]',
   glass:
-    'bg-surface-glass dark:bg-surface-glass backdrop-blur-xl border border-border dark:border-border hover:border-border-hover dark:hover:border-border-hover',
+    'bg-surface-glass backdrop-blur-xl border border-border hover:border-border-hover',
 };
 ---
 
-<div class={`rounded-2xl transition-colors duration-150 ${variantClasses[variant]} ${className}`}>
+<div
+  class={`rounded-lg border transition-colors duration-150 hover:-translate-y-0.5 ${variantClasses[variant]} ${className}`}
+>
   <slot />
 </div>

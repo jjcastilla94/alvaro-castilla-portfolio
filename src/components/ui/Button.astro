@@ -20,7 +20,7 @@ const {
 } = Astro.props;
 
 const baseClasses =
-  'inline-flex items-center justify-center gap-2 font-medium rounded-full transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent dark:focus-visible:outline-accent';
+  'inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent';
 
 const sizeClasses = {
   sm: 'px-3 py-1.5 text-xs',
@@ -30,10 +30,10 @@ const sizeClasses = {
 
 const variantClasses = {
   primary:
-    'bg-accent dark:bg-accent text-white dark:text-bg hover:bg-accent-hover dark:hover:bg-accent-hover',
+    'bg-accent text-white hover:bg-accent-hover shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]',
   secondary:
-    'border border-border dark:border-border text-text dark:text-text hover:border-border-hover dark:hover:border-border-hover bg-transparent',
-  ghost: 'text-text-muted dark:text-text-muted hover:text-text dark:hover:text-text',
+    'border border-border bg-surface text-text hover:bg-surface-hover hover:border-border-hover',
+  ghost: 'text-text-muted hover:text-text hover:bg-surface-hover',
 };
 ---
 

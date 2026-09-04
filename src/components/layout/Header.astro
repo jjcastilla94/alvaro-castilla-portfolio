@@ -10,17 +10,17 @@ const NAV_LINKS = [
 ---
 
 <header
-  class="fixed top-0 inset-x-0 z-50 border-b border-border dark:border-border bg-surface-glass dark:bg-surface-glass backdrop-blur-xl"
+  class="fixed top-0 inset-x-0 z-50 border-b border-border bg-surface-glass backdrop-blur-xl"
 >
   <div class="max-w-5xl mx-auto px-6 sm:px-8 py-4 flex items-center justify-between">
     <a
       href="/"
-      class="flex flex-col text-left group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent dark:focus-visible:outline-accent rounded-sm"
+      class="flex flex-col text-left group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-sm"
     >
-      <span class="font-medium text-sm tracking-tight text-text dark:text-text group-hover:opacity-80 transition-opacity">
+      <span class="font-medium text-sm tracking-tight text-text group-hover:opacity-80 transition-opacity">
         Álvaro Castilla
       </span>
-      <span class="text-[11px] font-mono tracking-tight text-text-dim dark:text-text-dim">
+      <span class="text-[11px] font-mono tracking-tight text-text-dim">
         Backend Developer
       </span>
     </a>
@@ -30,7 +30,7 @@ const NAV_LINKS = [
         NAV_LINKS.map((link) => (
           <a
             href={link.href}
-            class="px-3 py-2 text-sm text-text-muted dark:text-text-muted hover:text-text dark:hover:text-text transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent dark:focus-visible:outline-accent rounded-md"
+            class="px-3 py-2 text-sm text-text-muted hover:text-text transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-md"
           >
             {link.label}
           </a>
@@ -43,7 +43,7 @@ const NAV_LINKS = [
       <button
         id="menu-toggle"
         type="button"
-        class="md:hidden p-2 rounded-full border border-border dark:border-border text-text-muted dark:text-text-muted hover:text-text dark:hover:text-text transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent dark:focus-visible:outline-accent"
+        class="md:hidden p-2 rounded-lg border border-border text-text-muted hover:text-text transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         aria-label="Abrir menú de navegación"
         aria-expanded="false"
         aria-controls="mobile-menu"
@@ -76,14 +76,14 @@ const NAV_LINKS = [
 
   <div
     id="mobile-menu"
-    class="md:hidden hidden bg-surface dark:bg-surface border-t border-border dark:border-border"
+    class="md:hidden hidden bg-surface border-t border-border"
   >
     <nav class="px-6 py-4 flex flex-col gap-1" aria-label="Navegación móvil">
       {
         NAV_LINKS.map((link) => (
           <a
             href={link.href}
-            class="py-2.5 text-sm text-text-muted dark:text-text-muted hover:text-text dark:hover:text-text transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent dark:focus-visible:outline-accent rounded-md"
+            class="py-2.5 text-sm text-text-muted hover:text-text transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-md"
           >
             {link.label}
           </a>

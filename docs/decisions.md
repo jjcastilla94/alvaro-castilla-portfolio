@@ -158,23 +158,28 @@ Accepted
 
 ---
 
-## ADR-008 — Accent Color: Sky-400 (#38bdf8)
+## ADR-008 — Accent Color: Blue-500 (Dark) / Cobalt (Light)
 
 ### Context
 
-The design needed an accent color for links, highlights, and CTAs. The default "blue" (#3b82f6) reads as generic/template-like.
+The design needed an accent color for links, highlights, and CTAs. The default "blue" (#3b82f6) was initially considered generic/template-like, so sky-400 was trialed.
 
 ### Decision
 
-Use sky-400 (`#38bdf8`) as the accent color in dark mode, and sky-700 (`#0284c7`) in light mode for contrast.
+Use **blue-500 (`#3b82f6`)** as the accent color in **dark mode**, and **cobalt `#1d4ed8`** (blue-700) as the accent color in **light mode** for contrast.
 
 ### Reason
 
-Sky-400 is a lighter, more technical tone than the ubiquitous Bootstrap-style blue. It differentiates the portfolio from generic developer templates while remaining sober and professional. It provides sufficient contrast against dark backgrounds for WCAG AA.
+Coherent with the Stitch reference's palette while remaining professional. This combination reads as more sober and credible than the sky-400 tone that was used earlier, and better matches the portfolio's design direction.
+
+### Amendment History
+
+- **Original (superseded):** sky-400 (`#38bdf8`) accent in dark mode, sky-700 (`#0284c7`) in light mode.
+- **Amended:** blue-500 (`#3b82f6`) dark / cobalt (`#1d4ed8`) light. Updated September 2026 following visual review; the sky-400 tone stood out as less professional.
 
 ### Status
 
-Accepted
+Accepted (Amended)
 
 ---
 
