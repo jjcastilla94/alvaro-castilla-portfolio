@@ -21,18 +21,21 @@ Initialize the project with Astro, TypeScript, Tailwind CSS, ESLint, Prettier, a
 
 ### Validation
 
-Pending: lint, typecheck, build
+- Lint: PASS
+- Typecheck: PASS (0 errors, 0 warnings)
+- Build: PASS (1 page, 275ms)
 
 ### Decisions
 
 - Tailwind v4 CSS-first configuration (no `tailwind.config.js`)
 - Data files over content collections for professional data
 - No client-side framework (React/Vue) — minimal vanilla JS only
+- `no-explicit-any` set to `warn` (pragmatic for Astro frontmatter)
 
 ### Commit
 
-Pending
+`7d31cae` — `chore: initialize portfolio foundation`
 
 ### Status
 
-Completed — pending approval/commit
+Completed
