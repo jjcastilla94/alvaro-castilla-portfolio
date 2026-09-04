@@ -3,8 +3,10 @@ export interface Project {
   title: string;
   subtitle: string;
   description: string;
+  longDescription?: string;
   technologies: string[];
   href: string;
+  github?: string;
 }
 
 export const PROJECTS: Project[] = [

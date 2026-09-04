@@ -44,14 +44,14 @@ Components import data from these files — no personal strings are hardcoded in
 
 ## Pages
 
-| Route | Purpose |
-|-------|---------|
-| `/` | Home — hero, featured projects, skills preview |
-| `/about` | About — background, skills, evolution |
-| `/experience` | Professional experience timeline |
-| `/projects` | Project listing |
-| `/projects/[slug]` | Individual project case studies |
-| `/contact` | Contact information |
+| Route | Status | Purpose |
+|-------|--------|---------|
+| `/` | ✅ | Home — hero, featured projects, skills preview |
+| `/experience` | ✅ | Professional experience timeline |
+| `/projects` | ✅ | Project listing |
+| `/projects/[slug]` | ✅ | Individual project case studies (via `getStaticPaths`) |
+| `/contact` | ✅ | Contact information (email, GitHub, LinkedIn) |
+| `/about` | ⏳ Phase 6 | About — background, skills, evolution |
 | `/privacy` | Privacy policy |
 
 ## Design System

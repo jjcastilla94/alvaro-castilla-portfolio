@@ -1,0 +1,70 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/ui/Button.astro';
+import Card from '../../components/ui/Card.astro';
+import Tag from '../../components/ui/Tag.astro';
+
+import { PROJECTS } from '../../data/projects';
+import { PROFILE } from '../../data/profile';
+
+export function getStaticPaths() {
+  return PROJECTS.map((project) => ({
+    params: { slug: project.id },
+  }));
+}
+
+const { slug } = Astro.params;
+const project = PROJECTS.find((p) => p.id === slug);
+
+if (!project) {
+  throw new Error(`No se encontró el proyecto con slug "${slug}"`);
+}
+
+const title = `${project.title} — ${PROFILE.name}`;
+const description = project.longDescription ?? project.description;
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="max-w-5xl mx-auto px-6 sm:px-8 pt-32 sm:pt-40 pb-16">
+    <a
+      href="/projects"
+      class="inline-flex items-center gap-1.5 font-mono text-xs text-text-muted hover:text-text transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+    >
+      ← Volver a todos los proyectos
+    </a>
+
+    <header class="mt-8">
+      <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-text">
+        {project.title}
+      </h1>
+      <p class="mt-2 font-mono text-sm text-accent">
+        {project.subtitle}
+      </p>
+    </header>
+
+    {project.technologies.length > 0 && (
+      <div class="mt-6 flex flex-wrap gap-1.5">
+        {project.technologies.map((tech) => (
+          <Tag variant="accent">{tech}</Tag>
+        ))}
+      </div>
+    )}
+
+    <div class="mt-8">
+      <Card class="p-6 sm:p-8">
+        <h2 class="text-lg font-semibold text-text">Acerca del proyecto</h2>
+        <div class="mt-4 text-sm text-text-muted leading-relaxed space-y-3">
+          <p>{project.description}</p>
+          {project.longDescription && <p>{project.longDescription}</p>}
+        </div>
+      </Card>
+    </div>
+
+    <div class="mt-8 flex flex-wrap gap-4">
+      {project.github && (
+        <Button href={project.github} external>Ver en GitHub</Button>
+      )}
+      <Button href="/projects" variant="secondary">Volver a proyectos</Button>
+    </div>
+  </section>
+</BaseLayout>

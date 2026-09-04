@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/ui/Button.astro';
+import Card from '../components/ui/Card.astro';
+import Tag from '../components/ui/Tag.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+
+import { PROJECTS } from '../data/projects';
+import { PROFILE } from '../data/profile';
+
+const title = `Proyectos — ${PROFILE.name}`;
+---
+
+<BaseLayout title={title} description={PROFILE.bio}>
+  <section class="max-w-5xl mx-auto px-6 sm:px-8 pt-32 sm:pt-40 pb-16">
+    <SectionHeading
+      label="Proyectos"
+      title="Lo que he construido"
+      description="Proyectos Full Stack que demuestran mi capacidad técnica en el stack backend y su integración con el frontend."
+      class="border-b border-border pb-8"
+    />
+
+    <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-6">
+      {
+        PROJECTS.map((project) => (
+          <Card>
+            <div class="p-6 flex flex-col gap-4 h-full">
+              <div>
+                <h3 class="text-lg font-semibold text-text">{project.title}</h3>
+                <p class="text-xs font-mono text-text-dim mt-0.5">
+                  {project.subtitle}
+                </p>
+              </div>
+              <p class="text-sm text-text-muted leading-relaxed flex-1">
+                {project.description}
+              </p>
+              {project.technologies.length > 0 && (
+                <div class="flex flex-wrap gap-1.5">
+                  {project.technologies.map((tech) => (
+                    <Tag>{tech}</Tag>
+                  ))}
+                </div>
+              )}
+              <div>
+                <Button href={project.href} variant="ghost" size="sm">Ver caso de estudio →</Button>
+              </div>
+            </div>
+          </Card>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>

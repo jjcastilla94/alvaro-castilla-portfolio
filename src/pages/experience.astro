@@ -1,0 +1,109 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/ui/Button.astro';
+import Card from '../components/ui/Card.astro';
+import Tag from '../components/ui/Tag.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+
+import { EXPERIENCE } from '../data/experience';
+import { PROFILE } from '../data/profile';
+
+const title = `Experiencia — ${PROFILE.name}`;
+
+const MONTHS = [
+  'ene.',
+  'feb.',
+  'mar.',
+  'abr.',
+  'may.',
+  'jun.',
+  'jul.',
+  'ago.',
+  'sep.',
+  'oct.',
+  'nov.',
+  'dic.',
+];
+
+function formatDate(dateStr: string): string {
+  const [year, month] = dateStr.split('-');
+  return `${MONTHS[parseInt(month, 10) - 1]} ${year}`;
+}
+
+function formatRange(start: string, end: string | null): string {
+  return end ? `${formatDate(start)} — ${formatDate(end)}` : `${formatDate(start)} — actualidad`;
+}
+---
+
+<BaseLayout title={title} description={PROFILE.bio}>
+  <section class="max-w-5xl mx-auto px-6 sm:px-8 pt-32 sm:pt-40 pb-16">
+    <SectionHeading
+      label="Experiencia profesional"
+      title="Mi trayectoria en el desarrollo backend"
+      description="Experiencia en el desarrollo e integración de APIs REST dentro de entornos empresariales."
+      class="border-b border-border pb-8"
+    />
+
+    <div class="mt-10 flex flex-col gap-6">
+      {
+        EXPERIENCE.map((entry) => (
+          <Card class="p-6 sm:p-8">
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+              <div>
+                <h3 class="text-lg sm:text-xl font-semibold text-text">
+                  {entry.role}
+                </h3>
+                <p class="mt-1 font-mono text-xs text-text-muted">
+                  {entry.company} · Departamento de {entry.department}
+                </p>
+                <p class="mt-1 font-mono text-xs text-text-dim">
+                  {entry.location}
+                </p>
+              </div>
+              <div class="flex flex-col items-start sm:items-end gap-2 shrink-0">
+                <span class="inline-flex items-center gap-1.5 font-mono text-xs text-text-dim">
+                  {entry.type}
+                </span>
+                <span class="inline-flex items-center gap-1.5 font-mono text-xs text-text-dim">
+                  {formatRange(entry.startDate, entry.endDate)}
+                  {
+                    entry.endDate === null && (
+                      <span class="rounded bg-accent-subtle border border-accent/25 text-accent px-1.5 py-0.5 font-mono text-[0.65625rem] uppercase tracking-wide">
+                        Actual
+                      </span>
+                    )
+                  }
+                </span>
+              </div>
+            </div>
+
+            <p class="mt-4 text-sm text-text-muted leading-relaxed">
+              {entry.description}
+            </p>
+
+            {entry.highlights.length > 0 && (
+              <ul class="mt-4 flex flex-col gap-2 list-disc pl-5 text-sm text-text-muted leading-relaxed">
+                {entry.highlights.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            )}
+
+            {entry.technologies.length > 0 && (
+              <div class="mt-5 flex flex-wrap gap-1.5">
+                {entry.technologies.map((tech) => (
+                  <Tag>{tech}</Tag>
+                ))}
+              </div>
+            )}
+          </Card>
+        ))
+      }
+    </div>
+
+    <div class="mt-10 flex flex-wrap gap-4">
+      <Button href="/projects">Ver proyectos</Button>
+      <Button href="/contact" variant="secondary">Contactar</Button>
+    </div>
+  </section>
+</BaseLayout>

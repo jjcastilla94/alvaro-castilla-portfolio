@@ -1,0 +1,96 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/ui/Button.astro';
+import Card from '../components/ui/Card.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+
+import { PROFILE } from '../data/profile';
+
+const title = `Contacto — ${PROFILE.name}`;
+---
+
+<BaseLayout title={title} description={PROFILE.bio}>
+  <section class="max-w-5xl mx-auto px-6 sm:px-8 pt-32 sm:pt-40 pb-16">
+    <SectionHeading
+      label="Contacto"
+      title="¿Hablamos?"
+      description="Dispuesto a colaborar, aprender y crecer como profesional del desarrollo de software. Puedes escribirme directamente o conectar conmigo por redes."
+      class="border-b border-border pb-8"
+    />
+
+    <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <Card class="p-6 sm:p-8">
+        <div class="flex flex-col gap-4 h-full">
+          <div>
+            <h3 class="font-semibold text-text">Email</h3>
+            <p class="mt-1 text-sm text-text-muted leading-relaxed">
+              Para propuestas laborales, colaboraciones o cualquier consulta.
+            </p>
+          </div>
+          <div class="flex-1 flex items-end">
+            <Button href={`mailto:${PROFILE.email}`}>Escribirme</Button>
+          </div>
+        </div>
+      </Card>
+
+      <Card class="p-6 sm:p-8">
+        <div class="flex flex-col gap-4 h-full">
+          <div>
+            <h3 class="font-semibold text-text">GitHub</h3>
+            <p class="mt-1 text-sm text-text-muted leading-relaxed">
+              Código de mis proyectos y contribuciones.
+            </p>
+          </div>
+          <div class="flex-1 flex items-end">
+            <Button href={PROFILE.social.github} external variant="secondary">Ver perfil de GitHub</Button>
+          </div>
+        </div>
+      </Card>
+
+      <Card class="p-6 sm:p-8">
+        <div class="flex flex-col gap-4 h-full">
+          <div>
+            <h3 class="font-semibold text-text">LinkedIn</h3>
+            <p class="mt-1 text-sm text-text-muted leading-relaxed">
+              Trayectoria profesional y conexiones.
+            </p>
+          </div>
+          <div class="flex-1 flex items-end">
+            <Button href={PROFILE.social.linkedin} external variant="secondary">Ver perfil de LinkedIn</Button>
+          </div>
+        </div>
+      </Card>
+
+      <Card class="p-6 sm:p-8">
+        <div class="flex flex-col gap-4 h-full">
+          <div>
+            <h3 class="font-semibold text-text">Redes</h3>
+            <p class="mt-1 text-sm text-text-muted leading-relaxed">
+              Accesos directos a mis perfiles profesionales.
+            </p>
+          </div>
+          <div class="flex-1 flex items-end">
+            <div class="flex items-center gap-6">
+              <a
+                href={PROFILE.social.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="font-mono text-sm text-text-muted hover:text-accent transition-colors duration-150"
+              >
+                GitHub
+              </a>
+              <a
+                href={PROFILE.social.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="font-mono text-sm text-text-muted hover:text-accent transition-colors duration-150"
+              >
+                LinkedIn
+              </a>
+            </div>
+          </div>
+        </div>
+      </Card>
+    </div>
+  </section>
+</BaseLayout>

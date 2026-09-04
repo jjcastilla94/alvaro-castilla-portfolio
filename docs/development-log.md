@@ -148,6 +148,59 @@ Separate hardcoded content from components into centralized data files, establis
 
 ### Commit
 
+`3dc3580` — `feat: separate content into centralized data files`
+
+### Status
+
+Completed
+
+---
+
+## Phase 4 — Individual Pages
+
+**Date:** 2026-09-04
+**Status:** In Progress
+
+### Objective
+
+Create the internal pages of the portfolio consuming the data files from Phase 3, preserving the existing architecture and Design System.
+
+### Implemented
+
+- **`/experience`** (`src/pages/experience.astro`) — Full professional experience timeline with both Cajamar entries. Shows the current role with an "Actual" badge, formatted dates (`formatDate`/`formatRange` inline helpers), description, bullet highlights, and technology tags.
+- **`/projects`** (`src/pages/projects.astro`) — Grid listing of all projects from `projects.ts`, each linking to its individual page.
+- **`/projects/[slug]`** (`src/pages/projects/[slug].astro`) — Dynamic pages generated via `getStaticPaths()` from `PROJECTS`. Handles optional `longDescription` (falls back to short description) and optional `github` (button hidden when absent). Uses `throw new Error` for truly invalid slugs (unreachable via generated paths).
+- **`/contact`** (`src/pages/contact.astro`) — Contact page using real data from `profile.ts`: email (mailto), GitHub, and LinkedIn. No form (proposed, awaiting decision).
+- **`src/data/site.ts`** — Removed `/about` from `NAV_LINKS` (page doesn't exist until Phase 6).
+- **`src/data/projects.ts`** — Extended `Project` interface with optional `longDescription` and `github` fields (not filled for the two existing projects).
+
+### Validation
+
+- Lint: PASS
+- Typecheck: PASS (0 errors, 0 warnings)
+- Build: PASS (6 pages, 410ms)
+- 6 routes generated: `/`, `/experience`, `/projects`, `/projects/arcadia`, `/projects/detubarrio`, `/contact`
+- All real data verified in generated HTML (experience roles/dates, project titles, contact email/URLs)
+- `/about` link not present in any page's navigation
+- All internal links point to existing routes
+- Zero hardcoded personal strings in `.astro` files
+
+### Decisions
+
+- **SSG with `getStaticPaths()`** for dynamic project routes (build-time generation)
+- **Slug from `project.id`** — clean URLs without spaces/accents
+- **Invalid slug → `throw new Error`** — unreachable via generated paths; no arbitrary redirect
+- **`formatDate` helper kept inline** in `experience.astro` — extracted to `src/utils/dates.ts` only if reused later
+- **Optional `github`/`longDescription`** — pages handle absence gracefully (no GitHub button, fallback description)
+- **No contact form** — direct email + social links; form can be added later without restructuring
+
+### Content Notes
+
+- Complete project data (`longDescription`, `github`) deferred until provided by user
+- Education, certifications, and `/about` page deferred to later phases
+
+### Commit
+
 Pending (awaiting approval)
 
 ### Status
