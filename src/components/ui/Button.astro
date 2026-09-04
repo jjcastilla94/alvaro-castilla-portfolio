@@ -1,0 +1,59 @@
+---
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'secondary' | 'ghost';
+  size?: 'sm' | 'md' | 'lg';
+  type?: 'button' | 'submit';
+  external?: boolean;
+  class?: string;
+  'aria-label'?: string;
+}
+
+const {
+  href = '#',
+  variant = 'primary',
+  size = 'md',
+  type = 'button',
+  external = false,
+  class: className = '',
+  'aria-label': ariaLabel,
+} = Astro.props;
+
+const baseClasses =
+  'inline-flex items-center justify-center gap-2 font-medium rounded-full transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent dark:focus-visible:outline-accent';
+
+const sizeClasses = {
+  sm: 'px-3 py-1.5 text-xs',
+  md: 'px-4 py-2 text-sm',
+  lg: 'px-6 py-3 text-sm',
+};
+
+const variantClasses = {
+  primary:
+    'bg-accent dark:bg-accent text-white dark:text-bg hover:bg-accent-hover dark:hover:bg-accent-hover',
+  secondary:
+    'border border-border dark:border-border text-text dark:text-text hover:border-border-hover dark:hover:border-border-hover bg-transparent',
+  ghost: 'text-text-muted dark:text-text-muted hover:text-text dark:hover:text-text',
+};
+---
+
+{
+  href ? (
+    <a
+      href={href}
+      class={`${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]} ${className}`}
+      aria-label={ariaLabel}
+      {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+    >
+      <slot />
+    </a>
+  ) : (
+    <button
+      type={type}
+      class={`${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]} ${className}`}
+      aria-label={ariaLabel}
+    >
+      <slot />
+    </button>
+  )
+}

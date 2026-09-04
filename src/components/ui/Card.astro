@@ -1,0 +1,19 @@
+---
+interface Props {
+  variant?: 'default' | 'glass';
+  class?: string;
+}
+
+const { variant = 'default', class: className = '' } = Astro.props;
+
+const variantClasses = {
+  default:
+    'bg-surface dark:bg-surface border border-border dark:border-border hover:border-border-hover dark:hover:border-border-hover',
+  glass:
+    'bg-surface-glass dark:bg-surface-glass backdrop-blur-xl border border-border dark:border-border hover:border-border-hover dark:hover:border-border-hover',
+};
+---
+
+<div class={`rounded-2xl transition-colors duration-150 ${variantClasses[variant]} ${className}`}>
+  <slot />
+</div>

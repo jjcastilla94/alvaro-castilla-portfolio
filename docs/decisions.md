@@ -130,3 +130,108 @@ Vercel provides native Astro support, preview deployments for PRs, HTTPS, and a 
 ### Status
 
 Accepted
+
+---
+
+## ADR-007 — Typography: Inter + JetBrains Mono
+
+### Context
+
+The portfolio needs a professional, technical typography system. The Stitch reference used a serif editorial font (Instrument Serif) for emphasis.
+
+### Decision
+
+Use Inter for all text and JetBrains Mono for labels, metadata, and tech tags. No serif editorial font.
+
+### Reason
+
+Inter is clean, professional, and highly readable. JetBrains Mono provides a technical feel for labels/tech without falling into "hacker terminal" aesthetics. A serif editorial font would not align with the profile of a Backend Developer. Using two fonts with clear roles avoids visual noise.
+
+### Alternatives Considered
+
+- Instrument Serif italic (from Stitch) — rejected: editorial feel, not appropriate for technical profile
+- System fonts only — rejected: less distinctive, harder to control consistency
+
+### Status
+
+Accepted
+
+---
+
+## ADR-008 — Accent Color: Sky-400 (#38bdf8)
+
+### Context
+
+The design needed an accent color for links, highlights, and CTAs. The default "blue" (#3b82f6) reads as generic/template-like.
+
+### Decision
+
+Use sky-400 (`#38bdf8`) as the accent color in dark mode, and sky-700 (`#0284c7`) in light mode for contrast.
+
+### Reason
+
+Sky-400 is a lighter, more technical tone than the ubiquitous Bootstrap-style blue. It differentiates the portfolio from generic developer templates while remaining sober and professional. It provides sufficient contrast against dark backgrounds for WCAG AA.
+
+### Status
+
+Accepted
+
+---
+
+## ADR-009 — Glassmorphism Only for Floating/Overlay Elements
+
+### Context
+
+The Stitch reference used backdrop-blur glassmorphism on all cards. This risks reduced legibility and performance issues.
+
+### Decision
+
+Use glassmorphism (backdrop-blur) only on floating elements: the fixed navbar and the final contact card. Content cards (projects, experience) use solid surfaces.
+
+### Reason
+
+Glassmorphism on solid content surfaces reduces text legibility and can hurt performance. Restricting it to floating/overlay elements (navbar) or final call-to-action (contact) provides depth where appropriate while keeping content areas clean and readable.
+
+### Status
+
+Accepted
+
+---
+
+## ADR-010 — Experience Before Projects on Home
+
+### Context
+
+The portfolio needs to differentiate itself from a purely academic one. Professional experience at Cajamar (GRUPO CAJAMAR) is a differentiator.
+
+### Decision
+
+In the Home page, the Experience section appears immediately after the Hero, before Projects.
+
+### Reason
+
+Professional experience is one of the strongest differentiators of this portfolio versus an academic-only portfolio. Placing it early communicates professional credibility quickly. It also matches the user's priority to give Cajamar prominence.
+
+### Status
+
+Accepted
+
+---
+
+## ADR-011 — Traditional Navigation Instead of Tab Switcher
+
+### Context
+
+The Stitch reference used a pill tab switcher ("Proyectos" / "Información") to switch between views on a single page.
+
+### Decision
+
+Use traditional link-based navigation with separate pages (Experience, Projects, About, Contact) plus a hamburger menu on mobile.
+
+### Reason
+
+Traditional navigation is more accessible, more predictable for users, better for SEO (distinct URLs per page), and more scalable (adding pages like Notes or Certifications later requires no re-architecture). The tab switcher is a clever visual but adds complexity and harms discoverability.
+
+### Status
+
+Accepted

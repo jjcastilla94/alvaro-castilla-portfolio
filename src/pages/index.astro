@@ -1,17 +1,200 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/ui/Button.astro';
+import Card from '../components/ui/Card.astro';
+import Tag from '../components/ui/Tag.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import SocialLink from '../components/ui/SocialLink.astro';
 
+const title = 'Álvaro Castilla — Backend Developer';
+const description =
+  'Backend Developer especializado en Java, Spring Boot y APIs REST. Experiencia profesional desarrollando sistemas en entorno productivo.';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title={title} description={description}>
+  <!-- ===== HERO ===== -->
+  <section id="top" class="max-w-5xl mx-auto px-6 sm:px-8 pt-36 sm:pt-44 pb-16">
+    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-text dark:text-text leading-[1.08]">
+      Álvaro Castilla
+    </h1>
+    <p class="mt-3 font-mono text-sm sm:text-base text-accent dark:text-accent">
+      Backend Developer
+    </p>
+    <p class="mt-6 text-base sm:text-lg text-text-muted dark:text-text-muted max-w-2xl leading-relaxed">
+      Desarrollo backend con Java, Spring Boot y APIs REST. Experiencia profesional en entorno
+      productivo construyendo y manteniendo servicios. Interesado en arquitectura de software,
+      calidad y evolución técnica continua.
+    </p>
+
+    <div class="mt-8 flex flex-wrap items-center gap-4">
+      <Button href="/projects">Ver proyectos</Button>
+      <Button href="/contact" variant="secondary">Contactar</Button>
+    </div>
+
+    <div class="mt-8 flex items-center gap-6">
+      <SocialLink href="https://github.com" label="GitHub" />
+      <SocialLink href="https://linkedin.com" label="LinkedIn" />
+    </div>
+  </section>
+
+  <!-- ===== EXPERIENCE ===== -->
+  <section class="max-w-5xl mx-auto px-6 sm:px-8 py-16">
+    <SectionHeading
+      label="Experiencia profesional"
+      title="Donde aplico lo que sé"
+      description="Mi experiencia profesional en desarrollo backend, trabajando con APIs REST en entorno productivo."
+      class="border-b border-border dark:border-border pb-8"
+    />
+
+    <div class="mt-10">
+      <Card class="p-6 sm:p-8">
+        <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+          <div>
+            <h3 class="text-lg sm:text-xl font-semibold text-text dark:text-text">
+              Desarrollador Backend Junior
+            </h3>
+            <p class="mt-1 font-mono text-xs text-text-dim dark:text-text-dim">
+              GRUPO CAJAMAR · julio 2026 — actualidad
+            </p>
+          </div>
+        </div>
+        <p class="mt-4 text-sm text-text-muted dark:text-text-muted leading-relaxed">
+          Desarrollo y mantenimiento de APIs REST, integración entre frontend y backend,
+          definición y gestión de flujos de request/response, validación y testing de servicios.
+        </p>
+        <div class="mt-5 flex flex-wrap gap-1.5">
+          <Tag>Java</Tag>
+          <Tag>Spring Boot</Tag>
+          <Tag>REST APIs</Tag>
+        </div>
+      </Card>
+    </div>
+
+    <div class="mt-8">
+      <Button href="/experience" variant="ghost">Ver experiencia completa →</Button>
+    </div>
+  </section>
+
+  <!-- ===== PROJECTS ===== -->
+  <section class="max-w-5xl mx-auto px-6 sm:px-8 py-16">
+    <SectionHeading
+      label="Proyectos"
+      title="Lo que he construido"
+      description="Proyectos Full Stack que demuestran mi capacidad técnica en el stack backend y su integración con el frontend."
+      class="border-b border-border dark:border-border pb-8"
+    />
+
+    <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <Card>
+        <div class="p-6 flex flex-col gap-4 h-full">
+          <div>
+            <h3 class="text-lg font-semibold text-text dark:text-text">Arcadia</h3>
+            <p class="text-xs font-mono text-text-dim dark:text-text-dim mt-0.5">
+              Full Stack HTML5 Gaming Platform
+            </p>
+          </div>
+          <p class="text-sm text-text-muted dark:text-text-muted leading-relaxed flex-1">
+            Plataforma Full Stack de juegos HTML5.
+          </p>
+          <div class="flex flex-wrap gap-1.5">
+            <Tag>Spring Boot</Tag>
+            <Tag>Vue 3</Tag>
+            <Tag>MySQL</Tag>
+            <Tag>Docker</Tag>
+          </div>
+          <div>
+            <Button href="/projects/arcadia" variant="ghost" size="sm">Ver caso de estudio →</Button>
+          </div>
+        </div>
+      </Card>
+
+      <Card>
+        <div class="p-6 flex flex-col gap-4 h-full">
+          <div>
+            <h3 class="text-lg font-semibold text-text dark:text-text">DetuBarrio</h3>
+            <p class="text-xs font-mono text-text-dim dark:text-text-dim mt-0.5">
+              Full Stack Marketplace
+            </p>
+          </div>
+          <p class="text-sm text-text-muted dark:text-text-muted leading-relaxed flex-1">
+            Marketplace Full Stack.
+          </p>
+          <div class="flex flex-wrap gap-1.5">
+            <Tag>Spring Boot</Tag>
+            <Tag>Vue.js</Tag>
+            <Tag>MySQL</Tag>
+            <Tag>Docker</Tag>
+          </div>
+          <div>
+            <Button href="/projects/detubarrio" variant="ghost" size="sm">Ver caso de estudio →</Button>
+          </div>
+        </div>
+      </Card>
+    </div>
+
+    <div class="mt-8">
+      <Button href="/projects" variant="ghost">Ver todos los proyectos →</Button>
+    </div>
+  </section>
+
+  <!-- ===== SKILLS ===== -->
+  <section class="max-w-5xl mx-auto px-6 sm:px-8 py-16">
+    <SectionHeading
+      label="Skills"
+      title="Mi stack técnico"
+      description="Tecnologías y herramientas con las que trabajo habitualmente y otras con las que tengo experiencia."
+      class="border-b border-border dark:border-border pb-8"
+    />
+
+    <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="flex flex-col gap-2">
+        <span class="font-mono text-xs uppercase tracking-widest text-text-dim dark:text-text-dim">
+          Backend
+        </span>
+        <div class="flex flex-wrap gap-1.5">
+          <Tag>Java</Tag>
+          <Tag>Spring Boot</Tag>
+          <Tag>REST APIs</Tag>
+          <Tag>MySQL / SQL</Tag>
+          <Tag>Microservicios</Tag>
+        </div>
+      </div>
+      <div class="flex flex-col gap-2">
+        <span class="font-mono text-xs uppercase tracking-widest text-text-dim dark:text-text-dim">
+          Frontend
+        </span>
+        <div class="flex flex-wrap gap-1.5">
+          <Tag>Vue.js</Tag>
+          <Tag>JavaScript</Tag>
+          <Tag>HTML / CSS</Tag>
+        </div>
+      </div>
+      <div class="flex flex-col gap-2">
+        <span class="font-mono text-xs uppercase tracking-widest text-text-dim dark:text-text-dim">
+          DevOps
+        </span>
+        <div class="flex flex-wrap gap-1.5">
+          <Tag>Docker</Tag>
+          <Tag>Git</Tag>
+          <Tag>AWS</Tag>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section class="max-w-5xl mx-auto px-6 sm:px-8 py-16">
+    <Card variant="glass" class="p-8 sm:p-12 text-center">
+      <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight text-text dark:text-text">
+        ¿Hablamos?
+      </h2>
+      <p class="mt-3 text-sm sm:text-base text-text-muted dark:text-text-muted max-w-xl mx-auto leading-relaxed">
+        Dispuesto a colaborar, aprender y crecer como profesional del desarrollo de software.
+      </p>
+      <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <Button href="mailto:contacto@alvarocastilla.dev">Contáctame por email</Button>
+        <Button href="/contact" variant="secondary">Ver contacto</Button>
+      </div>
+    </Card>
+  </section>
+</BaseLayout>
