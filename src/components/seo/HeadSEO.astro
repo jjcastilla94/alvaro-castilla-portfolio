@@ -1,4 +1,6 @@
 ---
+import { SITE } from '../../data/site';
+
 interface Props {
   title: string;
   description: string;
@@ -13,11 +15,7 @@ const {
   ogType = 'website',
 } = Astro.props;
 
-const SITE_URL = 'https://alvarocastilla.vercel.app';
-const SITE_NAME = 'Álvaro Castilla';
-const DEFAULT_OG_IMAGE = '/og-image.png';
-
-const pageCanonical = canonical ?? `${SITE_URL}/`;
+const pageCanonical = canonical ?? `${SITE.url}/`;
 ---
 
 <!doctype html>
@@ -63,15 +61,15 @@ const pageCanonical = canonical ?? `${SITE_URL}/`;
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={pageCanonical} />
-    <meta property="og:site_name" content={SITE_NAME} />
-    <meta property="og:locale" content="es_ES" />
-    <meta property="og:image" content={`${SITE_URL}${DEFAULT_OG_IMAGE}`} />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:locale" content={SITE.locale} />
+    <meta property="og:image" content={`${SITE.url}${SITE.ogImage}`} />
 
     <!-- Twitter / X -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={`${SITE_URL}${DEFAULT_OG_IMAGE}`} />
+    <meta name="twitter:image" content={`${SITE.url}${SITE.ogImage}`} />
 
     <meta name="generator" content={Astro.generator} />
   </head>

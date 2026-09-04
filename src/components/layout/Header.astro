@@ -1,12 +1,7 @@
 ---
 import ThemeToggle from '../ui/ThemeToggle.astro';
-
-const NAV_LINKS = [
-  { href: '/experience', label: 'Experiencia' },
-  { href: '/projects', label: 'Proyectos' },
-  { href: '/about', label: 'Sobre mí' },
-  { href: '/contact', label: 'Contacto' },
-];
+import { NAV_LINKS } from '../../data/site';
+import { PROFILE } from '../../data/profile';
 ---
 
 <header
@@ -18,10 +13,10 @@ const NAV_LINKS = [
       class="flex flex-col text-left group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-sm"
     >
       <span class="font-medium text-sm tracking-tight text-text group-hover:opacity-80 transition-opacity">
-        Álvaro Castilla
+        {PROFILE.name}
       </span>
       <span class="text-[11px] font-mono tracking-tight text-text-dim">
-        Backend Developer
+        {PROFILE.role}
       </span>
     </a>
 

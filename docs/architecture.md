@@ -34,11 +34,13 @@ alvaro-castilla-portfolio/
 
 Professional content is separated from presentation in `src/data/`:
 
-- `profile.ts` — Personal information, contact details
-- `experience.ts` — Work experience
-- `projects.ts` — Project details and case studies
-- `skills.ts` — Technical skills
-- `education.ts` — Educational background
+- `site.ts` — Site-wide constants (URL, name, OG image, locale, navigation links)
+- `profile.ts` — Personal information, contact details, social links
+- `experience.ts` — Work experience (typed `ExperienceEntry` interface)
+- `projects.ts` — Project details (typed `Project` interface)
+- `skills.ts` — Technical skills grouped by category (typed `SkillCategory` interface)
+
+Components import data from these files — no personal strings are hardcoded in `.astro` files.
 
 ## Pages
 

@@ -1,17 +1,19 @@
 ---
+import { PROFILE } from '../../data/profile';
+
 const YEAR = new Date().getFullYear();
 ---
 
 <footer class="w-full border-t border-border py-10 px-6 sm:px-8">
   <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
     <div class="flex items-center gap-2 font-mono text-xs text-text-dim">
-      <span>© {YEAR} Álvaro Castilla</span>
+      <span>© {YEAR} {PROFILE.name}</span>
       <span aria-hidden="true">•</span>
-      <span>Backend Developer</span>
+      <span>{PROFILE.role}</span>
     </div>
     <div class="flex items-center gap-6 font-mono text-xs">
       <a
-        href="https://github.com/jjcastilla94"
+        href={PROFILE.social.github}
         target="_blank"
         rel="noopener noreferrer"
         class="text-text-dim hover:text-text transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
@@ -19,7 +21,7 @@ const YEAR = new Date().getFullYear();
         GitHub
       </a>
       <a
-        href="https://www.linkedin.com/in/alvarocastillagonzalez"
+        href={PROFILE.social.linkedin}
         target="_blank"
         rel="noopener noreferrer"
         class="text-text-dim hover:text-text transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"

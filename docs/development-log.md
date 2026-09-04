@@ -91,12 +91,64 @@ Phase 2 was split into two steps:
 
 ### Content Notes
 
-- Experiencia: "Desarrollador Backend Junior — GRUPO CAJAMAR · julio 2026 — actualidad" (confirmed by user)
-- Email placeholder `contacto@alvarocastilla.dev` in contact section — pending confirmation
+- Experiencia: "Desarrollador Backend Junior — GRUPO CAJAMAR · Departamento de Apificación · julio 2026 — actualidad" (confirmed by user)
+- Email, GitHub, LinkedIn: real data confirmed and embedded
 
 ### Commit
 
-Pending (will be made after Phase 2 reviewed and approved for commit)
+`03fef0e` — `feat: add base layout and design system` (Phase 2A + implementation)
+`407ce50` — `feat: refine theme system, visual tokens, and real user data` (Phase 2 visual adjustments + ADR-008 amended)
+
+### Status
+
+Completed
+
+---
+
+## Phase 3 — Data Separation
+
+**Date:** 2026-09-04
+**Status:** In Progress
+
+### Objective
+
+Separate hardcoded content from components into centralized data files, establishing a clean data architecture that supports future expansion (education, certifications, more projects) without touching component code.
+
+### Implemented
+
+- **`src/data/site.ts`** — Site-wide constants: URL, name, OG image, locale, default description, navigation links
+- **`src/data/profile.ts`** — Personal data: name, role, bio, email, social links (GitHub, LinkedIn)
+- **`src/data/experience.ts`** — Work experience array with typed `ExperienceEntry` interface (2 entries: Cajamar Junior + Cajamar Prácticas)
+- **`src/data/skills.ts`** — Skills grouped by category with typed `SkillCategory` interface (Backend, Frontend, DevOps)
+- **`src/data/projects.ts`** — Projects array with typed `Project` interface (Arcadia, DetuBarrio)
+- **`Header.astro`** — Imports `NAV_LINKS` from `site.ts` and `PROFILE` from `profile.ts`
+- **`Footer.astro`** — Imports `PROFILE` from `profile.ts` for name, role, and social URLs
+- **`HeadSEO.astro`** — Imports `SITE` from `site.ts` for URL, name, OG image, locale
+- **`index.astro`** — Imports all data files; hero, experience, projects, skills, and contact sections all render from centralized data
+
+### Validation
+
+- Lint: PASS
+- Typecheck: PASS (0 errors, 0 warnings)
+- Build: PASS (1 page, 340ms)
+- HTML output verified: all real data present (GitHub URL, LinkedIn URL, email, Cajamar experience, projects)
+- Zero hardcoded personal strings remaining in `.astro` component files
+
+### Decisions
+
+- **5 data files** instead of a single monolith — each domain (site, profile, experience, skills, projects) is independently importable
+- **TypeScript interfaces exported** from data files — enables type safety in components
+- **`as const`** used for profile and site data — ensures literal types for values that won't change
+- **Experience filtered by `endDate === null`** on Home page — automatically shows current role without hardcoding which entry is current
+
+### Content Notes
+
+- Education, certifications, and additional projects deferred to future phases
+- LinkedIn "Acerca de" text kept as context, not copied literally
+
+### Commit
+
+Pending (awaiting approval)
 
 ### Status
 
