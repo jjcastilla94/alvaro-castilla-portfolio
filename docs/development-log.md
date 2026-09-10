@@ -108,7 +108,7 @@ Completed
 ## Phase 3 — Data Separation
 
 **Date:** 2026-09-04
-**Status:** In Progress
+**Status:** Completed
 
 ### Objective
 
@@ -159,7 +159,7 @@ Completed
 ## Phase 4 — Individual Pages
 
 **Date:** 2026-09-04
-**Status:** In Progress
+**Status:** Completed
 
 ### Objective
 
@@ -198,6 +198,70 @@ Create the internal pages of the portfolio consuming the data files from Phase 3
 
 - Complete project data (`longDescription`, `github`) deferred until provided by user
 - Education, certifications, and `/about` page deferred to later phases
+
+### Commit
+
+`681c167` — `feat: add individual pages (experience, projects, project detail, contact)` — pushed to `origin/main`, `main` in sync, working tree clean.
+
+### Status
+
+Completed
+
+---
+
+## Phase 5 — Visual Polish + Animations
+
+**Date:** 2026-09-10
+**Status:** Completed
+
+### Objective
+
+Increase visual impact and career polish without changing the visual identity, architecture, or stack. Add subtle, professional motion: reveals on scroll, microinteractions, a visual timeline for Experience, indexed Projects, refined Contact, and fast, subtle page transitions via Astro View Transitions.
+
+Scope constraint (approved): Phase 5 is visual only. No changes to `src/data`, stack, configuration, or dependencies. No content/Metrics invented. No Phase 6/7/8 features.
+
+### Implemented
+
+- **[data-reveal]** reveal-on-scroll system driven by `IntersectionObserver` (native API, no library). Content is visible by default (no-JS safe); the hidden starting state only applies when JS is active (`html.js`) and motion is allowed. Guarded by `prefers-reduced-motion`.
+- **`Reveal.astro`** — new UI primitive: thin wrapper (`div[data-reveal]`) with optional `delay` (ms) via `--reveal-delay`. Used for staggered entrance of cards on grids.
+- **Staggered Hero** — name, role, bio, CTAs and social links enter in sequence (0/70/140/210/280 ms).
+- **Ambient glow** — theme-aware radial glow (`.glow-accent`, uses `--color-accent` via `color-mix`) behind Hero and final Contact card. Low opacity, decorative only, `pointer-events: none`, no layout impact.
+- **Experience timeline** (`/experience`) — vertical timeline line with dots; the current role dot has a subtle pulse (`dot-pulse` keyframe). Cards unchanged structurally.
+- **Projects (home, `/projects`)** — mono index numbers ("01", "02"), staggered reveals, `h-full` cards for equal heights.
+- **Microinteractions** — Button (arrow drift on CTAs, primary/secondary lift + accent shadow), Card (hover/focus-within accent border + lift + soft shadow), Tag (color/border hover), back-link on project detail (`←` arrow drift).
+- **Active navigation indicator** — header underline (`scaleX` origin-left) for the current route in desktop nav; active color state in mobile menu.
+- **Contact page** — index heading, staggered card entrance, real email shown on the Email card (from `profile.ts`, not invented), `focus-visible` added to the "Redes" links.
+- **Footer** — minor hover refinement only (focus ring rounding).
+- **View Transitions (Astro)** — `<ClientRouter />` in `BaseLayout` with a fast 160 ms root cross-fade. No external library.
+- **Reduced motion policy** — movement disabled (reveals, keyframes, smooth scroll, page transitions), non-problematic state transitions (color, background, border, shadow, opacity) preserved. Content is never hidden.
+
+### Validation
+
+- Lint: PASS
+- Typecheck: PASS (0 errors, 0 warnings) — removed non-Astro `key` prop on `Reveal` (2 errors found and fixed)
+- Build: PASS (6 pages, 736ms) — same 6 routes as Phase 4
+- Format: modified/created files formatted with Prettier (pre-existing formatting debt in unrelated files left untouched: `README.md`, `eslint.config.js`, and a few components not in Phase 5 scope)
+- Running dev server: all 6 routes return HTTP 200
+- Compiled CSS verified: reveal rules, `html.js [data-reveal]`, reduced-motion block, `.dot-pulse`, `.glow-accent`, view-transition rules present
+- HTML verified: `data-reveal` attributes + staggered delays emitted; active nav indicator on each route; `/about` still absent from every navigation
+- View Transitions enabled on all pages (`astro-view-transitions-enabled` meta + ClientRouter module)
+- Reduced motion: reveals forced visible, animations killed, page transitions disabled, `scroll-behavior` auto, transform transitions removed while color/state transitions are preserved
+- Responsive reasoning: glow clipped to section width (`min(640px, 100%)`), timeline column `pl-9`, no fixed-width overflow sources; verified mobile-first classes throughout
+
+### Decisions
+
+- **Native `IntersectionObserver` over an animation library** — no dependency added. GSAP/Motion One/motion rejected as over-engineering (ADR-012).
+- **View Transitions via Astro `<ClientRouter />`** — fast 160 ms fade; integrated, no external library. Removed immediately if they caused navigation/theme/menu/accessibility issues (they did not) (ADR-013).
+- **`[data-reveal]` visible-by-default, hidden only under `html.js`** — guarantees no-JS and reduced-motion users never see hidden content (ADR-012).
+- **`prefers-reduced-motion` blocks movement but keeps color/state transitions** — per explicit user requirement (ADR-014).
+- **Single central reveal script in `BaseLayout`** listening to `astro:page-load` + initial load — works across View Transitions without per-component scripts.
+- **`html.js` class added in the head inline script** (only when motion allowed) so the hidden state is applied before first paint, enabling the Hero entrance while remaining no-JS safe.
+
+### Content Notes
+
+- No content, metrics, jobs, technologies, or URLs invented.
+- The visible email on `/contact` comes from `PROFILE.email` (existing data).
+- Section indices ("01", "02", …) are presentational labels, not personal data.
 
 ### Commit
 

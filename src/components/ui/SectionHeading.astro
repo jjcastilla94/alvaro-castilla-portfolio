@@ -3,14 +3,16 @@ interface Props {
   label: string;
   title: string;
   description?: string;
+  index?: string;
   class?: string;
 }
 
-const { label, title, description, class: className = '' } = Astro.props;
+const { label, title, description, index, class: className = '' } = Astro.props;
 ---
 
-<div class={`flex flex-col gap-2 ${className}`}>
+<div class={`flex flex-col gap-2 ${className}`} data-reveal>
   <span class="font-mono text-xs uppercase tracking-widest text-accent">
+    {index && <span class="mr-1.5 text-text-dim">{index}</span>}
     {label}
   </span>
   <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight text-text">
@@ -18,9 +20,7 @@ const { label, title, description, class: className = '' } = Astro.props;
   </h2>
   {
     description && (
-      <p class="text-sm sm:text-base text-text-muted max-w-2xl leading-relaxed">
-        {description}
-      </p>
+      <p class="text-sm sm:text-base text-text-muted max-w-2xl leading-relaxed">{description}</p>
     )
   }
 </div>

@@ -28,12 +28,16 @@ const description = project.longDescription ?? project.description;
   <section class="max-w-5xl mx-auto px-6 sm:px-8 pt-32 sm:pt-40 pb-16">
     <a
       href="/projects"
-      class="inline-flex items-center gap-1.5 font-mono text-xs text-text-muted hover:text-text transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+      class="group inline-flex items-center gap-1.5 font-mono text-xs text-text-muted hover:text-text transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-sm"
     >
-      ← Volver a todos los proyectos
+      <span
+        aria-hidden="true"
+        class="inline-block transition-transform duration-150 group-hover:-translate-x-0.5">←</span
+      >
+      Volver a todos los proyectos
     </a>
 
-    <header class="mt-8">
+    <header class="mt-8" data-reveal>
       <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-text">
         {project.title}
       </h1>
@@ -42,15 +46,17 @@ const description = project.longDescription ?? project.description;
       </p>
     </header>
 
-    {project.technologies.length > 0 && (
-      <div class="mt-6 flex flex-wrap gap-1.5">
-        {project.technologies.map((tech) => (
-          <Tag variant="accent">{tech}</Tag>
-        ))}
-      </div>
-    )}
+    {
+      project.technologies.length > 0 && (
+        <div data-reveal style="--reveal-delay: 60ms" class="mt-6 flex flex-wrap gap-1.5">
+          {project.technologies.map((tech) => (
+            <Tag variant="accent">{tech}</Tag>
+          ))}
+        </div>
+      )
+    }
 
-    <div class="mt-8">
+    <div data-reveal style="--reveal-delay: 120ms" class="mt-8">
       <Card class="p-6 sm:p-8">
         <h2 class="text-lg font-semibold text-text">Acerca del proyecto</h2>
         <div class="mt-4 text-sm text-text-muted leading-relaxed space-y-3">
@@ -60,10 +66,14 @@ const description = project.longDescription ?? project.description;
       </Card>
     </div>
 
-    <div class="mt-8 flex flex-wrap gap-4">
-      {project.github && (
-        <Button href={project.github} external>Ver en GitHub</Button>
-      )}
+    <div data-reveal style="--reveal-delay: 180ms" class="mt-8 flex flex-wrap gap-4">
+      {
+        project.github && (
+          <Button href={project.github} external>
+            Ver en GitHub
+          </Button>
+        )
+      }
       <Button href="/projects" variant="secondary">Volver a proyectos</Button>
     </div>
   </section>

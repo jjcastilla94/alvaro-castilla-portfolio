@@ -240,3 +240,86 @@ Traditional navigation is more accessible, more predictable for users, better fo
 ### Status
 
 Accepted
+
+---
+
+## ADR-012 -- Native CSS/JS Motion over Animation Library
+
+### Context
+
+Phase 5 introduces motion: reveals on scroll, hero entrance, microinteractions (hover/focus), and timeline pulse. We need these to be subtle, fast, and respectful of `prefers-reduced-motion`.
+
+### Decision
+
+Use only native browser APIs: CSS transitions, `@keyframes`, pseudoelements (`::before`), and a single `IntersectionObserver`. No animation library (GSAP, Motion One, framer-motion).
+
+The reveal system works as follows:
+
+- Elements opt in with a `data-reveal` attribute (`Reveal.astro` or inline).
+- Content is **visible by default**. The hidden state (`opacity: 0; translateY(16px)`) only applies when the `html.js` class is present (added in an inline head script, and only when motion is allowed).
+- A single central script in `BaseLayout` observes `[data-reveal]`, adds `.is-visible` on intersection, and re-runs on `astro:page-load` so it keeps working across View Transitions.
+- Staggering uses a `--reveal-delay` custom property.
+
+### Reason
+
+The portfolio is a static site with zero client-side framework. A library adds bundle weight and risk for effects that CSS + `IntersectionObserver` cover natively and with the required subtlety. Native APIs are also the simplest path to deterministic `prefers-reduced-motion` handling.
+
+### Alternatives Considered
+
+- **GSAP / Motion One / framer-motion** — rejected: over-engineering for a ~6-page static portfolio; heavier bundles; no additional value for subtle reveals.
+- **CSS-only with scroll-driven animations (`animation-timeline`)** — considered, not adopted: support is not consistent across browsers yet.
+
+### Status
+
+Accepted
+
+---
+
+## ADR-013 -- Astro View Transitions for Page Transitions
+
+### Context
+
+Navigating between routes was abrupt (instant full replacement). A fast, subtle cross-fade improves perceived quality without dependency overhead.
+
+### Decision
+
+Enable Astro's native View Transitions via `<ClientRouter />` (imported from `astro:transitions`) in `BaseLayout`, with a 160 ms root animation and `ease-out` timing — subtle and quick.
+
+Condition (approved beforehand): if during implementation/validation they caused issues with navigation, dark/light theme, mobile menu, accessibility, reduced motion, performance, or page behavior, they would be removed and the decision documented as postponed. None of these issues occurred, so the decision stands.
+
+### Reason
+
+View Transitions are built into Astro: zero dependencies, per-page opt-out possible, and accessible fallbacks (`astro-view-transitions-fallback`). Theme and `html` classes persist across navigation on `documentElement`, and the theme init runs before first paint.
+
+### Notes
+
+- Under `prefers-reduced-motion`, `::view-transition-group/old/new` animations are forced to `none`, so navigation falls back to an instant swap.
+- The mobile menu state is not persisted across navigation (menu closes), which is correct behavior.
+
+### Status
+
+Accepted
+
+---
+
+## ADR-014 -- Reduced Motion: Disable Movement, Keep State Transitions
+
+### Context
+
+The earlier global rule killed every transition (`transition-duration: 0.01ms !important`) under `prefers-reduced-motion`. The requirement for Phase 5 was more granular: disabling reveals/movement must not mean disabling all visual transitions indiscriminately.
+
+### Decision
+
+Under `prefers-reduced-motion: reduce`:
+
+- **Disabled:** reveals (`[data-reveal]` forced `opacity: 1; transform: none`), all `@keyframes` animations, smooth `scroll-behavior`, and View Transitions (`animation: none` on `::view-transition-*`).
+- **Restricted:** `transition-property` reduced to non-movement properties (`color`, `background-color`, `border-color`, `box-shadow`, `opacity`, `fill`, `stroke`), so hover lifts and other transform-based movement snap instead of animating.
+- **Preserved:** color/state transitions that are non-problematic.
+
+### Reason
+
+Reduced motion is about removing perceived movement and hidden content, not about making every state change instant. Preserving color/background/border transitions keeps visual feedback usable while eliminating motion. Content visibility is guaranteed: reveal elements are always shown.
+
+### Status
+
+Accepted

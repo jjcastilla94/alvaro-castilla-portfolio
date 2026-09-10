@@ -2,17 +2,23 @@
 import ThemeToggle from '../ui/ThemeToggle.astro';
 import { NAV_LINKS } from '../../data/site';
 import { PROFILE } from '../../data/profile';
+
+const currentPath = Astro.url.pathname;
+
+function isActive(href: string): boolean {
+  return href === '/' ? currentPath === '/' : currentPath.startsWith(href);
+}
 ---
 
-<header
-  class="fixed top-0 inset-x-0 z-50 border-b border-border bg-surface-glass backdrop-blur-xl"
->
+<header class="fixed top-0 inset-x-0 z-50 border-b border-border bg-surface-glass backdrop-blur-xl">
   <div class="max-w-5xl mx-auto px-6 sm:px-8 py-4 flex items-center justify-between">
     <a
       href="/"
       class="flex flex-col text-left group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-sm"
     >
-      <span class="font-medium text-sm tracking-tight text-text group-hover:opacity-80 transition-opacity">
+      <span
+        class="font-medium text-sm tracking-tight text-text group-hover:opacity-80 transition-opacity"
+      >
         {PROFILE.name}
       </span>
       <span class="text-[11px] font-mono tracking-tight text-text-dim">
@@ -25,9 +31,17 @@ import { PROFILE } from '../../data/profile';
         NAV_LINKS.map((link) => (
           <a
             href={link.href}
-            class="px-3 py-2 text-sm text-text-muted hover:text-text transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-md"
+            class={`group relative px-3 py-2 text-sm rounded-md transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
+              isActive(link.href) ? 'text-text' : 'text-text-muted hover:text-text'
+            }`}
           >
             {link.label}
+            <span
+              aria-hidden="true"
+              class={`absolute inset-x-3 bottom-0.5 h-px bg-accent transition-transform duration-150 origin-left ${
+                isActive(link.href) ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
+              }`}
+            />
           </a>
         ))
       }
@@ -52,7 +66,10 @@ import { PROFILE } from '../../data/profile';
           stroke-width="1.5"
           aria-hidden="true"
         >
-          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"></path>
         </svg>
         <svg
           id="menu-icon-close"
@@ -63,22 +80,21 @@ import { PROFILE } from '../../data/profile';
           stroke-width="1.5"
           aria-hidden="true"
         >
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
         </svg>
       </button>
     </div>
   </div>
 
-  <div
-    id="mobile-menu"
-    class="md:hidden hidden bg-surface border-t border-border"
-  >
+  <div id="mobile-menu" class="md:hidden hidden bg-surface border-t border-border">
     <nav class="px-6 py-4 flex flex-col gap-1" aria-label="Navegación móvil">
       {
         NAV_LINKS.map((link) => (
           <a
             href={link.href}
-            class="py-2.5 text-sm text-text-muted hover:text-text transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-md"
+            class={`py-2.5 text-sm rounded-md transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
+              isActive(link.href) ? 'text-text' : 'text-text-muted hover:text-text'
+            }`}
           >
             {link.label}
           </a>
@@ -100,7 +116,10 @@ import { PROFILE } from '../../data/profile';
     iconOpen.classList.toggle('hidden', open);
     iconClose.classList.toggle('hidden', !open);
     toggle.setAttribute('aria-expanded', String(open));
-    toggle.setAttribute('aria-label', open ? 'Cerrar menú de navegación' : 'Abrir menú de navegación');
+    toggle.setAttribute(
+      'aria-label',
+      open ? 'Cerrar menú de navegación' : 'Abrir menú de navegación',
+    );
   }
 
   if (toggle && menu) {

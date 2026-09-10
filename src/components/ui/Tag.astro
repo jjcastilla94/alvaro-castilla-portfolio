@@ -8,14 +8,13 @@ const { variant = 'default', class: className = '' } = Astro.props;
 
 const variantClasses = {
   default:
-    'bg-surface-hover border border-border text-text-muted',
-  accent:
-    'bg-accent-subtle border border-accent/25 text-accent',
+    'bg-surface-hover border border-border text-text-muted hover:border-border-hover hover:text-text',
+  accent: 'bg-accent-subtle border border-accent/25 text-accent hover:border-accent/45',
 };
 ---
 
 <span
-  class={`inline-flex items-center px-2.5 py-1 rounded text-[0.8125rem] font-mono border ${variantClasses[variant]} ${className}`}
+  class={`inline-flex items-center px-2.5 py-1 rounded text-[0.8125rem] font-mono border transition-colors duration-150 ${variantClasses[variant]} ${className}`}
 >
   <slot />
 </span>

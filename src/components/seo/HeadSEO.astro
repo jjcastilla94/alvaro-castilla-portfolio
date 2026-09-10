@@ -8,12 +8,7 @@ interface Props {
   ogType?: 'website' | 'article';
 }
 
-const {
-  title,
-  description,
-  canonical,
-  ogType = 'website',
-} = Astro.props;
+const { title, description, canonical, ogType = 'website' } = Astro.props;
 
 const pageCanonical = canonical ?? `${SITE.url}/`;
 ---
@@ -35,6 +30,11 @@ const pageCanonical = canonical ?? `${SITE.url}/`;
     <!-- Theme init: apply stored preference before first paint to avoid flash -->
     <script is:inline>
       (function () {
+        // Enables the [data-reveal] hidden state only when JS is active.
+        // Content stays visible for no-JS and prefers-reduced-motion users.
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          document.documentElement.classList.add('js');
+        }
         const stored = localStorage.getItem('theme');
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         const theme = stored || (prefersDark ? 'dark' : 'light');

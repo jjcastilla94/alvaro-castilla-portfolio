@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/ui/Button.astro';
 import Card from '../components/ui/Card.astro';
+import Reveal from '../components/ui/Reveal.astro';
 import Tag from '../components/ui/Tag.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
 import SocialLink from '../components/ui/SocialLink.astro';
@@ -19,23 +20,37 @@ const currentExperience = EXPERIENCE.find((e) => e.endDate === null);
 
 <BaseLayout title={title} description={description}>
   <!-- ===== HERO ===== -->
-  <section id="top" class="max-w-5xl mx-auto px-6 sm:px-8 pt-36 sm:pt-44 pb-16">
-    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-text leading-[1.08]">
+  <section
+    id="top"
+    class="glow-accent relative max-w-5xl mx-auto px-6 sm:px-8 pt-36 sm:pt-44 pb-16"
+  >
+    <h1
+      data-reveal
+      class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-text leading-[1.08]"
+    >
       {PROFILE.name}
     </h1>
-    <p class="mt-3 font-mono text-sm sm:text-base text-accent">
+    <p
+      data-reveal
+      style="--reveal-delay: 70ms"
+      class="mt-3 font-mono text-sm sm:text-base text-accent"
+    >
       {PROFILE.role}
     </p>
-    <p class="mt-6 text-base sm:text-lg text-text-muted max-w-2xl leading-relaxed">
+    <p
+      data-reveal
+      style="--reveal-delay: 140ms"
+      class="mt-6 text-base sm:text-lg text-text-muted max-w-2xl leading-relaxed"
+    >
       {PROFILE.bio}
     </p>
 
-    <div class="mt-8 flex flex-wrap items-center gap-4">
+    <div data-reveal style="--reveal-delay: 210ms" class="mt-8 flex flex-wrap items-center gap-4">
       <Button href="/projects">Ver proyectos</Button>
       <Button href="/contact" variant="secondary">Contactar</Button>
     </div>
 
-    <div class="mt-8 flex items-center gap-6">
+    <div data-reveal style="--reveal-delay: 280ms" class="mt-8 flex items-center gap-6">
       <SocialLink href={PROFILE.social.github} label="GitHub" />
       <SocialLink href={PROFILE.social.linkedin} label="LinkedIn" />
     </div>
@@ -44,45 +59,54 @@ const currentExperience = EXPERIENCE.find((e) => e.endDate === null);
   <!-- ===== EXPERIENCE ===== -->
   <section class="max-w-5xl mx-auto px-6 sm:px-8 py-16">
     <SectionHeading
+      index="01"
       label="Experiencia profesional"
       title="Donde aplico lo que sé"
       description="Mi experiencia profesional en desarrollo backend, trabajando en el desarrollo y mantenimiento de APIs REST en entornos empresariales."
       class="border-b border-border pb-8"
     />
 
-    {currentExperience && (
-      <div class="mt-10">
-        <Card class="p-6 sm:p-8">
-          <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-            <div>
-              <h3 class="text-lg sm:text-xl font-semibold text-text">
-                {currentExperience.role}
-              </h3>
-              <p class="mt-1 font-mono text-xs text-text-dim">
-                {currentExperience.company} · Departamento de {currentExperience.department} · {currentExperience.startDate} — actualidad
-              </p>
+    {
+      currentExperience && (
+        <Reveal class="mt-10" delay={40}>
+          <Card class="p-6 sm:p-8">
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+              <div>
+                <h3 class="text-lg sm:text-xl font-semibold text-text">{currentExperience.role}</h3>
+                <p class="mt-1 font-mono text-xs text-text-dim">
+                  {currentExperience.company} · Departamento de {currentExperience.department} ·{' '}
+                  {currentExperience.startDate} — actualidad
+                </p>
+              </div>
             </div>
-          </div>
-          <p class="mt-4 text-sm text-text-muted leading-relaxed">
-            {currentExperience.description}
-          </p>
-          <div class="mt-5 flex flex-wrap gap-1.5">
-            {currentExperience.technologies.map((tech) => (
-              <Tag>{tech}</Tag>
-            ))}
-          </div>
-        </Card>
-      </div>
-    )}
+            <p class="mt-4 text-sm text-text-muted leading-relaxed">
+              {currentExperience.description}
+            </p>
+            <div class="mt-5 flex flex-wrap gap-1.5">
+              {currentExperience.technologies.map((tech) => (
+                <Tag>{tech}</Tag>
+              ))}
+            </div>
+          </Card>
+        </Reveal>
+      )
+    }
 
-    <div class="mt-8">
-      <Button href="/experience" variant="ghost">Ver experiencia completa →</Button>
+    <div data-reveal class="mt-8">
+      <Button href="/experience" variant="ghost">
+        Ver experiencia completa
+        <span
+          aria-hidden="true"
+          class="inline-block transition-transform duration-150 group-hover:translate-x-0.5">→</span
+        >
+      </Button>
     </div>
   </section>
 
   <!-- ===== PROJECTS ===== -->
   <section class="max-w-5xl mx-auto px-6 sm:px-8 py-16">
     <SectionHeading
+      index="02"
       label="Proyectos"
       title="Lo que he construido"
       description="Proyectos Full Stack que demuestran mi capacidad técnica en el stack backend y su integración con el frontend."
@@ -90,39 +114,62 @@ const currentExperience = EXPERIENCE.find((e) => e.endDate === null);
     />
 
     <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-6">
-      {PROJECTS.map((project) => (
-        <Card>
-          <div class="p-6 flex flex-col gap-4 h-full">
-            <div>
-              <h3 class="text-lg font-semibold text-text">{project.title}</h3>
-              <p class="text-xs font-mono text-text-dim mt-0.5">
-                {project.subtitle}
-              </p>
-            </div>
-            <p class="text-sm text-text-muted leading-relaxed flex-1">
-              {project.description}
-            </p>
-            <div class="flex flex-wrap gap-1.5">
-              {project.technologies.map((tech) => (
-                <Tag>{tech}</Tag>
-              ))}
-            </div>
-            <div>
-              <Button href={project.href} variant="ghost" size="sm">Ver caso de estudio →</Button>
-            </div>
-          </div>
-        </Card>
-      ))}
+      {
+        PROJECTS.map((project, i) => (
+          <Reveal class="h-full" delay={i * 60}>
+            <Card class="h-full">
+              <div class="p-6 flex flex-col gap-4 h-full">
+                <div class="flex items-start justify-between gap-3">
+                  <div>
+                    <h3 class="text-lg font-semibold text-text">{project.title}</h3>
+                    <p class="text-xs font-mono text-text-dim mt-0.5">{project.subtitle}</p>
+                  </div>
+                  <span
+                    aria-hidden="true"
+                    class="shrink-0 font-mono text-xs text-text-dim tabular-nums"
+                  >
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                </div>
+                <p class="text-sm text-text-muted leading-relaxed flex-1">{project.description}</p>
+                <div class="flex flex-wrap gap-1.5">
+                  {project.technologies.map((tech) => (
+                    <Tag>{tech}</Tag>
+                  ))}
+                </div>
+                <div>
+                  <Button href={project.href} variant="ghost" size="sm">
+                    Ver caso de estudio
+                    <span
+                      aria-hidden="true"
+                      class="inline-block transition-transform duration-150 group-hover:translate-x-0.5"
+                    >
+                      →
+                    </span>
+                  </Button>
+                </div>
+              </div>
+            </Card>
+          </Reveal>
+        ))
+      }
     </div>
 
-    <div class="mt-8">
-      <Button href="/projects" variant="ghost">Ver todos los proyectos →</Button>
+    <div data-reveal class="mt-8">
+      <Button href="/projects" variant="ghost">
+        Ver todos los proyectos
+        <span
+          aria-hidden="true"
+          class="inline-block transition-transform duration-150 group-hover:translate-x-0.5">→</span
+        >
+      </Button>
     </div>
   </section>
 
   <!-- ===== SKILLS ===== -->
   <section class="max-w-5xl mx-auto px-6 sm:px-8 py-16">
     <SectionHeading
+      index="03"
       label="Skills"
       title="Mi stack técnico"
       description="Tecnologías y herramientas con las que trabajo habitualmente y otras con las que tengo experiencia."
@@ -130,34 +177,37 @@ const currentExperience = EXPERIENCE.find((e) => e.endDate === null);
     />
 
     <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
-      {SKILLS.map((group) => (
-        <div class="flex flex-col gap-2">
-          <span class="font-mono text-xs uppercase tracking-widest text-text-dim">
-            {group.category}
-          </span>
-          <div class="flex flex-wrap gap-1.5">
-            {group.skills.map((skill) => (
-              <Tag>{skill}</Tag>
-            ))}
+      {
+        SKILLS.map((group, i) => (
+          <div data-reveal style={`--reveal-delay: ${i * 70}ms`} class="flex flex-col gap-3">
+            <span class="font-mono text-xs uppercase tracking-widest text-text-dim">
+              {group.category}
+            </span>
+            <div class="flex flex-wrap gap-1.5">
+              {group.skills.map((skill) => (
+                <Tag>{skill}</Tag>
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
+        ))
+      }
     </div>
   </section>
 
   <!-- ===== CONTACT ===== -->
-  <section class="max-w-5xl mx-auto px-6 sm:px-8 py-16">
-    <Card variant="glass" class="p-8 sm:p-12 text-center">
-      <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight text-text">
-        ¿Hablamos?
-      </h2>
-      <p class="mt-3 text-sm sm:text-base text-text-muted max-w-xl mx-auto leading-relaxed">
-        Dispuesto a colaborar, aprender y crecer como profesional del desarrollo de software.
-      </p>
-      <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-        <Button href={`mailto:${PROFILE.email}`}>Contáctame por email</Button>
-        <Button href="/contact" variant="secondary">Ver contacto</Button>
-      </div>
-    </Card>
+  <section class="glow-accent relative max-w-5xl mx-auto px-6 sm:px-8 py-16">
+    <div data-reveal>
+      <Card variant="glass" class="p-8 sm:p-12 text-center">
+        <span class="font-mono text-xs uppercase tracking-widest text-accent"> 04 · Contacto </span>
+        <h2 class="mt-3 text-2xl sm:text-3xl font-semibold tracking-tight text-text">¿Hablamos?</h2>
+        <p class="mt-3 text-sm sm:text-base text-text-muted max-w-xl mx-auto leading-relaxed">
+          Dispuesto a colaborar, aprender y crecer como profesional del desarrollo de software.
+        </p>
+        <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Button href={`mailto:${PROFILE.email}`}>Contáctame por email</Button>
+          <Button href="/contact" variant="secondary">Ver contacto</Button>
+        </div>
+      </Card>
+    </div>
   </section>
 </BaseLayout>
