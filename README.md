@@ -15,10 +15,10 @@ Personal portfolio for Álvaro Castilla (Backend Developer), showcasing his prof
 
 | Route | Description |
 |-------|-------------|
-| `/` | Home — hero, featured experience, projects, skills, contact |
-| `/experience` | Professional experience timeline |
-| `/projects` | Project listing |
-| `/projects/[slug]` | Individual project case studies |
+| `/` | Home — hero with code card, featured experience, stats, projects, architecture, skills, contact |
+| `/experience` | Professional experience timeline with animated entries |
+| `/projects` | Project listing with full-width cards |
+| `/projects/[slug]` | Individual project case studies with visual preview |
 | `/contact` | Contact information (email, GitHub, LinkedIn) |
 
 > `/about` is intentionally not present in the navigation until it exists (planned for Phase 6).
@@ -29,11 +29,16 @@ Personal portfolio for Álvaro Castilla (Backend Developer), showcasing his prof
 alvaro-castilla-portfolio/
 ├── public/              # Static assets (favicon, robots.txt)
 ├── src/
-│   ├── components/      # Astro components (UI, layout, sections)
+│   ├── components/
+│   │   ├── layout/      # Header, Footer
+│   │   ├── sections/    # Hero (code card), Architecture (animated diagram)
+│   │   ├── seo/         # HeadSEO
+│   │   └── ui/          # Button, Card, Reveal, Tag, SectionHeading,
+│   │                    # SocialLink, ThemeToggle, ProjectCard, Breadcrumbs
 │   ├── data/            # Centralized content (profile, projects, experience, skills, site)
-│   ├── layouts/         # Page layouts
+│   ├── layouts/         # BaseLayout (scroll progress, stats, reveals)
 │   ├── pages/           # Route pages
-│   ├── styles/          # Global CSS + design tokens
+│   ├── styles/          # Global CSS + design tokens + motion system
 │   └── utils/           # Utility functions
 ├── tests/               # Test files (unit + E2E)
 ├── docs/                # Project documentation
@@ -44,10 +49,10 @@ alvaro-castilla-portfolio/
 
 All of the site's content lives in `src/data/` — no personal strings are hardcoded in components:
 
-- `site.ts` — Site-wide constants: URL, name, OG image, locale, navigation links
-- `profile.ts` — Name, role, bio, email, social links
+- `site.ts` — Site-wide constants: URL, name, OG image, locale, navigation links (including Inicio)
+- `profile.ts` — Name, role, bio, email, social links, stats array
 - `experience.ts` — Work experience entries (typed)
-- `projects.ts` — Project list with optional `longDescription` and `github` URLs
+- `projects.ts` — Project list with color field, optional `longDescription` and `github` URLs
 - `skills.ts` — Skills grouped by category
 
 To add a new project, add an entry to `src/data/projects.ts` — the listing and detail pages update automatically.

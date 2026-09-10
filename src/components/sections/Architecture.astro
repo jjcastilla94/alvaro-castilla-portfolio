@@ -1,0 +1,93 @@
+---
+const NODES = [
+  { id: 'client', label: 'Client', sublabel: 'Vue.js / Browser', icon: '&#9741;' },
+  { id: 'bff', label: 'BFF', sublabel: 'Backend for Frontend', icon: '&#9881;' },
+  { id: 'gateway', label: 'Gateway', sublabel: 'API Routing', icon: '&#9881;' },
+  { id: 'service', label: 'Service', sublabel: 'Spring Boot', icon: '&#9881;' },
+  { id: 'database', label: 'Database', sublabel: 'MySQL', icon: '&#9881;' },
+];
+---
+
+<section class="max-w-5xl mx-auto px-6 sm:px-8 py-16">
+  <div class="flex flex-col gap-2" data-reveal>
+    <span class="font-mono text-xs uppercase tracking-widest text-accent">
+      <span class="mr-1.5 text-text-dim">03</span>
+      Cómo construyo
+    </span>
+    <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight text-text">
+      Arquitectura en acción
+    </h2>
+    <p class="text-sm sm:text-base text-text-muted max-w-2xl leading-relaxed">
+      Flujo de datos desde el cliente hasta la base de datos. Cada capa tiene una responsabilidad
+      clara.
+    </p>
+  </div>
+
+  <div class="mt-12 flex justify-center">
+    <div class="relative flex flex-col items-center gap-0">
+      {
+        NODES.map((node, i) => (
+          <div class="flex flex-col items-center">
+            <div
+              class="arch-node relative z-10 w-56 sm:w-64 px-5 py-4 rounded-lg border border-border bg-surface hover:border-accent/40 transition-colors duration-200"
+              style={`--reveal-delay: ${i * 180}ms`}
+            >
+              <div class="flex items-center gap-3">
+                <div class="flex items-center justify-center w-8 h-8 rounded-md bg-accent-subtle border border-accent/20">
+                  <span class="text-accent text-xs font-mono font-medium">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                </div>
+                <div>
+                  <span class="block text-sm font-semibold text-text">{node.label}</span>
+                  <span class="block font-mono text-[0.6875rem] text-text-dim">
+                    {node.sublabel}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {i < NODES.length - 1 && (
+              <div class="relative flex flex-col items-center h-10 sm:h-12">
+                <div
+                  class="arch-line relative w-px h-full bg-gradient-to-b from-accent/40 to-accent/10"
+                  style={`--reveal-delay: ${i * 180 + 100}ms`}
+                >
+                  <div class="flow-dot" style={`animation-delay: ${i * 0.6}s`} />
+                </div>
+              </div>
+            )}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <div
+    class="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4"
+    data-reveal
+    style="--reveal-delay: 200ms"
+  >
+    <div class="flex flex-col gap-2 p-4 rounded-lg border border-border bg-surface/50">
+      <span class="font-mono text-xs text-accent">01</span>
+      <span class="text-sm font-medium text-text">Separación de capas</span>
+      <span class="text-xs text-text-muted leading-relaxed"
+        >Cada componente tiene una responsabilidad única y bien definida.</span
+      >
+    </div>
+    <div class="flex flex-col gap-2 p-4 rounded-lg border border-border bg-surface/50">
+      <span class="font-mono text-xs text-accent">02</span>
+      <span class="text-sm font-medium text-text">APIs contractuales</span>
+      <span class="text-xs text-text-muted leading-relaxed"
+        >Comunicación entre capas mediante contratos REST explícitos.</span
+      >
+    </div>
+    <div class="flex flex-col gap-2 p-4 rounded-lg border border-border bg-surface/50">
+      <span class="font-mono text-xs text-accent">03</span>
+      <span class="text-sm font-medium text-text">Containerización</span>
+      <span class="text-xs text-text-muted leading-relaxed"
+        >Despliegue consistente con Docker en cualquier entorno.</span
+      >
+    </div>
+  </div>
+</section>

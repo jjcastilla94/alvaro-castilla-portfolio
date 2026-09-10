@@ -348,3 +348,89 @@ A slightly darker blue preserves the visual identity and hover behavior (color s
 ### Status
 
 Accepted
+
+---
+
+## ADR-016 — Space Grotesk as Display Font
+
+### Context
+
+The reference site (sergio-perez-planells.netlify.app) uses Space Grotesk for headings and display text, creating visual hierarchy between section titles and body content. The current typography system uses Inter for everything and JetBrains Mono for labels.
+
+### Decision
+
+Add Space Grotesk via Google Fonts as a third font role: **display headings** (Hero name, section titles, experience roles, stat values). Token `--font-display` defined in `global.css`.
+
+### Reason
+
+Space Grotesk provides visual weight and hierarchy for section headings, making the portfolio feel more polished and less flat. It aligns with the reference site's professional aesthetic while fitting a backend developer's profile. The three-font system is clear: Space Grotesk (display), Inter (body), JetBrains Mono (code/labels).
+
+### Status
+
+Accepted
+
+---
+
+## ADR-017 — Static Code Card in Hero (No Fake Terminal)
+
+### Context
+
+The reference site shows a `Developer.java` code card in the Hero section, communicating technical competence at a glance. The user's rules explicitly prohibit fake terminal effects, typing animations, blinking cursors, and Matrix aesthetic.
+
+### Decision
+
+Implement a **static code card** showing `Developer.java` with syntax highlighting (keywords, strings, functions, comments), mac-window dots, and 3D tilt on hover. No typing animation, no cursor, no blinking.
+
+### Reason
+
+A static code card communicates "this person writes code" instantly, without the gimmick of fake terminal effects. The syntax highlighting demonstrates familiarity with Java/Spring ecosystem. The 3D tilt adds interactivity while remaining professional. This balances the user's aesthetic rules with the visual impact the reference site achieves.
+
+### Alternatives Considered
+
+- **Typed code animation** — rejected: violates "no fake terminal" rule, adds complexity for transient visual effect
+- **Syntax-highlighted without interactivity** — considered, but the tilt provides engagement without gimmick
+- **Interactive editor** — rejected: would require client-side framework, over-engineering
+
+### Status
+
+Accepted
+
+---
+
+## ADR-018 — Animated Stats Counters
+
+### Context
+
+Professional metrics (years, projects, technologies) on the home page are static text. A subtle count-up animation adds dynamism and draws attention to key numbers.
+
+### Decision
+
+Use `data-count` and `data-suffix` attributes on stat elements, with a JavaScript count-up animation that triggers on intersection. Numbers animate from 0 (or the base value) to the target with `ease-out` timing over 900ms.
+
+### Reason
+
+Count-up animations are a well-established pattern for making metrics feel dynamic without being distracting. The animation is short, respects `prefers-reduced-motion` (numbers shown instantly), and adds visual interest to what would otherwise be a static row. No library needed — a single `requestAnimationFrame` loop with easing is sufficient.
+
+### Status
+
+Accepted
+
+---
+
+## ADR-019 — Breadcrumbs on All Subpages
+
+### Context
+
+The portfolio had no navigation trail on internal pages. Users who arrive at `/experience` or `/projects/arcadia` (e.g., from a direct link) have no visual indication of where they are in the site hierarchy, and the only way back was the main nav or a "Volver" back-link on project detail pages.
+
+### Decision
+
+Add a `Breadcrumbs.astro` component that renders `Inicio / Section` on all subpages. On project detail pages: `Inicio / Proyectos / ProjectName` with linked intermediate crumbs.
+
+### Reason
+
+Breadcrumbs provide spatial context on internal pages and improve navigation for direct-link visitors. They replace the isolated "Volver a todos los proyectos" back-link with a full navigation trail. The implementation is simple (no schema/JSON-LD, just visual), and the `Inicio` crumb always links home — matching the newly added "Inicio" nav link.
+
+### Status
+
+Accepted

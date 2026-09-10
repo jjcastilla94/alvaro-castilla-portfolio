@@ -30,21 +30,28 @@ const pageCanonical = canonical ?? `${SITE.url}/`;
     <!-- Theme init: apply stored preference before first paint to avoid flash -->
     <script is:inline>
       (function () {
-        // Enables the [data-reveal] hidden state only when JS is active.
-        // Content stays visible for no-JS and prefers-reduced-motion users.
-        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-          document.documentElement.classList.add('js');
+        function applyTheme() {
+          // Enables the [data-reveal] hidden state only when JS is active.
+          // Content stays visible for no-JS and prefers-reduced-motion users.
+          const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          document.documentElement.classList.toggle('js', !reduceMotion);
+
+          const stored = localStorage.getItem('theme');
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          const theme = stored || (prefersDark ? 'dark' : 'light');
+          if (theme === 'light') {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.classList.add('light');
+          } else {
+            document.documentElement.classList.remove('light');
+            document.documentElement.classList.add('dark');
+          }
         }
-        const stored = localStorage.getItem('theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const theme = stored || (prefersDark ? 'dark' : 'light');
-        if (theme === 'light') {
-          document.documentElement.classList.remove('dark');
-          document.documentElement.classList.add('light');
-        } else {
-          document.documentElement.classList.remove('light');
-          document.documentElement.classList.add('dark');
-        }
+        applyTheme();
+        // Re-apply theme and .js after every View Transition navigation:
+        // ClientRouter resets html classes to the static markup ones, so we
+        // re-sync them whenever a new page finishes loading.
+        document.addEventListener('astro:page-load', applyTheme);
       })();
     </script>
 
@@ -52,7 +59,7 @@ const pageCanonical = canonical ?? `${SITE.url}/`;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
 

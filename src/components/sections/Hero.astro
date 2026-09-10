@@ -1,0 +1,103 @@
+---
+import Button from '../ui/Button.astro';
+import SocialLink from '../ui/SocialLink.astro';
+import { PROFILE } from '../../data/profile';
+
+const codeHtml = `<span class="c-key">public class</span> <span class="c-cls">Developer</span> {
+  <span class="c-key">private</span> String name = <span class="c-str">"Álvaro Castilla"</span>;
+  <span class="c-key">private</span> String role = <span class="c-str">"Backend Developer"</span>;
+  <span class="c-key">private</span> String company = <span class="c-str">"GRUPO CAJAMAR"</span>;
+
+  <span class="c-key">private</span> String[] stack = {
+    <span class="c-str">"Java"</span>, <span class="c-str">"Spring Boot"</span>,
+    <span class="c-str">"REST APIs"</span>, <span class="c-str">"MySQL"</span>,
+    <span class="c-str">"Docker"</span>, <span class="c-str">"BFF"</span>
+  };
+
+  <span class="c-cmt">// APIs REST en entornos empresariales</span>
+  <span class="c-key">public</span> <span class="c-cls">Impact</span> <span class="c-fn">build</span>() {
+    <span class="c-key">return</span> <span class="c-fn">createAPIs</span>()
+      .<span class="c-fn">withCleanArchitecture</span>()
+      .<span class="c-fn">forBusiness</span>();
+  }
+}`;
+---
+
+<section
+  id="top"
+  class="glow-accent relative max-w-5xl mx-auto px-6 sm:px-8 pt-32 sm:pt-40 pb-16 lg:grid lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:items-center"
+>
+  <div>
+    <div class="hero-badge" data-reveal style="--reveal-delay: 0ms">
+      <span aria-hidden="true" class="w-1.5 h-1.5 rounded-full bg-green-400 inline-block"></span>
+      Disponible para nuevos retos
+    </div>
+
+    <h1
+      data-reveal
+      style="--reveal-delay: 60ms"
+      class="mt-6 font-display text-5xl sm:text-6xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-text leading-[1.02]"
+    >
+      {PROFILE.name}
+    </h1>
+
+    <p
+      data-reveal
+      style="--reveal-delay: 130ms"
+      class="mt-4 font-mono text-base sm:text-lg text-accent"
+    >
+      {PROFILE.role}
+    </p>
+
+    <p
+      data-reveal
+      style="--reveal-delay: 200ms"
+      class="mt-6 text-base sm:text-lg text-text-muted max-w-xl leading-relaxed"
+    >
+      {PROFILE.bio}
+    </p>
+
+    <div data-reveal style="--reveal-delay: 270ms" class="mt-8 flex flex-wrap items-center gap-4">
+      <Button href="/projects">Ver proyectos</Button>
+      <Button href="/contact" variant="secondary">Contactar</Button>
+    </div>
+
+    <div data-reveal style="--reveal-delay: 340ms" class="mt-7 flex items-center gap-6">
+      <SocialLink href={PROFILE.social.github} label="GitHub" />
+      <SocialLink href={PROFILE.social.linkedin} label="LinkedIn" />
+    </div>
+  </div>
+
+  <div data-reveal style="--reveal-delay: 150ms" class="mt-12 lg:mt-0">
+    <div class="code-window select-none" aria-hidden="true">
+      <div class="code-window__bar">
+        <span class="code-window__dot"></span>
+        <span class="code-window__dot"></span>
+        <span class="code-window__dot"></span>
+        <span class="code-window__file">Developer.java</span>
+      </div>
+      <pre class="code-window__body"><code set:html={codeHtml} /></pre>
+    </div>
+  </div>
+
+  <div data-reveal style="--reveal-delay: 450ms" class="mt-12 lg:col-span-2 flex justify-center">
+    <a
+      href="#experience"
+      class="scroll-indicator flex flex-col items-center gap-1 text-text-dim hover:text-text-muted transition-colors duration-200"
+      aria-label="Scroll para explorar"
+    >
+      <span class="font-mono text-[0.625rem] uppercase tracking-widest">Explorar</span>
+      <svg
+        class="w-4 h-4"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        aria-hidden="true"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 5.25 7.5 7.5 7.5-7.5"></path>
+        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 7.5 7.5 7.5-7.5"></path>
+      </svg>
+    </a>
+  </div>
+</section>

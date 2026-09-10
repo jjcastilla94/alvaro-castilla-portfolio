@@ -4,6 +4,7 @@ import Button from '../components/ui/Button.astro';
 import Card from '../components/ui/Card.astro';
 import Tag from '../components/ui/Tag.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
+import Breadcrumbs from '../components/ui/Breadcrumbs.astro';
 
 import { EXPERIENCE } from '../data/experience';
 import { PROFILE } from '../data/profile';
@@ -34,10 +35,15 @@ function formatDate(dateStr: string): string {
 function formatRange(start: string, end: string | null): string {
   return end ? `${formatDate(start)} — ${formatDate(end)}` : `${formatDate(start)} — actualidad`;
 }
+
+function getYear(dateStr: string): string {
+  return dateStr.split('-')[0];
+}
 ---
 
 <BaseLayout title={title} description={PROFILE.bio} canonical={`${SITE.url}/experience`}>
   <section class="max-w-5xl mx-auto px-6 sm:px-8 pt-32 sm:pt-40 pb-16">
+    <Breadcrumbs crumbs={[{ label: 'Experiencia' }]} />
     <SectionHeading
       index="01"
       label="Experiencia profesional"
@@ -47,23 +53,50 @@ function formatRange(start: string, end: string | null): string {
     />
 
     <div class="relative mt-10">
-      <div aria-hidden="true" class="absolute inset-y-2 left-2 w-px bg-border"></div>
-      <div class="flex flex-col gap-6">
+      <div
+        aria-hidden="true"
+        class="timeline-line absolute inset-y-2 left-[40px] w-px bg-gradient-to-b from-accent/50 via-accent/30 to-border"
+      >
+      </div>
+
+      <div class="flex flex-col gap-8">
         {
           EXPERIENCE.map((entry, i) => {
             const isCurrent = entry.endDate === null;
+            const year = getYear(entry.startDate);
             return (
-              <div data-reveal style={`--reveal-delay: ${i * 70}ms`} class="relative pl-9">
+              <div
+                data-reveal={`slide-right`}
+                style={`--reveal-delay: ${i * 120}ms`}
+                class="relative pl-12 sm:pl-14"
+              >
                 <span
                   aria-hidden="true"
-                  class={`absolute left-2 top-7 h-4 w-4 -translate-x-1/2 rounded-full border-2 ${
-                    isCurrent ? 'dot-pulse bg-accent border-accent' : 'bg-bg border-border'
-                  }`}
+                  class="absolute left-[40px] top-7 h-[18px] w-[18px] -translate-x-1/2 rounded-full border-2 z-10 bg-surface transition-colors duration-300"
+                  style={
+                    isCurrent
+                      ? 'border-color: var(--color-accent); background-color: var(--color-accent);'
+                      : 'border-color: var(--color-border);'
+                  }
                 />
+                {isCurrent && (
+                  <span
+                    aria-hidden="true"
+                    class="absolute left-[40px] top-7 h-[18px] w-[18px] -translate-x-1/2 rounded-full z-[9]"
+                    style="border: 2px solid var(--color-accent); animation: pulse-ring 2s ease-out infinite;"
+                  />
+                )}
+
+                <div class="absolute left-0 top-6 w-9 pr-1.5 font-mono text-[0.625rem] text-text-dim tabular-nums text-right">
+                  {year}
+                </div>
+
                 <Card class="p-6 sm:p-8">
                   <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                     <div>
-                      <h3 class="text-lg sm:text-xl font-semibold text-text">{entry.role}</h3>
+                      <h3 class="font-display text-lg sm:text-xl font-semibold text-text">
+                        {entry.role}
+                      </h3>
                       <p class="mt-1 font-mono text-xs text-text-muted">
                         {entry.company} · Departamento de {entry.department}
                       </p>
@@ -87,9 +120,9 @@ function formatRange(start: string, end: string | null): string {
                   <p class="mt-4 text-sm text-text-muted leading-relaxed">{entry.description}</p>
 
                   {entry.highlights.length > 0 && (
-                    <ul class="mt-4 flex flex-col gap-2 list-disc pl-5 text-sm text-text-muted leading-relaxed">
+                    <ul class="mt-4 flex flex-col gap-2.5 text-sm text-text-muted leading-relaxed">
                       {entry.highlights.map((item) => (
-                        <li>{item}</li>
+                        <li class="exp-marker relative pl-5">{item}</li>
                       ))}
                     </ul>
                   )}

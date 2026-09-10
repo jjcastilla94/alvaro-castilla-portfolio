@@ -8,6 +8,7 @@ export const SITE = {
 };
 
 export const NAV_LINKS = [
+  { href: '/', label: 'Inicio' },
   { href: '/experience', label: 'Experiencia' },
   { href: '/projects', label: 'Proyectos' },
   { href: '/contact', label: 'Contacto' },

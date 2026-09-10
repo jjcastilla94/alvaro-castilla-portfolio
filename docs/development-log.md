@@ -265,7 +265,7 @@ Scope constraint (approved): Phase 5 is visual only. No changes to `src/data`, s
 
 ### Commit
 
-`ea44e98` — `feat: add visual polish and motion system (Phase 5)` — pushed to `origin/main`, `main` in sync, working tree clean.
+Pending (committed together with Phase 6)
 
 ### Status
 
@@ -318,8 +318,54 @@ Manual visual review of the finished Phase 5 site on the running dev server (all
 
 ### Commit
 
-Pending (awaiting approval)
+Pending (committed together with Phase 6)
 
 ### Status
 
 Completed
+
+---
+
+## Phase 6 — Visual Identity & Impact
+
+**Date:** 2026-09-10
+**Status:** Completed
+
+### Objective
+
+Transform the portfolio from "correct and professional" to "professional and memorable." Add visual impact for recruiters following the reference site (sergio-perez-planells.netlify.app), while maintaining the established identity, stack, and professional credibility.
+
+### Implemented
+
+- **Hero redesign** (`Hero.astro`): 2-column layout with name (Space Grotesk up to `text-7xl`), bio, CTAs, social links. Right column: static `Developer.java` code card with syntax highlighting, mac-window dots, 3D tilt on hover, scroll indicator.
+- **Space Grotesk display font** (`HeadSEO.astro`): Added via Google Fonts. Token `--font-display` in `global.css`. Applied to Hero name, section headings, experience roles, stat values.
+- **Project cards** (`ProjectCard.astro`): Full-width cards with CSS gradient/pattern placeholders (Arcadia: violet/indigo; DetuBarrio: orange/amber), index numbers, hover effects (scale, arrow drift, glow border).
+- **Architecture section** (`Architecture.astro`): "Como construyo" section with animated diagram (Client -> BFF -> Gateway -> Service -> Database), staggered nodes, animated line drawing, flow dots, 3 principle cards.
+- **Scroll progress bar** (`BaseLayout.astro`): Theme-aware gradient bar at the top, grows with scroll position. Present on all pages.
+- **Section headings** (`SectionHeading.astro`): Number prefix + gradient rule (replacing flat `border-b`) + `font-display`.
+- **Animated stats** (`BaseLayout.astro`): Row of stats on home (Desde en Grupo Cajamar 2026, 2 proyectos, 6+ tecnologias, REST APIs). Count-up animation with `data-count`/`data-suffix`, easing on intersection.
+- **Experience timeline improvements** (`experience.astro`): `slide-right` reveal per entry, pulse-ring on current-role dot, `>` marker highlights, `font-display` on roles, gradient line. Year labels repositioned to avoid dot overlap.
+- **Breadcrumbs** (`Breadcrumbs.astro`): New component for subpage navigation. "Inicio / Section" on all internal pages. On project detail: "Inicio / Proyectos / ProjectName".
+- **Nav updated** (`site.ts`, `Header.astro`): "Inicio" added as first navigation link, highlighted only on home page.
+- **SPA theme fix** (`HeadSEO.astro`): `applyTheme()` re-executed on `astro:page-load` to re-apply stored theme after SPA navigation.
+- **Theme toggle fix** (`ThemeToggle.astro`): Event delegation on `document` for survival across SPA navigation.
+- **Data enrichment**: `profile.ts` gained `stats` array (typed `Stat` interface). `projects.ts` gained `color` field and `github` URLs. `site.ts` gained Inicio nav link.
+- **Reduced motion coverage**: All new keyframes (glow-breathe, pill-enter, arch-node-enter, draw-line, flow-dot, slide-in-right, tag-pop, pulse-ring, scroll-bounce) covered under `prefers-reduced-motion`.
+
+### Validation
+
+- Lint: PASS
+- Typecheck: PASS (0 errors, 0 warnings, 0 hints)
+- Build: PASS (6 pages, 376ms)
+- Headless browser test (puppeteer-core): theme toggle works across SPA navigation, nav "Inicio" present, breadcrumbs render on all subpages, code-window/scroll-progress/stats present, timeline year at left 0px (no overlap), no JS errors
+
+### Decisions
+
+- **Space Grotesk as display font** (ADR-016)
+- **Static code card in Hero** (ADR-017) - communicates technical competence without fake terminal effects
+- **Animated stats counters** (ADR-018) - subtle number animations for professional metrics
+- **Breadcrumbs on all subpages** (ADR-019) - full navigation trail replacing isolated back-links
+
+### Commit
+
+Pending (committed together with Phase 5.5 changes)

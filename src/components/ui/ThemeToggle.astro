@@ -40,16 +40,19 @@ const TOGGLE_ID = 'theme-toggle';
 </button>
 
 <script>
-  const toggle = document.getElementById('theme-toggle');
-  if (toggle) {
-    toggle.addEventListener('click', () => {
-      const root = document.documentElement;
-      const currentTheme = root.classList.contains('light') ? 'light' : 'dark';
-      const nextTheme = currentTheme === 'light' ? 'dark' : 'light';
+  // Event delegation bound once on the document: survives View Transition
+  // navigation, where the header (and its #theme-toggle button) is re-created
+  // on every page but module scripts are evaluated only once.
+  document.addEventListener('click', (event: Event) => {
+    const target = event.target as HTMLElement | null;
+    if (!target || !target.closest('#theme-toggle')) return;
 
-      root.classList.remove(currentTheme);
-      root.classList.add(nextTheme);
-      localStorage.setItem('theme', nextTheme);
-    });
-  }
+    const root = document.documentElement;
+    const currentTheme = root.classList.contains('light') ? 'light' : 'dark';
+    const nextTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+    root.classList.remove(currentTheme);
+    root.classList.add(nextTheme);
+    localStorage.setItem('theme', nextTheme);
+  });
 </script>

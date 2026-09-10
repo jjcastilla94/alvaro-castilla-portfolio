@@ -15,6 +15,7 @@ const { title, description, canonical } = Astro.props;
 ---
 
 <HeadSEO title={title} description={description} canonical={canonical}>
+  <div class="scroll-progress" aria-hidden="true"></div>
   <ClientRouter />
   <Header />
   <main>
@@ -25,7 +26,9 @@ const { title, description, canonical } = Astro.props;
 
 <script>
   function initReveals(): void {
-    const items = document.querySelectorAll('[data-reveal]:not(.is-visible)');
+    const items = document.querySelectorAll(
+      '[data-reveal]:not(.is-visible), .arch-node:not(.is-visible), .arch-line:not(.is-visible), .timeline-line:not(.is-visible)',
+    );
     if (items.length === 0) return;
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -39,18 +42,117 @@ const { title, description, canonical } = Astro.props;
       (entries) => {
         for (const entry of entries) {
           if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-            observer.unobserve(entry.target);
+            const el = entry.target as HTMLElement;
+            const delay = parseInt(el.style.getPropertyValue('--reveal-delay') || '0', 10);
+            if (delay > 0) {
+              setTimeout(() => el.classList.add('is-visible'), delay);
+            } else {
+              el.classList.add('is-visible');
+            }
+            observer.unobserve(el);
           }
         }
       },
-      { threshold: 0.12, rootMargin: '0px 0px -8% 0px' },
+      { threshold: 0.1, rootMargin: '0px 0px -6% 0px' },
     );
 
     items.forEach((el) => observer.observe(el));
   }
 
-  // Re-run after every View Transition navigation (astro:page-load) and on initial load.
-  document.addEventListener('astro:page-load', initReveals);
+  function initTimelineLines(): void {
+    const lines = document.querySelectorAll('.timeline-line');
+    if (lines.length === 0) return;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) {
+      lines.forEach((l) => l.classList.add('is-visible'));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        }
+      },
+      { threshold: 0.05 },
+    );
+
+    lines.forEach((line) => observer.observe(line));
+  }
+
+  function initScrollProgress(): void {
+    const bar = document.querySelector<HTMLElement>('.scroll-progress');
+    if (!bar) return;
+
+    const update = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const ratio = max > 0 ? window.scrollY / max : 0;
+      bar.style.width = `${ratio * 100}%`;
+    };
+
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+    document.addEventListener('astro:page-load', update);
+  }
+
+  function animateStats(): void {
+    const stats = document.querySelectorAll('[data-stat]');
+    if (stats.length === 0) return;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const animate = (el: HTMLElement) => {
+      const targetRaw = el.getAttribute('data-count');
+      const target = parseInt(targetRaw || '', 10);
+      const output = el.querySelector('.stat-count');
+      if (!output) return;
+      if (!target || isNaN(target) || reduceMotion) {
+        output.textContent = el.getAttribute('data-value') || '';
+        return;
+      }
+      const start = performance.now();
+      const duration = 900;
+      const tick = (now: number) => {
+        const p = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        output.textContent = String(Math.round(target * eased));
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+
+    if (reduceMotion) {
+      stats.forEach((el) => animate(el as HTMLElement));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            animate(entry.target as HTMLElement);
+            observer.unobserve(entry.target);
+          }
+        }
+      },
+      { threshold: 0.3 },
+    );
+
+    stats.forEach((el) => observer.observe(el));
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    initReveals();
+    initTimelineLines();
+    initScrollProgress();
+    animateStats();
+  });
   initReveals();
+  initTimelineLines();
+  initScrollProgress();
+  animateStats();
 </script>

@@ -1,0 +1,25 @@
+---
+export interface Crumb {
+  href?: string;
+  label: string;
+}
+
+const { crumbs } = Astro.props as { crumbs: Crumb[] };
+---
+
+<nav
+  aria-label="Migas de pan"
+  class="mb-10 flex flex-wrap items-center gap-1.5 text-sm font-mono text-text-dim"
+>
+  <a href="/" class="hover:text-text transition-colors">Inicio</a>
+  {crumbs.map((crumb) => (
+    <>
+      <span aria-hidden="true" class="text-text-muted">/</span>
+      {crumb.href ? (
+        <a href={crumb.href} class="hover:text-text transition-colors">{crumb.label}</a>
+      ) : (
+        <span class="text-text">{crumb.label}</span>
+      )}
+    </>
+  ))}
+</nav>

@@ -11,11 +11,14 @@ const { label, title, description, index, class: className = '' } = Astro.props;
 ---
 
 <div class={`flex flex-col gap-2 ${className}`} data-reveal>
-  <span class="font-mono text-xs uppercase tracking-widest text-accent">
-    {index && <span class="mr-1.5 text-text-dim">{index}</span>}
-    {label}
-  </span>
-  <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight text-text">
+  <div class="flex items-center gap-3">
+    <span class="font-mono text-xs uppercase tracking-widest text-accent shrink-0">
+      {index && <span class="mr-1.5 text-text-dim">{index}</span>}
+      {label}
+    </span>
+    <span class="section-rule" aria-hidden="true"></span>
+  </div>
+  <h2 class="mt-1 font-display text-2xl sm:text-3xl font-semibold tracking-tight text-text">
     {title}
   </h2>
   {

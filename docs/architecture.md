@@ -9,12 +9,13 @@ Personal portfolio for Álvaro Castilla, built as a static site with Astro. It i
 - **Framework:** Astro (static site generation) + native `astro:transitions` (View Transitions)
 - **Language:** TypeScript (strict mode)
 - **Styling:** Tailwind CSS v4 (CSS-first configuration, no `tailwind.config.js`)
+- **Fonts:** Inter (body), JetBrains Mono (labels/metadata), Space Grotesk (display headings)
 - **Linting:** ESLint + Prettier
 - **Testing:** planned — Vitest (unit) + Playwright (E2E), Phase 7
 - **CI/CD:** planned — GitHub Actions + Vercel, Phase 8
 - **Deployment:** Vercel Free tier (planned Domain: alvarocastilla.vercel.app)
 
-No client-side framework (React/Vue/Svelte). All interactivity is vanilla JS: theme toggle, mobile menu, and the reveal system.
+No client-side framework (React/Vue/Svelte). All interactivity is vanilla JS: theme toggle, mobile menu, scroll progress, stats animation, and the reveal system.
 
 ## Project Structure
 
@@ -22,15 +23,17 @@ No client-side framework (React/Vue/Svelte). All interactivity is vanilla JS: th
 alvaro-castilla-portfolio/
 ├── public/              # Static assets (favicon.ico, favicon.svg)
 ├── src/
-│   ├── components/      # Astro components (UI, layout, SEO)
-│   │   ├── layout/      # Header, Footer
-│   │   ├── seo/         # HeadSEO
-│   │   └── ui/          # Button, Card, Reveal, Tag, SectionHeading, SocialLink, ThemeToggle
-│   ├── data/            # Professional data (profile, projects, experience, skills, site)
-│   ├── layouts/         # BaseLayout
-│   ├── pages/           # Route pages
-│   ├── styles/          # global.css (tokens + motion system)
-│   └── utils/           # Utility functions (currently empty — helpers kept inline while unused elsewhere)
+│   ├── components/
+│   │   ├── layout/      # Header.astro, Footer.astro
+│   │   ├── sections/    # Hero.astro, Architecture.astro
+│   │   ├── seo/         # HeadSEO.astro
+│   │   └── ui/          # Button, Card, Reveal, Tag, SectionHeading,
+│   │                    # SocialLink, ThemeToggle, ProjectCard, Breadcrumbs
+│   ├── data/            # profile, projects, experience, skills, site
+│   ├── layouts/         # BaseLayout.astro
+│   ├── pages/           # index, experience, projects, projects/[slug], contact
+│   ├── styles/          # global.css (tokens, motion, code-window, stats)
+│   └── utils/           # Utility functions (currently empty)
 ├── docs/                # Project documentation
 └── tests/               # Test files (planned, Phase 7)
 ```
@@ -39,10 +42,10 @@ alvaro-castilla-portfolio/
 
 Professional content is separated from presentation in `src/data/`:
 
-- `site.ts` — Site-wide constants (URL, name, OG image, locale, navigation links)
-- `profile.ts` — Personal information, contact details, social links
+- `site.ts` — Site-wide constants (URL, name, OG image, locale, navigation links including "Inicio")
+- `profile.ts` — Personal information, contact details, social links, stats array (typed `Stat` interface)
 - `experience.ts` — Work experience (typed `ExperienceEntry` interface)
-- `projects.ts` — Project details (typed `Project` interface, optional `longDescription`/`github`)
+- `projects.ts` — Project details (typed `Project` interface, with `color` field, optional `longDescription`/`github`)
 - `skills.ts` — Technical skills grouped by category (typed `SkillCategory` interface)
 
 Components import data from these files — no personal strings are hardcoded in `.astro` files. This rule is validated at each phase.
@@ -63,20 +66,28 @@ Components import data from these files — no personal strings are hardcoded in
 - Dark mode as primary theme (`#090a0f` + accent `#3b82f6`), light mode as secondary (`#f8f9ff` + accent `#1d4ed8`) via toggle, flash-free (inline head script).
 - Color tokens defined in CSS via Tailwind v4 `@theme` (`--color-*`), overridden per theme on `html.light`.
 - Primary CTA fill: dark mode uses `--color-accent-cta` / `--color-accent-cta-hover` (`#1d4ed8`/`#2563eb`, white text AA 6.70:1/5.17:1) via `dark:` on the primary Button only; light mode keeps the accent (ADR-015).
-- Typography: Inter (headings, body), JetBrains Mono (labels, metadata, tags).
+- Typography: **Space Grotesk** (display headings — Hero name, section titles, experience roles, stat values), **Inter** (body text), **JetBrains Mono** (labels, metadata, tags, code).
 - Borders: primarily `rounded` / `rounded-lg`; pills reserved for tags/statuses.
 - Glassmorphism restricted to floating/substrate elements (navbar, mobile menu, contact card). Content cards stay solid.
-- UI primitives: `Button` (primary/secondary/ghost), `Card` (solid/glass), `Tag` (default/accent), `SectionHeading` (optional mono index), `SocialLink`, `ThemeToggle`, `Reveal`.
+- UI primitives: `Button`, `Card`, `Tag`, `SectionHeading` (with gradient rule + display font), `SocialLink`, `ThemeToggle`, `Reveal`, `ProjectCard` (full-width with CSS placeholder previews), `Breadcrumbs` (navigation trail for subpages).
+- Hero components: `Hero.astro` (2-col layout, code card with syntax highlighting), `Architecture.astro` (animated diagram section).
+- Scroll progress bar: global gradient bar at the top of the viewport, grows with scroll position.
 
 ## Motion System
 
-Added in Phase 5, built entirely with native CSS/JS — no animation library.
+Added in Phase 5, extended in Phase 6, built entirely with native CSS/JS — no animation library.
 
-- **Reveal on scroll:** `[data-reveal]` elements start visible; the hidden state only applies under `html.js` (added in the head inline script when motion is allowed). A single `IntersectionObserver` in `BaseLayout` adds `.is-visible` on intersection and re-runs on `astro:page-load` (View Transitions aware). Optional `--reveal-delay` enables staggered entrances.
-- **Microinteractions:** button arrow drift + lift, card hover/focus-within (accent border + soft shadow), tag hover, active nav underline (`scaleX`).
-- **Ambient glow:** `.glow-accent` radial gradient behind Hero and Contact using `--color-accent` via `color-mix` (theme-aware, decorative only).
-- **Experience timeline:** vertical line + dots; the current-role dot pulses (`dot-pulse` keyframe).
+- **Reveal on scroll:** `[data-reveal]` elements start visible; the hidden state only applies under `html.js`. A single `IntersectionObserver` in `BaseLayout` adds `.is-visible` on intersection and re-runs on `astro:page-load`. Supports `slide-right`, `slide-in-right` variants and staggered delays.
+- **Microinteractions:** button arrow drift + lift, card hover/focus-within (accent border + soft shadow), tag hover, active nav underline (`scaleX`), ProjectCard preview scale + arrow drift + glow border.
+- **Hero entrance:** staggered entrance (name, role, bio, CTAs, socials at 0/70/140/210/280ms), code card 3D tilt on hover, scroll indicator bounce.
+- **Code card:** static `Developer.java` with syntax highlighting (keywords, strings, functions, comments), mac-window dots. Communicates technical competence without fake terminal effects (ADR-017).
+- **Animated stats:** count-up animation on home page stats (data-count + data-suffix), easing on intersection, respects reduced motion.
+- **Scroll progress bar:** gradient bar at top of viewport, grows with scroll position via `scroll-progress` CSS class.
+- **Architecture diagram:** staggered node entry, animated line drawing (`draw-line` keyframe), flow dots (`flow-down` keyframe).
+- **Experience timeline:** vertical gradient line with staggered entry, dots with pulse-ring on current role, `slide-right` reveals per entry, `>` marker highlights.
+- **Ambient glow:** `.glow-accent` radial gradient behind Hero and Contact using `--color-accent` via `color-mix`.
 - **Page transitions:** Astro View Transitions (`<ClientRouter />`) with a fast 160 ms root fade.
+- **Breadcrumbs:** `Inicio / Section` navigation trail on all subpages, replacing isolated back-links.
 
 Motion principles: subtle, fast (150–450 ms), purposeful, no hacker/terminal aesthetic. See `docs/decisions.md` (ADR-012/013/014) for the detailed decisions.
 
