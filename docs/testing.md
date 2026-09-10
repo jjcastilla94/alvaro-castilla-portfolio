@@ -115,3 +115,10 @@ npm run format:check  # Prettier (scoped to changed files to avoid unrelated deb
 - Page transitions disabled (instant swap)
 - Transform-based movement (hover lifts, arrow drift) is instant; color/state transitions remain
 - Site is fully navigable via keyboard
+
+### Contrast (WCAG AA, normal text ≥ 4.5:1)
+
+- Primary CTA (dark mode): white on `#1d4ed8` = 6.70:1, hover `#2563eb` = 5.17:1 (ADR-015)
+- Primary CTA (light mode): white on `#1d4ed8` = 6.70:1, hover `#1e40af` = 8.72:1
+- Body text: dark `#f8fafc` on `#090a0f` = 18.9:1; light `#0f172a` on `#f8f9ff` = 16.99:1
+- Known borderliner (accepted, monitored): `--color-text-dim` in dark `#64748b` ≈ 3.9–4.2:1 (small labels)

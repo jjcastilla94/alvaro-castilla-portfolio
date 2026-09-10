@@ -63,13 +63,11 @@ const pageCanonical = canonical ?? `${SITE.url}/`;
     <meta property="og:url" content={pageCanonical} />
     <meta property="og:site_name" content={SITE.name} />
     <meta property="og:locale" content={SITE.locale} />
-    <meta property="og:image" content={`${SITE.url}${SITE.ogImage}`} />
 
     <!-- Twitter / X -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={`${SITE.url}${SITE.ogImage}`} />
 
     <meta name="generator" content={Astro.generator} />
   </head>

@@ -323,3 +323,28 @@ Reduced motion is about removing perceived movement and hidden content, not abou
 ### Status
 
 Accepted
+
+---
+
+## ADR-015 -- Dark-Mode Primary CTA Contrast (WCAG AA)
+
+### Context
+
+In dark mode, primary CTA buttons rendered white text on the global accent (`--color-accent` `#3b82f6`), which fails WCAG AA for normal text (3.68:1), and on hover (`--color-accent-hover` `#60a5fa`) it drops to 2.54:1. The accent is part of the approved palette and must not change globally.
+
+### Decision
+
+Add two component-specific tokens used only by the primary Button in dark mode via the `dark:` variant (light mode is already AA-compliant and stays untouched):
+
+- `--color-accent-cta: #1d4ed8` (blue-700) — dark-mode primary CTA fill
+- `--color-accent-cta-hover: #2563eb` (blue-600) — dark-mode primary CTA hover
+
+White text contrast: base 6.70:1, hover 5.17:1 (both ≥ 4.5, WCAG AA). Same blue family as the accent (Tailwind palette), no arbitrary hues.
+
+### Reason
+
+A slightly darker blue preserves the visual identity and hover behavior (color still lightens on hover: 700 → 600) while meeting WCAG AA for normal text. The change is scoped to the primary Button only; `secondary` and `ghost` variants, Tags, cards, glow, and the global accent are unaffected.
+
+### Status
+
+Accepted

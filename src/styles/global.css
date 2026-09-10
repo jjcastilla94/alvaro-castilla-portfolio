@@ -22,6 +22,13 @@
   --color-accent: #3b82f6;
   --color-accent-hover: #60a5fa;
   --color-accent-subtle: rgba(59, 130, 246, 0.1);
+
+  /* Primary CTA fill in dark mode (same blue family as --color-accent).
+     --color-accent (#3b82f6) fails WCAG AA with white text (3.68:1), so dark
+     buttons use a darker blue that passes AA: base 6.70:1, hover 5.17:1.
+     Light mode keeps --color-accent (blue-700) which already passes AA. */
+  --color-accent-cta: #1d4ed8;
+  --color-accent-cta-hover: #2563eb;
 }
 
 html {

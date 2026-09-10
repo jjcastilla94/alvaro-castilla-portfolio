@@ -6,11 +6,12 @@ import Reveal from '../components/ui/Reveal.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
 
 import { PROFILE } from '../data/profile';
+import { SITE } from '../data/site';
 
 const title = `Contacto — ${PROFILE.name}`;
 ---
 
-<BaseLayout title={title} description={PROFILE.bio}>
+<BaseLayout title={title} description={PROFILE.bio} canonical={`${SITE.url}/contact`}>
   <section class="max-w-5xl mx-auto px-6 sm:px-8 pt-32 sm:pt-40 pb-16">
     <SectionHeading
       index="01"

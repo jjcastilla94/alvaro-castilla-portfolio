@@ -265,6 +265,59 @@ Scope constraint (approved): Phase 5 is visual only. No changes to `src/data`, s
 
 ### Commit
 
+`ea44e98` — `feat: add visual polish and motion system (Phase 5)` — pushed to `origin/main`, `main` in sync, working tree clean.
+
+### Status
+
+Completed
+
+---
+
+## Phase 5.5 — Visual QA + Bug Fixes
+
+**Date:** 2026-09-10
+**Status:** Completed
+
+### Objective
+
+Manual visual review of the finished Phase 5 site on the running dev server (all 6 routes), covering layout, dark/light, animations, reduced motion, navigation, links, and responsive structure. Small, safe correctness fixes only — no new development phase, no new content.
+
+### QA performed
+
+- **All 6 pages fetched from dev server (HTTP 200)** and audited: `/`, `/experience`, `/projects`, `/projects/arcadia`, `/projects/detubarrio`, `/contact`.
+- **Compiled production CSS audited** after build: every utility class used by Phase 5 templates generates (checked variants, hover/focus forms, arbitrary values, escaped selector forms). All present.
+- **Motion system verified in compiled output** — reveal rules (`html.js [data-reveal]:not(.is-visible)`, `translateY(16px)`, `--reveal-delay`), `.glow-accent` (radial-gradient + blur), `dot-pulse`, view-transition duration 160 ms, and the full `prefers-reduced-motion` block are emitted.
+- **Reveal counts / stagger delays** verified in served HTML (Hero 0/70/140/210/280 ms; Projects cards `i*60`; Experience `i*70`; Contact 40/100/160/220 ms).
+- **Active nav indicator verified on all 6 routes** — correct link active on `/experience`, `/projects` + both details, `/contact`; none active on `/`; `/about` absent everywhere.
+- **Dark/light verified** — server HTML defaults to `class="dark"`, head inline script applies stored/OS preference before first paint (no FOUC), `ThemeToggle` toggles `dark`/`light` + `localStorage`, light tokens override via `html.light`, `dark:` variant uses class strategy (`@custom-variant`).
+- **Links / wiring** — internal links only point to existing routes; back-to-top `#top` present; mobile menu markup + `aria-expanded` logic present; `mailto` on Contact and home CTA uses real `PROFILE.email`; View Transitions meta + ClientRouter on all pages.
+- **Contrast audit (WCAG)** — light theme passes (≥ 4.53). Dark theme flagged: white on `--color-accent` CTA buttons = 3.68:1 and the `--color-accent-hover` hover state = 2.54:1 (below AA). Pre-existing token values; fixing them changes the approved palette, so left for explicit user decision.
+- **No placeholders** — no TODO/lorem/example URLs in `src/`.
+
+### Issues found and fixed
+
+1. **Duplicate canonicals (all pages → homepage)** — every page emitted `rel="canonical" href="https://alvarocastilla.vercel.app/"`. Fixed by passing an explicit canonical per page: `/experience`, `/projects`, `/projects/{id}`, `/contact` (`index` keeps the site root). Verified in built HTML.
+2. **Broken og:image / twitter:image references** — pointed to `og-image.png`, which does not exist in `public/`. Fixed by removing those meta tags from `HeadSEO` (SocialLink/OG image card restored later with a real asset).
+3. **Cosmetic whitespace** — hardcoded `04 · Contacto` label trimmed to `04 · Contacto`.
+4. **Dark-mode primary CTA contrast (WCAG AA)** — white text on `--color-accent` (3.68:1) and hover `--color-accent-hover` (2.54:1) failed AA. Fixed with two component-specific tokens used only in dark mode (ADR-015): `--color-accent-cta` `#1d4ed8` (blue-700) and `--color-accent-cta-hover` `#2563eb` (blue-600), applied via `dark:` only on the primary Button. Verified contrast: base 6.70:1, hover 5.17:1 (both ≥ 4.5). Light mode untouched (already AA: 6.70 base, 8.72 hover).
+
+### Issues found, left open (need user decision / Phase 6)
+
+- **`--color-text-dim` in dark** — #64748b ≈ 3.9–4.2:1 (borderline for small labels).
+- **Favicon** — still the default Astro icon; branded favicon is an asset-creation task.
+- **Projects have no GitHub URLs** — "Ver en GitHub" button on detail pages is hidden until real repo URLs are provided (Phase 6 content).
+
+### Validation
+
+- Lint: PASS
+- Typecheck: PASS (0 errors, 0 warnings)
+- Build: PASS (6 pages, 519ms)
+- Prettier: changed files formatted
+- Built HTML re-verified: correct per-page canonicals, no `og:image`/`twitter:image`, no `/about` links
+- Re-validated after CTA accessibility fix: lint PASS, typecheck PASS (0/0/0), build PASS (6 pages), all 6 routes HTTP 200, CTA contrast measured at base 6.70:1 and hover 5.17:1, canonicals unique and correct, no broken og:image/twitter:image references
+
+### Commit
+
 Pending (awaiting approval)
 
 ### Status

@@ -62,6 +62,7 @@ Components import data from these files — no personal strings are hardcoded in
 
 - Dark mode as primary theme (`#090a0f` + accent `#3b82f6`), light mode as secondary (`#f8f9ff` + accent `#1d4ed8`) via toggle, flash-free (inline head script).
 - Color tokens defined in CSS via Tailwind v4 `@theme` (`--color-*`), overridden per theme on `html.light`.
+- Primary CTA fill: dark mode uses `--color-accent-cta` / `--color-accent-cta-hover` (`#1d4ed8`/`#2563eb`, white text AA 6.70:1/5.17:1) via `dark:` on the primary Button only; light mode keeps the accent (ADR-015).
 - Typography: Inter (headings, body), JetBrains Mono (labels, metadata, tags).
 - Borders: primarily `rounded` / `rounded-lg`; pills reserved for tags/statuses.
 - Glassmorphism restricted to floating/substrate elements (navbar, mobile menu, contact card). Content cards stay solid.
