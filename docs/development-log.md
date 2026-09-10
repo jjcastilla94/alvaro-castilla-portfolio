@@ -368,4 +368,41 @@ Transform the portfolio from "correct and professional" to "professional and mem
 
 ### Commit
 
-Pending (committed together with Phase 5.5 changes)
+`438d261` — `feat: add visual identity and impact (Phase 5.5 + 6)` — working tree clean, not pushed.
+
+### Status
+
+Completed
+
+---
+
+## Phase 6.5 — Refinement & Content Finalization (PLANNED)
+
+**Date:** pending
+**Status:** Planned — scheduled before Phase 7 (Testing)
+
+### Objective
+
+Refine and finalize the design and content before automated tests are written, so Phase 7 tests are written once against the definitive design. Leaving the UI/content unfinalized would make tests break and require rework.
+
+### Scope (agreed with the user)
+
+1. **Specifications** — define the exact data and structure for new content sections.
+2. **Refinement of design and content** — adjust existing pages based on review.
+3. **New section: Certificaciones** — new `src/data/certifications.ts` (name, issuer, date, optional URL) and a section/page to display them.
+4. **New section: Servicios** — new `src/data/services.ts` (title, description, involved technologies) and a section/page to display them.
+
+### Placement decision (pending confirmation)
+
+- **Certificaciones:** after Experience, before Projects.
+- **Servicios:** after Projects, before Contact.
+
+Both can live as home sections, dedicated pages, or both — to be decided in the specs step.
+
+### Constraint
+
+This phase is the last one that can touch design/content cheaply. After it, Phase 7 (testing) must target a fixed UI/content, and Phase 8 (CI/CD + deploy) must not be blocked by further design changes.
+
+### Status
+
+Planned (starting tomorrow)
