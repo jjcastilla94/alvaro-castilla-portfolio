@@ -1,0 +1,55 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+import Tag from '../ui/Tag.astro';
+import { ABOUT } from '../../data/about';
+---
+
+<section class="max-w-6xl mx-auto px-6 sm:px-8 py-16">
+  <SectionHeading
+    index="01"
+    label="Sobre mí"
+    title="Cómo abordo el desarrollo"
+    class="border-b border-border pb-8"
+  />
+
+  <p
+    data-reveal
+    class="mt-10 max-w-3xl text-base sm:text-lg text-text leading-relaxed"
+  >
+    {ABOUT.intro}
+  </p>
+
+  <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4">
+    {
+      ABOUT.approach.map((principle, i) => (
+        <div
+          data-reveal
+          style={`--reveal-delay: ${i * 70}ms`}
+          class="flex flex-col gap-2 p-5 rounded-lg border border-border bg-surface transition-colors duration-200 hover:border-accent/40"
+        >
+          <span class="font-mono text-xs text-accent">{String(i + 1).padStart(2, '0')}</span>
+          <span class="text-sm font-medium text-text">{principle.title}</span>
+          <span class="text-xs sm:text-sm text-text-muted leading-relaxed">
+            {principle.description}
+          </span>
+        </div>
+      ))
+    }
+  </div>
+
+  <div data-reveal class="mt-10 flex flex-col gap-3">
+    <span class="font-mono text-xs uppercase tracking-widest text-text-dim">
+      Intereses profesionales
+    </span>
+    <div class="flex flex-wrap gap-1.5">
+      {ABOUT.interests.map((interest) => <Tag>{interest}</Tag>)}
+    </div>
+  </div>
+
+  <div data-reveal class="mt-8">
+    <div class="flex flex-col gap-2 rounded-lg border-l-2 border-accent bg-surface/50 p-5">
+      <span class="font-mono text-xs uppercase tracking-widest text-text-dim">Fuera del código</span>
+      <p class="text-sm text-text-muted leading-relaxed">{ABOUT.personalNote}</p>
+    </div>
+  </div>
+</section>

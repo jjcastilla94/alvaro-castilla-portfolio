@@ -434,3 +434,123 @@ Breadcrumbs provide spatial context on internal pages and improve navigation for
 ### Status
 
 Accepted
+
+---
+
+## ADR-020 — No "Junior" as Primary Professional Title
+
+### Context
+
+The home hero and header displayed "Junior Backend Developer". The label reflected seniority more than role and undermined the positioning of a developer already working in production environments (Grupo Cajamar, Apificación).
+
+### Decision
+
+Use "Backend Developer" as the primary title everywhere (`role`, `shortRole`, header, hero badge). Drop "Junior" from visible UI. Seniority nuance may live in the bio copy, not the title.
+
+### Reason
+
+"Junior" biases perception of competence and is redundant with a factual experience timeline. The role (Backend Developer) describes what the person does; the experience section describes the level. No invented data — the title matches the confirmed professional role.
+
+### Status
+
+Accepted
+
+---
+
+## ADR-021 — Services Framed as "Lo que construyo"
+
+### Context
+
+The proposed "Servicios" section described what the developer can build as an offer. A services/agency framing implies freelance or marketable offerings that were not requested.
+
+### Decision
+
+Frame the section as "Lo que construyo" (what I build) instead of "Servicios". The data lives in `src/data/services.ts` as `CAPABILITIES` (title, description, technologies) and is rendered with a dedicated `ServiceCard.astro` in a 2x2 grid at home section 06.
+
+### Reason
+
+The language describes demonstrated capabilities (APIs, microservices, clean architecture, integrations) rather than a commercial services menu. It stays honest to the content and avoids inventing a transactional offer.
+
+### Status
+
+Accepted
+
+---
+
+## ADR-022 — Hero CTA Strategy: 3 Actions, CV Conditional
+
+### Context
+
+The hero needed clear next actions. A single CTA (or the previous layout) did not distinguish between browsing and contacting. A CV download button was desired and the user later provided the CV file.
+
+### Decision
+
+Render three CTAs: **Ver proyectos** (primary, → `/projects`), **Contactar** (secondary, → `/contact`), and **Descargar CV** (secondary + download icon) which is rendered **only when** `PROFILE.hasCv()` is true. The CV PDF is placed at `public/cv/alvaro-castilla-cv.pdf` and `cvUrl` is set to `/cv/alvaro-castilla-cv.pdf`; the button opens it in a new tab (`target="_blank"`) so the browser PDF viewer can display and save it.
+
+### Reason
+
+`hasCv()` guarantees no broken links or empty buttons when no CV is available — the button only renders once `cvUrl` is set, which is now the case. Opening in a new tab both displays the PDF and exposes the viewer's save/download action, matching the "download and open" intent without JS hacks or file-system access.
+
+### Status
+
+Accepted
+
+---
+
+## ADR-023 — Certifications Deferred Until Real Data Exists
+
+### Context
+
+Phase 6.5 planned a Certificaciones section. No certifications, dates, issuers, or URLs are confirmed.
+
+### Decision
+
+Create `src/data/certifications.ts` with an empty array (`TODO_ALVARO`). Do not render a Certificaciones section anywhere until the array is populated.
+
+### Reason
+
+The "no invented data" rule. An empty rendered section would look broken; a filled one would be fabricated. Deferring keeps the model ready while the UI stays clean.
+
+### Status
+
+Accepted
+
+---
+
+## ADR-024 — Project Detail Shows longDescription OR description, Not Both
+
+### Context
+
+Project detail pages rendered two paragraphs: `project.description` and (if present) `project.longDescription`, which were near-duplicates and read as a redundant wall of text.
+
+### Decision
+
+Render a single paragraph: `project.longDescription || project.description`.
+
+### Reason
+
+Each project has one authoritative narrative. `longDescription` is the expanded version when it exists; `description` is the fallback. This removes duplication without losing information.
+
+### Status
+
+Accepted
+
+---
+
+## ADR-025 — Skills Modeled as Core / Working / Exposure
+
+### Context
+
+Previous skills UI rolled all skills into a flat list. The developer works daily with some technologies and has varying depth in others.
+
+### Decision
+
+Model skills in `src/data/skills.ts` with three levels: `core` (main/proficient), `working` (used, gaining depth), `exposure` (used/experimented). The home Skills section (05) renders three groups with a Tag accent on `core` items; an `accentedOnly` prop filters to the core set for compact displays.
+
+### Reason
+
+Levels communicate honest depth without inventing metrics or percentages. They are qualitative (core/working/exposure), not quantitative, so they cannot be called fabrications.
+
+### Status
+
+Accepted

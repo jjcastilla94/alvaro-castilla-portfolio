@@ -1,22 +1,39 @@
 ---
 import { PROFILE } from '../../data/profile';
+import { NAV_LINKS } from '../../data/site';
 
 const YEAR = new Date().getFullYear();
 ---
 
-<footer class="w-full border-t border-border py-10 px-6 sm:px-8">
-  <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-    <div class="flex items-center gap-2 font-mono text-xs text-text-dim">
-      <span>© {YEAR} {PROFILE.name}</span>
-      <span aria-hidden="true">•</span>
-      <span>{PROFILE.role}</span>
+<footer class="w-full border-t border-border py-12 px-6 sm:px-8">
+  <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-10">
+    <div class="flex flex-col gap-2">
+      <span class="font-medium text-sm tracking-tight text-text">{PROFILE.name}</span>
+      <span class="font-mono text-xs text-text-dim">{PROFILE.role}</span>
+      <p class="mt-2 font-mono text-xs text-text-dim">Java · Spring Boot · REST APIs</p>
     </div>
-    <div class="flex items-center gap-6 font-mono text-xs">
+
+    <nav class="flex flex-col gap-2" aria-label="Enlaces del pie de página">
+      <span class="font-mono text-xs uppercase tracking-widest text-text-dim">Navegación</span>
+      {
+        NAV_LINKS.map((link) => (
+          <a
+            href={link.href}
+            class="text-sm text-text-muted hover:text-text transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-sm w-fit"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="flex flex-col gap-2">
+      <span class="font-mono text-xs uppercase tracking-widest text-text-dim">Enlaces</span>
       <a
         href={PROFILE.social.github}
         target="_blank"
         rel="noopener noreferrer"
-        class="text-text-dim hover:text-text transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-sm"
+        class="text-sm text-text-muted hover:text-text transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-sm w-fit"
       >
         GitHub
       </a>
@@ -24,16 +41,21 @@ const YEAR = new Date().getFullYear();
         href={PROFILE.social.linkedin}
         target="_blank"
         rel="noopener noreferrer"
-        class="text-text-dim hover:text-text transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-sm"
+        class="text-sm text-text-muted hover:text-text transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-sm w-fit"
       >
         LinkedIn
       </a>
       <a
         href="#top"
-        class="text-text-dim hover:text-text transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-sm"
+        class="text-sm text-text-muted hover:text-text transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-sm w-fit"
       >
         Volver arriba ↑
       </a>
     </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-2">
+    <span class="font-mono text-xs text-text-dim">© {YEAR} {PROFILE.name}</span>
+    <span class="font-mono text-xs text-text-dim">Construido con Astro</span>
   </div>
 </footer>

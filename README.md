@@ -15,13 +15,11 @@ Personal portfolio for Álvaro Castilla (Backend Developer), showcasing his prof
 
 | Route | Description |
 |-------|-------------|
-| `/` | Home — hero with code card, featured experience, stats, projects, architecture, skills, contact |
+| `/` | Home — hero with code card, About, experience, featured projects, architecture, skills by level, "Lo que construyo", contact |
 | `/experience` | Professional experience timeline with animated entries |
 | `/projects` | Project listing with full-width cards |
 | `/projects/[slug]` | Individual project case studies with visual preview |
 | `/contact` | Contact information (email, GitHub, LinkedIn) |
-
-> `/about` is intentionally not present in the navigation until it exists (planned for Phase 6).
 
 ## Project Structure
 
@@ -31,11 +29,11 @@ alvaro-castilla-portfolio/
 ├── src/
 │   ├── components/
 │   │   ├── layout/      # Header, Footer
-│   │   ├── sections/    # Hero (code card), Architecture (animated diagram)
+│   │   ├── sections/    # Hero (code card + CTAs), About, Architecture (diagram)
 │   │   ├── seo/         # HeadSEO
 │   │   └── ui/          # Button, Card, Reveal, Tag, SectionHeading,
-│   │                    # SocialLink, ThemeToggle, ProjectCard, Breadcrumbs
-│   ├── data/            # Centralized content (profile, projects, experience, skills, site)
+│   │                    # SocialLink, ThemeToggle, ProjectCard, Breadcrumbs, ServiceCard
+│   ├── data/            # Centralized content (profile, projects, experience, skills, site, about, services, projectStyles)
 │   ├── layouts/         # BaseLayout (scroll progress, stats, reveals)
 │   ├── pages/           # Route pages
 │   ├── styles/          # Global CSS + design tokens + motion system
@@ -49,11 +47,17 @@ alvaro-castilla-portfolio/
 
 All of the site's content lives in `src/data/` — no personal strings are hardcoded in components:
 
+- `public/` — Static assets: favicon, `robots.txt`, `og-image.png`, `cv/alvaro-castilla-cv.pdf`
 - `site.ts` — Site-wide constants: URL, name, OG image, locale, navigation links (including Inicio)
-- `profile.ts` — Name, role, bio, email, social links, stats array
+- `profile.ts` — Name, role, bio, email, social links, CV URL (`cvUrl` + `hasCv()`), stats
 - `experience.ts` — Work experience entries (typed)
-- `projects.ts` — Project list with color field, optional `longDescription` and `github` URLs
-- `skills.ts` — Skills grouped by category
+- `projects.ts` — Project list with color field, optional `longDescription`, `image`, `gallery`, `problem`, `contribution`, `learnings`, `status`, `featured`, and `github` URLs
+- `skills.ts` — Skills grouped by level (core / working / exposure)
+- `about.ts` — About section content (intro, approach, interests)
+- `services.ts` — `CAPABILITIES` (the "Lo que construyo" section)
+- `certifications.ts` — Empty until real data is provided
+- `projectStyles.ts` — Per-color gradients/patterns for project visuals
+- `utils/dates.ts` — Date formatting helpers
 
 To add a new project, add an entry to `src/data/projects.ts` — the listing and detail pages update automatically.
 

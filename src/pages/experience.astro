@@ -9,36 +9,9 @@ import Breadcrumbs from '../components/ui/Breadcrumbs.astro';
 import { EXPERIENCE } from '../data/experience';
 import { PROFILE } from '../data/profile';
 import { SITE } from '../data/site';
+import { formatRange, getYear } from '../utils/dates';
 
 const title = `Experiencia — ${PROFILE.name}`;
-
-const MONTHS = [
-  'ene.',
-  'feb.',
-  'mar.',
-  'abr.',
-  'may.',
-  'jun.',
-  'jul.',
-  'ago.',
-  'sep.',
-  'oct.',
-  'nov.',
-  'dic.',
-];
-
-function formatDate(dateStr: string): string {
-  const [year, month] = dateStr.split('-');
-  return `${MONTHS[parseInt(month, 10) - 1]} ${year}`;
-}
-
-function formatRange(start: string, end: string | null): string {
-  return end ? `${formatDate(start)} — ${formatDate(end)}` : `${formatDate(start)} — actualidad`;
-}
-
-function getYear(dateStr: string): string {
-  return dateStr.split('-')[0];
-}
 ---
 
 <BaseLayout title={title} description={PROFILE.bio} canonical={`${SITE.url}/experience`}>
@@ -49,6 +22,7 @@ function getYear(dateStr: string): string {
       label="Experiencia profesional"
       title="Mi trayectoria en el desarrollo backend"
       description="Experiencia en el desarrollo e integración de APIs REST dentro de entornos empresariales."
+      level={1}
       class="border-b border-border pb-8"
     />
 

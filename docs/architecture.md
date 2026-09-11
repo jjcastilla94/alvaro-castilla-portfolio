@@ -21,19 +21,19 @@ No client-side framework (React/Vue/Svelte). All interactivity is vanilla JS: th
 
 ```
 alvaro-castilla-portfolio/
-├── public/              # Static assets (favicon.ico, favicon.svg)
+├── public/              # Static assets (favicon.ico, favicon.svg, robots.txt, og-image.png, cv/alvaro-castilla-cv.pdf)
 ├── src/
 │   ├── components/
 │   │   ├── layout/      # Header.astro, Footer.astro
-│   │   ├── sections/    # Hero.astro, Architecture.astro
+│   │   ├── sections/    # Hero.astro, About.astro, Architecture.astro
 │   │   ├── seo/         # HeadSEO.astro
 │   │   └── ui/          # Button, Card, Reveal, Tag, SectionHeading,
-│   │                    # SocialLink, ThemeToggle, ProjectCard, Breadcrumbs
-│   ├── data/            # profile, projects, experience, skills, site
+│   │                    # SocialLink, ThemeToggle, ProjectCard, Breadcrumbs, ServiceCard
+│   ├── data/            # profile, projects, experience, skills, site, about, services, certifications, projectStyles
 │   ├── layouts/         # BaseLayout.astro
 │   ├── pages/           # index, experience, projects, projects/[slug], contact
 │   ├── styles/          # global.css (tokens, motion, code-window, stats)
-│   └── utils/           # Utility functions (currently empty)
+│   └── utils/           # dates.ts (formatDate, formatRange, getYear)
 ├── docs/                # Project documentation
 └── tests/               # Test files (planned, Phase 7)
 ```
@@ -43,10 +43,15 @@ alvaro-castilla-portfolio/
 Professional content is separated from presentation in `src/data/`:
 
 - `site.ts` — Site-wide constants (URL, name, OG image, locale, navigation links including "Inicio")
-- `profile.ts` — Personal information, contact details, social links, stats array (typed `Stat` interface)
+- `profile.ts` — Personal information, contact details, social links, `stack`, `cvUrl` + `hasCv()`, stats array (typed `Stat` interface)
 - `experience.ts` — Work experience (typed `ExperienceEntry` interface)
-- `projects.ts` — Project details (typed `Project` interface, with `color` field, optional `longDescription`/`github`)
-- `skills.ts` — Technical skills grouped by category (typed `SkillCategory` interface)
+- `projects.ts` — Project details (typed `Project` interface, `color` field; optional `longDescription`, `image`, `gallery`, `problem`, `contribution`, `learnings`, `status`, `featured`, `github`)
+- `skills.ts` — Skills grouped by level `core` / `working` / `exposure` (ADR-025)
+- `about.ts` — About section content (intro, current, approach, interests, personal note)
+- `services.ts` — `CAPABILITIES` framed as "Lo que construyo" (ADR-021)
+- `certifications.ts` — Empty array until real data exists (ADR-023)
+- `projectStyles.ts` — Per-color CSS gradients/patterns for project visuals
+- `utils/dates.ts` — date formatting helpers used by experience/home
 
 Components import data from these files — no personal strings are hardcoded in `.astro` files. This rule is validated at each phase.
 
@@ -54,12 +59,11 @@ Components import data from these files — no personal strings are hardcoded in
 
 | Route              | Status     | Purpose                                                                   |
 | ------------------ | ---------- | ------------------------------------------------------------------------- |
-| `/`                | ✅         | Home — hero, featured experience, projects, skills, contact CTA           |
+| `/`                | ✅         | Home — hero (3 CTAs), About, experience, projects, architecture, skills by level, "Lo que construyo", contact |
 | `/experience`      | ✅         | Professional experience timeline                                          |
 | `/projects`        | ✅         | Project listing                                                           |
 | `/projects/[slug]` | ✅         | Individual project case studies (via `getStaticPaths`)                    |
 | `/contact`         | ✅         | Contact information (email, GitHub, LinkedIn)                             |
-| `/about`           | ⏳ Phase 6 | About — background, skills, evolution (not in navigation until it exists) |
 
 ## Design System
 
@@ -69,8 +73,8 @@ Components import data from these files — no personal strings are hardcoded in
 - Typography: **Space Grotesk** (display headings — Hero name, section titles, experience roles, stat values), **Inter** (body text), **JetBrains Mono** (labels, metadata, tags, code).
 - Borders: primarily `rounded` / `rounded-lg`; pills reserved for tags/statuses.
 - Glassmorphism restricted to floating/substrate elements (navbar, mobile menu, contact card). Content cards stay solid.
-- UI primitives: `Button`, `Card`, `Tag`, `SectionHeading` (with gradient rule + display font), `SocialLink`, `ThemeToggle`, `Reveal`, `ProjectCard` (full-width with CSS placeholder previews), `Breadcrumbs` (navigation trail for subpages).
-- Hero components: `Hero.astro` (2-col layout, code card with syntax highlighting), `Architecture.astro` (animated diagram section).
+- UI primitives: `Button`, `Card`, `Tag`, `SectionHeading` (with gradient rule + display font), `SocialLink`, `ThemeToggle`, `Reveal`, `ProjectCard` (full-width with CSS placeholder previews), `Breadcrumbs` (navigation trail for subpages), `ServiceCard` (capability card, "Lo que construyo").
+- Hero components: `Hero.astro` (2-col layout, code card with syntax highlighting, 3 CTAs — Ver proyectos / Contactar / Descargar CV conditional on `hasCv()`), `About.astro` (principles grid + interests), `Architecture.astro` (animated diagram section).
 - Scroll progress bar: global gradient bar at the top of the viewport, grows with scroll position.
 
 ## Motion System
@@ -79,7 +83,7 @@ Added in Phase 5, extended in Phase 6, built entirely with native CSS/JS — no 
 
 - **Reveal on scroll:** `[data-reveal]` elements start visible; the hidden state only applies under `html.js`. A single `IntersectionObserver` in `BaseLayout` adds `.is-visible` on intersection and re-runs on `astro:page-load`. Supports `slide-right`, `slide-in-right` variants and staggered delays.
 - **Microinteractions:** button arrow drift + lift, card hover/focus-within (accent border + soft shadow), tag hover, active nav underline (`scaleX`), ProjectCard preview scale + arrow drift + glow border.
-- **Hero entrance:** staggered entrance (name, role, bio, CTAs, socials at 0/70/140/210/280ms), code card 3D tilt on hover, scroll indicator bounce.
+- **Hero entrance:** staggered entrance (badge, name, role, bio, CTAs, socials, code card at 0/60/110/170/230/300ms + scroll indicator at 400ms), code card 3D tilt on hover, scroll indicator bounce.
 - **Code card:** static `Developer.java` with syntax highlighting (keywords, strings, functions, comments), mac-window dots. Communicates technical competence without fake terminal effects (ADR-017).
 - **Animated stats:** count-up animation on home page stats (data-count + data-suffix), easing on intersection, respects reduced motion.
 - **Scroll progress bar:** gradient bar at top of viewport, grows with scroll position via `scroll-progress` CSS class.
@@ -94,17 +98,21 @@ Motion principles: subtle, fast (150–450 ms), purposeful, no hacker/terminal a
 ## SEO
 
 - Per-page `<title>` and meta description
-- Open Graph and Twitter card tags
+- Open Graph tags (including `og:image` with width/height/alt) and Twitter card tags (`summary_large_image`)
 - Canonical URLs
+- `robots.txt` (allow all)
 - `meta name="generator"` (Astro)
 
-Planned (not yet implemented): JSON-LD structured data, sitemap, `robots.txt`.
+Planned (not yet implemented): JSON-LD structured data, sitemap.
 
 ## Accessibility
 
 - Semantic HTML (`header`, `main`, `footer`, `nav`, `h1`/`h2` hierarchy, `list` semantics)
+- Skip link "Saltar al contenido" → `main#main-content`; `#top` anchor target
+- Correct heading levels via `SectionHeading` `level` prop (pages use `level={1}`, sections `level={2}`)
+- `aria-current="page"` on active navigation links and breadcrumb trail
 - Keyboard navigation with visible focus states (`focus-visible`, `focus-within` on cards)
-- WCAG AA contrast (validated tokens: `bg`/`surface`/`text` pairs)
+- WCAG AA contrast (validated tokens: `bg`/`surface`/`text` pairs; dark `text-dim` `#7e8fa6`)
 - `prefers-reduced-motion`: movement disabled, content always visible, non-problematic state transitions preserved
 - Decorative elements marked `aria-hidden="true"`; interactive arrows added as `aria-hidden` spans
 - Mobile menu: `aria-expanded`, `aria-controls`, Escape to close

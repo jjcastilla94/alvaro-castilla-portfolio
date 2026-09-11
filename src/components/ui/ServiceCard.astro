@@ -1,0 +1,28 @@
+---
+import Tag from './Tag.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  technologies: string[];
+  index: number;
+  class?: string;
+}
+
+const { title, description, technologies, index, class: className = '' } = Astro.props;
+---
+
+<div
+  class={`flex h-full flex-col gap-3 rounded-xl border border-border bg-surface p-5 sm:p-6 transition-colors duration-200 hover:border-accent/40 ${className}`}
+>
+  <span class="font-mono text-xs uppercase tracking-widest text-accent">
+    <span class="mr-1.5 text-text-dim">{String(index).padStart(2, '0')}</span>
+  </span>
+  <h3 class="font-display text-lg font-semibold text-text">{title}</h3>
+  <p class="text-sm text-text-muted leading-relaxed">{description}</p>
+  <div class="mt-auto flex flex-wrap gap-1.5 pt-2">
+    {technologies.map((tech) => (
+      <Tag>{tech}</Tag>
+    ))}
+  </div>
+</div>

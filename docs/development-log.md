@@ -376,33 +376,114 @@ Completed
 
 ---
 
-## Phase 6.5 — Refinement & Content Finalization (PLANNED)
+## Phase 6.5 — Refinement & Content Finalization
 
-**Date:** pending
-**Status:** Planned — scheduled before Phase 7 (Testing)
+**Date:** 2026-09-11
 
 ### Objective
 
 Refine and finalize the design and content before automated tests are written, so Phase 7 tests are written once against the definitive design. Leaving the UI/content unfinalized would make tests break and require rework.
 
-### Scope (agreed with the user)
-
-1. **Specifications** — define the exact data and structure for new content sections.
-2. **Refinement of design and content** — adjust existing pages based on review.
-3. **New section: Certificaciones** — new `src/data/certifications.ts` (name, issuer, date, optional URL) and a section/page to display them.
-4. **New section: Servicios** — new `src/data/services.ts` (title, description, involved technologies) and a section/page to display them.
-
-### Placement decision (pending confirmation)
-
-- **Certificaciones:** after Experience, before Projects.
-- **Servicios:** after Projects, before Contact.
-
-Both can live as home sections, dedicated pages, or both — to be decided in the specs step.
-
-### Constraint
+### Constraint (from the plan)
 
 This phase is the last one that can touch design/content cheaply. After it, Phase 7 (testing) must target a fixed UI/content, and Phase 8 (CI/CD + deploy) must not be blocked by further design changes.
 
+### Execution (agreed blocks)
+
+Work was executed in blocks A–H, each validated with `lint` + `typecheck` + `build`. A–F completed as part of this log; G (docs, this file) and H (Git) follow.
+
+#### Block A — Accessibility & Semantic Foundation
+
+| Step | Description |
+| --- | --- |
+| A1 | Skip link "Saltar al contenido" in `BaseLayout.astro` linking to `main#main-content`. |
+| A2 | Added `<div id="top">` anchor target; footer aside now links `#top`. |
+| A3 | `SectionHeading.astro` accepts `level` prop (1–6, default 2) with conditional h1/h2/h3 (resolves Astro tag type error). |
+| A4 | `projects.astro`, `experience.astro`, `contact.astro` use `level={1}` for the page H1. |
+| A5 | `aria-current="page"` on active nav link in `Header.astro` and `Breadcrumbs.astro`. |
+| A6 | Dark `--color-text-dim` fixed to `#7e8fa6` (WCAG AA on `#090a0f`). |
+
+Validation: lint 0, typecheck 0, build 6 pages.
+
+#### Block B — Data Architecture
+
+Low-level data now lives in typed collections, decoupled from components:
+
+- `src/utils/dates.ts` — `formatDate`, `formatRange`, `getYear`; `experience.astro` and `index.astro` use them (inline date math removed).
+- `src/data/projectStyles.ts` — centralized per-color gradients/patterns; removed duplicated maps in `ProjectCard.astro` and `projects/[slug].astro`.
+- `src/data/certifications.ts` — empty array (`TODO_ALVARO`), no section rendered until real data.
+- `src/data/about.ts` — intro, current, approach, interests, personalNote (Spanish).
+- `src/data/services.ts` — `CAPABILITIES` (4 areas framed as "Lo que construyo").
+- `src/data/skills.ts` — rewritten with `core`/`working`/`exposure` levels.
+- `src/data/projects.ts` — extended model (optional `image`, `gallery`, `problem`, `contribution`, `learnings`, `status`, `featured`); DetuBarrio URL fixed to `github.com/DetuBarrio/DetuBarrio`; content aligned to confirmed data.
+- `src/data/profile.ts` — `shortRole`, `tagline`, `stack`, `cvUrl` + `hasCv()`, stats; CV activated later (see Block G).
+
+Validation: lint 0, typecheck 0, build OK.
+
+#### Block C — New Sections (Home)
+
+- `src/components/sections/About.astro` (home 01) — principles grid, interests, personal note.
+- `src/components/ui/ServiceCard.astro` + "Lo que construyo" grid (home 06).
+- Skills section (home 05) grouped by level, `core` items accented.
+- `Architecture.astro` refactored to use `SectionHeading`, dead `icon` prop removed.
+- Home renumbered: 01 About, 02 Experience, 03 Projects, 04 Architecture, 05 Skills, 06 Lo que construyo, 07 Contact.
+
+Validation: lint 0, typecheck 0, build 6 pages.
+
+#### Block D — Project Detail
+
+- D1: redundant `longDescription`+`description` paragraph pair replaced with `longDescription || description` (single authoritative paragraph).
+
+#### Block E — Visual Polish
+
+- E1: Hero rewritten — 3 CTAs (**Ver proyectos** primary → `/projects`, **Contactar** secondary → `/contact`, **Descargar CV** secondary + download icon, rendered only when `hasCv()`), stack line (Java · Spring Boot · REST APIs · MySQL · Docker), reveal delays reworked, CTA row responsive (primary full-width on mobile, secondary pair shares a row).
+- E2: Footer redesigned to 3 columns (brand/role · nav links · links + back-to-top) with bottom bar (© year, "Construido con Astro").
+- E3: Contact "Redes" card reuses `SocialLink.astro`.
+- E4: dead CSS removed — `.dot-pulse`, `.tech-pill`/`pill-enter`, `--color-accent-2` fallback.
+- E5–E8: manual QA on dev server — all pages render, CTA conditional works (CV button active once `cvUrl` is set), pills/footer/code window present, `prefers-reduced-motion` intact.
+
+Validation: lint 0, typecheck 0, build 6 pages.
+
+#### Block F — SEO & Social
+
+- `public/og-image.png` generated (1200×630, dark placeholder + accent bar).
+- `HeadSEO.astro` — restored `og:image` (with width/height/alt) and `twitter:image` (`summary_large_image`), absolute URL `${SITE.url}${SITE.ogImage}`.
+- `public/robots.txt` created (allow all).
+
+Validation: lint 0, typecheck 0, build 6 pages; `dist` contains `og-image.png` and `robots.txt`.
+
+#### Block G — Documentation
+
+- `docs/decisions.md` — ADR-020 to ADR-025 (junior title, services framing, hero CTA strategy, certifications deferred, longDescription fix, skills levels).
+- `README.md`, `docs/architecture.md` and this log updated to reflect Blocks A–F.
+
+#### Block G2 — CV finalization
+
+The user provided the CV. Applied:
+
+- `public/cv/alvaro-castilla-cv.pdf` added (144 KB) — served at `/cv/alvaro-castilla-cv.pdf` (status 200, `application/pdf`).
+- `src/data/profile.ts` — `cvUrl: '/cv/alvaro-castilla-cv.pdf'` (replaces `undefined`/`TODO_ALVARO`).
+- Hero **Descargar CV** button now renders and opens the PDF in a new tab (`target="_blank"` + `rel="noopener noreferrer"`, same-origin asset; the PDF viewer offers save/download).
+- Verified on dev server: button present, link correct, PDF served.
+- Docs updated so CV references reflect the real state (no longer "pending").
+
+#### Block H — Git
+
+- Pending explicit user approval to commit and push.
+
+### Decisions (Phase 6.5)
+
+See ADR-020 to ADR-025 in `docs/decisions.md`.
+
+### Content Notes
+
+- No certifications, metrics, or achievements were invented; placeholders are `TODO_ALVARO`.
+- CV active: `public/cv/alvaro-castilla-cv.pdf`, linked via `cvUrl` in `src/data/profile.ts`.
+
+### Commit
+
+Not committed yet — awaiting explicit approval (Block H).
+
 ### Status
 
-Planned (starting tomorrow)
+Blocks A–G complete and validated (including CV finalization, Block G2). Block H (Git) awaiting approval.

@@ -5,6 +5,7 @@ import Card from '../components/ui/Card.astro';
 import Reveal from '../components/ui/Reveal.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
 import Breadcrumbs from '../components/ui/Breadcrumbs.astro';
+import SocialLink from '../components/ui/SocialLink.astro';
 
 import { PROFILE } from '../data/profile';
 import { SITE } from '../data/site';
@@ -20,6 +21,7 @@ const title = `Contacto — ${PROFILE.name}`;
       label="Contacto"
       title="¿Hablamos?"
       description="Dispuesto a colaborar, aprender y crecer como profesional del desarrollo de software. Puedes escribirme directamente o conectar conmigo por redes."
+      level={1}
       class="border-b border-border pb-8"
     />
 
@@ -90,22 +92,8 @@ const title = `Contacto — ${PROFILE.name}`;
             </div>
             <div class="flex-1 flex items-end">
               <div class="flex items-center gap-6">
-                <a
-                  href={PROFILE.social.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="font-mono text-sm text-text-muted hover:text-accent transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-sm"
-                >
-                  GitHub
-                </a>
-                <a
-                  href={PROFILE.social.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="font-mono text-sm text-text-muted hover:text-accent transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-sm"
-                >
-                  LinkedIn
-                </a>
+                <SocialLink href={PROFILE.social.github} label="GitHub" class="text-sm" />
+                <SocialLink href={PROFILE.social.linkedin} label="LinkedIn" class="text-sm" />
               </div>
             </div>
           </div>

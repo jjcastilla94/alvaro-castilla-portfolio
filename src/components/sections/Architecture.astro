@@ -1,27 +1,23 @@
 ---
+import SectionHeading from '../ui/SectionHeading.astro';
+
 const NODES = [
-  { id: 'client', label: 'Client', sublabel: 'Vue.js / Browser', icon: '&#9741;' },
-  { id: 'bff', label: 'BFF', sublabel: 'Backend for Frontend', icon: '&#9881;' },
-  { id: 'gateway', label: 'Gateway', sublabel: 'API Routing', icon: '&#9881;' },
-  { id: 'service', label: 'Service', sublabel: 'Spring Boot', icon: '&#9881;' },
-  { id: 'database', label: 'Database', sublabel: 'MySQL', icon: '&#9881;' },
+  { id: 'client', label: 'Client', sublabel: 'Vue.js / Browser' },
+  { id: 'bff', label: 'BFF', sublabel: 'Backend for Frontend' },
+  { id: 'gateway', label: 'Gateway', sublabel: 'API Routing' },
+  { id: 'service', label: 'Service', sublabel: 'Spring Boot' },
+  { id: 'database', label: 'Database', sublabel: 'MySQL' },
 ];
 ---
 
 <section class="max-w-6xl mx-auto px-6 sm:px-8 py-16">
-  <div class="flex flex-col gap-2" data-reveal>
-    <span class="font-mono text-xs uppercase tracking-widest text-accent">
-      <span class="mr-1.5 text-text-dim">03</span>
-      Cómo construyo
-    </span>
-    <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight text-text">
-      Arquitectura en acción
-    </h2>
-    <p class="text-sm sm:text-base text-text-muted max-w-2xl leading-relaxed">
-      Flujo de datos desde el cliente hasta la base de datos. Cada capa tiene una responsabilidad
-      clara.
-    </p>
-  </div>
+  <SectionHeading
+    index="04"
+    label="Cómo construyo"
+    title="Arquitectura en acción"
+    description="Flujo de datos desde el cliente hasta la base de datos. Cada capa tiene una responsabilidad clara."
+    class="border-b border-border pb-8"
+  />
 
   <div class="mt-12 flex justify-center">
     <div class="relative flex flex-col items-center gap-0">

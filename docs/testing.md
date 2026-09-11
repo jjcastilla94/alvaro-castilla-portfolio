@@ -67,9 +67,9 @@ npm run test:e2e      # Playwright
 
 Unit and E2E tests are not yet implemented. They will be added in Phase 7.
 
-## Manual Validation Baseline (Phases 1-5)
+## Manual Validation Baseline (Phases 1-6.5)
 
-Until automated tests exist (Phase 7), every phase is validated with this reproducible manual checklist. Phase 5 (Visual Polish + Animations) added the animation-related checks.
+Until automated tests exist (Phase 7), every phase is validated with this reproducible manual checklist. Phase 5 (Visual Polish + Animations) added the animation-related checks; Phase 6.5 added the accessibility (skip link, heading levels, `aria-current`), new-section and CV checks.
 
 ### Static checks (run at every phase)
 
@@ -83,6 +83,8 @@ npm run format:check  # Prettier (scoped to changed files to avoid unrelated deb
 ### Runtime checks (dev server)
 
 - All routes return HTTP 200: `/`, `/experience`, `/projects`, `/projects/arcadia`, `/projects/detubarrio`, `/contact`
+- CV asset `/cv/alvaro-castilla-cv.pdf` returns 200 with `application/pdf`
+- Hero **Descargar CV** button only renders when `cvUrl` is set; it opens the PDF in a new tab
 - Navigation works, `/about` is not present in any navigation link
 - Theme toggle works in both directions; no flash on reload; theme persists in `localStorage`
 - Mobile menu opens/closes, Escape closes it, `aria-expanded` updates
@@ -101,7 +103,8 @@ npm run format:check  # Prettier (scoped to changed files to avoid unrelated deb
 
 ### Motion-specific checks (Phase 5)
 
-- Hero entrance staggers: name → role → bio → CTAs → socials
+- Hero entrance staggers: badge → name → role → bio → CTAs → socials (code card and scroll indicator staggered after)
+- CTA row responsive: "Ver proyectos" full-width on mobile, secondary pair (Contactar / Descargar CV) shares a row
 - Cards reveal with slight rise; grid cards stagger slightly by index
 - Button arrow drifts on hover; primary/secondary lift subtly
 - Experience timeline shows the current-role pulse dot
@@ -121,4 +124,4 @@ npm run format:check  # Prettier (scoped to changed files to avoid unrelated deb
 - Primary CTA (dark mode): white on `#1d4ed8` = 6.70:1, hover `#2563eb` = 5.17:1 (ADR-015)
 - Primary CTA (light mode): white on `#1d4ed8` = 6.70:1, hover `#1e40af` = 8.72:1
 - Body text: dark `#f8fafc` on `#090a0f` = 18.9:1; light `#0f172a` on `#f8f9ff` = 16.99:1
-- Known borderliner (accepted, monitored): `--color-text-dim` in dark `#64748b` ≈ 3.9–4.2:1 (small labels)
+- Known borderliner (accepted, monitored): `--color-text-dim` in light mode requires checking; in dark it was raised to `#7e8fa6` for AA (Phase 6.5, Block A6)

@@ -1,7 +1,7 @@
 ---
 import Button from '../ui/Button.astro';
 import SocialLink from '../ui/SocialLink.astro';
-import { PROFILE } from '../../data/profile';
+import { PROFILE, hasCv } from '../../data/profile';
 
 const codeHtml = `<span class="c-key">public class</span> <span class="c-cls">Developer</span> {
   <span class="c-key">private</span> String name = <span class="c-str">"Álvaro Castilla"</span>;
@@ -21,6 +21,8 @@ const codeHtml = `<span class="c-key">public class</span> <span class="c-cls">De
       .<span class="c-fn">forBusiness</span>();
   }
 }`;
+
+const showCv = hasCv();
 ---
 
 <section
@@ -30,7 +32,7 @@ const codeHtml = `<span class="c-key">public class</span> <span class="c-cls">De
   <div>
     <div class="hero-badge" data-reveal style="--reveal-delay: 0ms">
       <span aria-hidden="true" class="w-1.5 h-1.5 rounded-full bg-green-400 inline-block"></span>
-      Disponible para nuevos retos
+      Backend Developer
     </div>
 
     <h1
@@ -43,26 +45,49 @@ const codeHtml = `<span class="c-key">public class</span> <span class="c-cls">De
 
     <p
       data-reveal
-      style="--reveal-delay: 130ms"
-      class="mt-4 font-mono text-base sm:text-lg text-accent"
+      style="--reveal-delay: 110ms"
+      class="mt-4 font-mono text-sm sm:text-base text-accent"
     >
-      {PROFILE.role}
+      Java · Spring Boot · REST APIs · MySQL · Docker
     </p>
 
     <p
       data-reveal
-      style="--reveal-delay: 200ms"
+      style="--reveal-delay: 170ms"
       class="mt-6 text-base sm:text-lg text-text-muted max-w-xl leading-relaxed"
     >
       {PROFILE.bio}
     </p>
 
-    <div data-reveal style="--reveal-delay: 270ms" class="mt-8 flex flex-wrap items-center gap-4">
-      <Button href="/projects">Ver proyectos</Button>
-      <Button href="/contact" variant="secondary">Contactar</Button>
+    <div data-reveal style="--reveal-delay: 230ms" class="mt-8 flex flex-col sm:flex-row flex-wrap gap-4">
+      <Button href="/projects" class="w-full sm:w-auto justify-center">Ver proyectos</Button>
+      <div class="flex gap-4 sm:flex-none">
+        <Button href="/contact" variant="secondary" class="flex-1 sm:flex-none justify-center">
+          Contactar
+        </Button>
+        {showCv && (
+          <Button href={PROFILE.cvUrl} variant="secondary" external class="flex-1 sm:flex-none justify-center">
+            Descargar CV
+            <svg
+              class="w-4 h-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
+              />
+            </svg>
+          </Button>
+        )}
+      </div>
     </div>
 
-    <div data-reveal style="--reveal-delay: 340ms" class="mt-7 flex items-center gap-6">
+    <div data-reveal style="--reveal-delay: 300ms" class="mt-7 flex items-center gap-6">
       <SocialLink href={PROFILE.social.github} label="GitHub" />
       <SocialLink href={PROFILE.social.linkedin} label="LinkedIn" />
     </div>
@@ -80,7 +105,7 @@ const codeHtml = `<span class="c-key">public class</span> <span class="c-cls">De
     </div>
   </div>
 
-  <div data-reveal style="--reveal-delay: 450ms" class="mt-12 lg:col-span-2 flex justify-center">
+  <div data-reveal style="--reveal-delay: 400ms" class="mt-12 lg:col-span-2 flex justify-center">
     <a
       href="#experience"
       class="scroll-indicator flex flex-col items-center gap-1 text-text-dim hover:text-text-muted transition-colors duration-200"

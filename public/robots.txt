@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Disallow draft or private pages if added later
+# Disallow: /draft/

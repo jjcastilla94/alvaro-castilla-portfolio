@@ -6,13 +6,17 @@ import Reveal from '../components/ui/Reveal.astro';
 import Tag from '../components/ui/Tag.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
 import ProjectCard from '../components/ui/ProjectCard.astro';
+import ServiceCard from '../components/ui/ServiceCard.astro';
 import Hero from '../components/sections/Hero.astro';
+import About from '../components/sections/About.astro';
 import Architecture from '../components/sections/Architecture.astro';
 
 import { PROFILE } from '../data/profile';
 import { EXPERIENCE } from '../data/experience';
 import { PROJECTS } from '../data/projects';
 import { SKILLS } from '../data/skills';
+import { CAPABILITIES } from '../data/services';
+import { formatDate } from '../utils/dates';
 
 const title = `${PROFILE.name} — ${PROFILE.role}`;
 const description = PROFILE.bio;
@@ -23,10 +27,13 @@ const currentExperience = EXPERIENCE.find((e) => e.endDate === null);
 <BaseLayout title={title} description={description}>
   <Hero />
 
+  <!-- ===== ABOUT ===== -->
+  <About />
+
   <!-- ===== EXPERIENCE ===== -->
   <section id="experience" class="max-w-6xl mx-auto px-6 sm:px-8 py-16">
     <SectionHeading
-      index="01"
+      index="02"
       label="Experiencia profesional"
       title="Donde aplico lo que sé"
       description="Mi experiencia profesional en desarrollo backend, trabajando en el desarrollo y mantenimiento de APIs REST en entornos empresariales."
@@ -44,7 +51,7 @@ const currentExperience = EXPERIENCE.find((e) => e.endDate === null);
                 </h3>
                 <p class="mt-1 font-mono text-xs text-text-dim">
                   {currentExperience.company} · Departamento de {currentExperience.department} ·{' '}
-                  {currentExperience.startDate} — actualidad
+                  {formatDate(currentExperience.startDate)} — actualidad
                 </p>
               </div>
             </div>
@@ -96,7 +103,7 @@ const currentExperience = EXPERIENCE.find((e) => e.endDate === null);
   <!-- ===== PROJECTS ===== -->
   <section class="max-w-6xl mx-auto px-6 sm:px-8 py-16">
     <SectionHeading
-      index="02"
+      index="03"
       label="Proyectos"
       title="Lo que he construido"
       description="Proyectos Full Stack que demuestran mi capacidad técnica en el stack backend y su integración con el frontend."
@@ -139,26 +146,60 @@ const currentExperience = EXPERIENCE.find((e) => e.endDate === null);
   <!-- ===== SKILLS ===== -->
   <section class="max-w-6xl mx-auto px-6 sm:px-8 py-16">
     <SectionHeading
-      index="04"
+      index="05"
       label="Skills"
       title="Mi stack técnico"
-      description="Tecnologías y herramientas con las que trabajo habitualmente y otras con las que tengo experiencia."
+      description="Diferencio entre las tecnologías que definen mi perfil, las que manejo con soltura y las áreas en las que estoy creciendo."
       class="border-b border-border pb-8"
     />
 
-    <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="mt-10 flex flex-col gap-8">
       {
         SKILLS.map((group, i) => (
           <div data-reveal style={`--reveal-delay: ${i * 70}ms`} class="flex flex-col gap-3">
-            <span class="font-mono text-xs uppercase tracking-widest text-text-dim">
-              {group.category}
-            </span>
+            <div class="flex flex-col gap-1">
+              <span
+                class={`font-mono text-xs uppercase tracking-widest ${
+                  group.level === 'core' ? 'text-accent' : 'text-text-dim'
+                }`}
+              >
+                <span class="mr-1.5 text-text-dim">{String(i + 1).padStart(2, '0')}</span>
+                {group.label}
+              </span>
+              <span class="text-xs text-text-muted">{group.description}</span>
+            </div>
             <div class="flex flex-wrap gap-1.5">
               {group.skills.map((skill) => (
-                <Tag>{skill}</Tag>
+                <Tag variant={group.level === 'core' ? 'accent' : 'default'}>{skill}</Tag>
               ))}
             </div>
           </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- ===== WHAT I BUILD ===== -->
+  <section class="max-w-6xl mx-auto px-6 sm:px-8 py-16">
+    <SectionHeading
+      index="06"
+      label="Lo que construyo"
+      title="Áreas donde puedo aportar"
+      description="La combinación de mi stack técnico y mi forma de trabajar me permite contribuir en varias áreas del desarrollo de software."
+      class="border-b border-border pb-8"
+    />
+
+    <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-6">
+      {
+        CAPABILITIES.map((cap, i) => (
+          <Reveal class="h-full" delay={i * 80}>
+            <ServiceCard
+              title={cap.title}
+              description={cap.description}
+              technologies={cap.technologies}
+              index={i + 1}
+            />
+          </Reveal>
         ))
       }
     </div>
@@ -168,7 +209,7 @@ const currentExperience = EXPERIENCE.find((e) => e.endDate === null);
   <section class="glow-accent relative max-w-6xl mx-auto px-6 sm:px-8 py-16">
     <div data-reveal>
       <Card variant="glass" class="p-8 sm:p-12 text-center">
-        <span class="font-mono text-xs uppercase tracking-widest text-accent">05 · Contacto</span>
+        <span class="font-mono text-xs uppercase tracking-widest text-accent">07 · Contacto</span>
         <h2 class="mt-3 text-2xl sm:text-3xl font-semibold tracking-tight text-text">¿Hablamos?</h2>
         <p class="mt-3 text-sm sm:text-base text-text-muted max-w-xl mx-auto leading-relaxed">
           Dispuesto a colaborar, aprender y crecer como profesional del desarrollo de software.
