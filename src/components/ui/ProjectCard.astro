@@ -1,6 +1,8 @@
 ---
 import Tag from './Tag.astro';
+import ProjectStatus from './ProjectStatus.astro';
 import { getProjectGradient, getProjectPattern } from '../../data/projectStyles';
+import type { Project } from '../../data/projects';
 
 interface Props {
   title: string;
@@ -9,7 +11,10 @@ interface Props {
   technologies: string[];
   href: string;
   github?: string;
+  url?: string;
   color: string;
+  image?: string;
+  status?: Project['status'];
   index: number;
   class?: string;
 }
@@ -21,7 +26,10 @@ const {
   technologies,
   href,
   github,
+  url,
   color,
+  image,
+  status,
   index,
   class: className = '',
 } = Astro.props;
@@ -32,19 +40,34 @@ const pattern = getProjectPattern(color);
 
 <a
   href={href}
-  class={`project-card block rounded-xl border border-border bg-surface group ${className}`}
+  class={`project-card block h-full rounded-xl border border-border bg-surface group flex flex-col ${className}`}
 >
   <div
-    class={`project-preview relative h-44 sm:h-52 rounded-t-xl overflow-hidden bg-gradient-to-br ${gradient}`}
+    class={`project-preview relative h-48 sm:h-60 rounded-t-xl overflow-hidden bg-gradient-to-br ${gradient}`}
   >
     <div class="absolute inset-0" style={pattern}></div>
+    {
+      image && (
+        <img
+          src={image}
+          alt={`${title} — captura de pantalla`}
+          loading="lazy"
+          class="absolute inset-0 w-full h-full object-cover object-top"
+        />
+      )
+    }
     <div
-      class="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent opacity-60"
+      class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-surface to-transparent"
     >
     </div>
     <div class="absolute top-4 right-4 font-mono text-5xl font-bold text-white/[0.04] select-none">
       {String(index).padStart(2, '0')}
     </div>
+    {status && (
+      <div class="absolute top-4 left-4">
+        <ProjectStatus status={status} />
+      </div>
+    )}
     <div class="absolute bottom-4 left-4 right-4 flex items-end justify-between">
       <div>
         <h3 class="text-xl font-bold text-text">{title}</h3>
@@ -70,15 +93,17 @@ const pattern = getProjectPattern(color);
     </div>
   </div>
 
-  <div class="project-content p-5 sm:p-6 flex flex-col gap-3">
+  <div class="project-content p-5 sm:p-6 flex flex-col gap-3 flex-1">
     <p class="text-sm text-text-muted leading-relaxed">{description}</p>
     <div class="flex flex-wrap gap-1.5">
       {technologies.map((tech) => <Tag>{tech}</Tag>)}
     </div>
-    <div class="flex items-center gap-3 mt-1">
+    <div class="flex items-center gap-3 mt-auto pt-1">
       <span class="text-xs text-accent font-medium group-hover:underline">
         Ver caso de estudio
       </span>
+      {url && <span class="text-xs text-text-dim">·</span>}
+      {url && <span class="text-xs text-text-dim group-hover:text-accent">Visitar ↗</span>}
       {github && <span class="text-xs text-text-dim">·</span>}
       {github && <span class="text-xs text-text-dim">GitHub ↗</span>}
     </div>

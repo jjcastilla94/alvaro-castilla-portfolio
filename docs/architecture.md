@@ -2,7 +2,7 @@
 
 ## Overview
 
-Personal portfolio for Álvaro Castilla, built as a static site with Astro. It is a presentation and credibility asset: it showcases the author's real professional experience (Cajamar), real projects (Arcadia, DetuBarrio), and engineering practice through the repository itself (small descriptive commits, phased development, documentation, validated builds).
+Personal portfolio for Alvaro Castilla, built as a static site with Astro. It is a presentation and credibility asset: it showcases the author's real professional experience (Cajamar), real projects (Arcadia, DetuBarrio), and engineering practice through the repository itself (small descriptive commits, phased development, documentation, validated builds).
 
 ## Tech Stack
 
@@ -21,19 +21,20 @@ No client-side framework (React/Vue/Svelte). All interactivity is vanilla JS: th
 
 ```
 alvaro-castilla-portfolio/
-├── public/              # Static assets (favicon.ico, favicon.svg, robots.txt, og-image.png, cv/alvaro-castilla-cv.pdf)
+├── public/              # Static assets (favicon.ico, favicon.svg, robots.txt, og-image.png, images/, cv/alvaro-castilla-cv.pdf)
 ├── src/
 │   ├── components/
 │   │   ├── layout/      # Header.astro, Footer.astro
-│   │   ├── sections/    # Hero.astro, About.astro, Architecture.astro
+│   │   ├── sections/    # Hero.astro, About.astro, Architecture.astro, Skills.astro
 │   │   ├── seo/         # HeadSEO.astro
 │   │   └── ui/          # Button, Card, Reveal, Tag, SectionHeading,
-│   │                    # SocialLink, ThemeToggle, ProjectCard, Breadcrumbs, ServiceCard
+│   │                    # SocialLink, ThemeToggle, ProjectCard, ProjectStatus,
+│   │                    # CertificationCard, Breadcrumbs, ServiceCard
 │   ├── data/            # profile, projects, experience, skills, site, about, services, certifications, projectStyles
 │   ├── layouts/         # BaseLayout.astro
 │   ├── pages/           # index, experience, projects, projects/[slug], contact
 │   ├── styles/          # global.css (tokens, motion, code-window, stats)
-│   └── utils/           # dates.ts (formatDate, formatRange, getYear)
+│   └── utils/           # dates.ts (formatDate, formatRange, getYear, formatMonthYear), projectImages.ts (build-time project gallery scanner)
 ├── docs/                # Project documentation
 └── tests/               # Test files (planned, Phase 7)
 ```
@@ -45,25 +46,26 @@ Professional content is separated from presentation in `src/data/`:
 - `site.ts` — Site-wide constants (URL, name, OG image, locale, navigation links including "Inicio")
 - `profile.ts` — Personal information, contact details, social links, `stack`, `cvUrl` + `hasCv()`, stats array (typed `Stat` interface)
 - `experience.ts` — Work experience (typed `ExperienceEntry` interface)
-- `projects.ts` — Project details (typed `Project` interface, `color` field; optional `longDescription`, `image`, `gallery`, `problem`, `contribution`, `learnings`, `status`, `featured`, `github`)
-- `skills.ts` — Skills grouped by level `core` / `working` / `exposure` (ADR-025)
-- `about.ts` — About section content (intro, current, approach, interests, personal note)
+- `projects.ts` — Project details (typed `Project` interface, `color` field; optional `longDescription`, `image`, `gallery`, `problem`, `contribution`, `learnings`, `status`, `github`/`url`, `repositories` for multi-repo projects, `featured`; helpers `getProjectRepos` / `getProjectPrimaryRepo`)
+- `skills.ts` — Skills grouped by level `core` / `working` / `exposure` / `complementary` (ADR-025)
+- `about.ts` — About section content (intro, current, approach, interests, future, personal note)
 - `services.ts` — `CAPABILITIES` framed as "Lo que construyo" (ADR-021)
-- `certifications.ts` — Empty array until real data exists (ADR-023)
+- `certifications.ts` — Real certifications + AWS AI Practitioner in progress (ADR-023)
 - `projectStyles.ts` — Per-color CSS gradients/patterns for project visuals
 - `utils/dates.ts` — date formatting helpers used by experience/home
+- `utils/projectImages.ts` — build-time project screenshot scanner (`getProjectImages`, `getProjectMainImage`; uses Node `fs` on `public/images/projects/<id>/`, requires `@types/node`)
 
 Components import data from these files — no personal strings are hardcoded in `.astro` files. This rule is validated at each phase.
 
 ## Pages
 
-| Route              | Status     | Purpose                                                                   |
-| ------------------ | ---------- | ------------------------------------------------------------------------- |
-| `/`                | ✅         | Home — hero (3 CTAs), About, experience, projects, architecture, skills by level, "Lo que construyo", contact |
-| `/experience`      | ✅         | Professional experience timeline                                          |
-| `/projects`        | ✅         | Project listing                                                           |
-| `/projects/[slug]` | ✅         | Individual project case studies (via `getStaticPaths`)                    |
-| `/contact`         | ✅         | Contact information (email, GitHub, LinkedIn)                             |
+| Route              | Status | Purpose                                                                                                       |
+| ------------------ | ------ | ------------------------------------------------------------------------------------------------------------- |
+| `/`                | ✅     | Home — hero (3 CTAs), About, experience, projects, architecture, skills by level, "Lo que construyo", contact |
+| `/experience`      | ✅     | Professional experience timeline                                                                              |
+| `/projects`        | ✅     | Project listing                                                                                               |
+| `/projects/[slug]` | ✅     | Individual project case studies (via `getStaticPaths`)                                                        |
+| `/contact`         | ✅     | Contact information (email, GitHub, LinkedIn)                                                                 |
 
 ## Design System
 
@@ -73,8 +75,9 @@ Components import data from these files — no personal strings are hardcoded in
 - Typography: **Space Grotesk** (display headings — Hero name, section titles, experience roles, stat values), **Inter** (body text), **JetBrains Mono** (labels, metadata, tags, code).
 - Borders: primarily `rounded` / `rounded-lg`; pills reserved for tags/statuses.
 - Glassmorphism restricted to floating/substrate elements (navbar, mobile menu, contact card). Content cards stay solid.
-- UI primitives: `Button`, `Card`, `Tag`, `SectionHeading` (with gradient rule + display font), `SocialLink`, `ThemeToggle`, `Reveal`, `ProjectCard` (full-width with CSS placeholder previews), `Breadcrumbs` (navigation trail for subpages), `ServiceCard` (capability card, "Lo que construyo").
-- Hero components: `Hero.astro` (2-col layout, code card with syntax highlighting, 3 CTAs — Ver proyectos / Contactar / Descargar CV conditional on `hasCv()`), `About.astro` (principles grid + interests), `Architecture.astro` (animated diagram section).
+- UI primitives: `Button`, `Card`, `Tag`, `SectionHeading` (with gradient rule + display font), `SocialLink`, `ThemeToggle`, `Reveal`, `ProjectCard` (screenshot previews + hover effects), `ProjectStatus` (En producción / En desarrollo / Completado badge), `ProjectGallery` (native-`<dialog>` lightbox, prev/next, Ese/backdrop close, reduced-motion aware), `CertificationCard` (status badge, skills, "Ver credencial"), `Breadcrumbs` (navigation trail for subpages), `ServiceCard` (capability card, "Lo que construyo").
+- Projects: cards on Home show only `featured` projects; `/projects` lists all. Detail page (`projects/[slug].astro`) renders banner, status, chips, "Acerca del proyecto", numbered `El problema` / `Mi contribución` / `Lo que aprendí` sections (only when data exists), the gallery, and CTAs — one button per repository (GitHub always when a repo exists; the label comes from `repositories` when present), "Visitar proyecto" only when deployed, and a clarifying note for non-deployed projects. Screenshots live in `public/images/projects/<id>/` and are discovered at build time by `src/utils/projectImages.ts` (`getProjectImages` / `getProjectMainImage`, Node `fs`): `main.png` is the cover (cards + detail banner) and every other image in the folder is the click-to-zoom gallery automatically — no code changes needed when capturing new screenshots. Set `image`/`gallery` in `projects.ts` only to override.
+- Hero components: `Hero.astro` (2-col layout, code card with syntax highlighting, 3 CTAs — Ver proyectos / Contactar / Descargar CV conditional on `hasCv()`), `About.astro` (intro + "Mi día a día" + principles grid + "Dónde quiero ir" + interests + "Fuera del código"), `Architecture.astro` (animated diagram section), `Skills.astro` (stack by level + certifications sub-block).
 - Scroll progress bar: global gradient bar at the top of the viewport, grows with scroll position.
 
 ## Motion System

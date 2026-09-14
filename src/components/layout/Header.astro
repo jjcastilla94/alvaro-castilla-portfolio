@@ -14,15 +14,26 @@ function isActive(href: string): boolean {
   <div class="max-w-6xl mx-auto px-6 sm:px-8 py-4 flex items-center justify-between">
     <a
       href="/"
-      class="flex flex-col text-left group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-sm"
+      class="flex items-center gap-2.5 group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-sm"
     >
-      <span
-        class="font-medium text-sm tracking-tight text-text group-hover:opacity-80 transition-opacity"
-      >
-        {PROFILE.name}
-      </span>
-      <span class="text-[11px] font-mono tracking-tight text-text-dim">
-        {PROFILE.role}
+      {PROFILE.image && (
+        <img
+          src={PROFILE.image}
+          alt=""
+          width="64"
+          height="64"
+          class="w-8 h-8 rounded-full object-cover border border-border"
+        />
+      )}
+      <span class="flex flex-col text-left">
+        <span
+          class="font-medium text-sm tracking-tight text-text group-hover:opacity-80 transition-opacity"
+        >
+          {PROFILE.name}
+        </span>
+        <span class="text-[11px] font-mono tracking-tight text-text-dim">
+          {PROFILE.role}
+        </span>
       </span>
     </a>
 

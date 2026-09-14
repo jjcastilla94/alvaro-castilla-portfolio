@@ -16,7 +16,7 @@ export const EXPERIENCE: ExperienceEntry[] = [
   {
     id: 'cajamar-junior',
     role: 'Desarrollador Backend Junior',
-    company: 'GRUPO CAJAMAR',
+    company: 'Cajamar Tecnología',
     department: 'Apificación',
     location: 'Almería, Andalucía, España · Presencial',
     type: 'Jornada completa',
@@ -35,7 +35,7 @@ export const EXPERIENCE: ExperienceEntry[] = [
   {
     id: 'cajamar-practicas',
     role: 'Desarrollador Backend en Prácticas',
-    company: 'GRUPO CAJAMAR',
+    company: 'Cajamar Tecnología',
     department: 'Apificación',
     location: 'Almería, Andalucía, España · Presencial',
     type: 'Contrato de prácticas',

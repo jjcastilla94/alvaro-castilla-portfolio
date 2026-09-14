@@ -25,3 +25,23 @@ export function formatRange(start: string, end: string | null): string {
 export function getYear(dateStr: string): string {
   return dateStr.split('-')[0];
 }
+
+const MONTHS_FULL = [
+  'Enero',
+  'Febrero',
+  'Marzo',
+  'Abril',
+  'Mayo',
+  'Junio',
+  'Julio',
+  'Agosto',
+  'Septiembre',
+  'Octubre',
+  'Noviembre',
+  'Diciembre',
+];
+
+export function formatMonthYear(dateStr: string): string {
+  const [year, month] = dateStr.split('-');
+  return `${MONTHS_FULL[parseInt(month, 10) - 1]} ${year}`;
+}

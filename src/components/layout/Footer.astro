@@ -10,7 +10,7 @@ const YEAR = new Date().getFullYear();
     <div class="flex flex-col gap-2">
       <span class="font-medium text-sm tracking-tight text-text">{PROFILE.name}</span>
       <span class="font-mono text-xs text-text-dim">{PROFILE.role}</span>
-      <p class="mt-2 font-mono text-xs text-text-dim">Java · Spring Boot · REST APIs</p>
+      <p class="mt-2 font-mono text-xs text-text-dim">{PROFILE.stack.slice(0, 3).join(' · ')}</p>
     </div>
 
     <nav class="flex flex-col gap-2" aria-label="Enlaces del pie de página">

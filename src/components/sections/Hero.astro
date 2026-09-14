@@ -4,9 +4,9 @@ import SocialLink from '../ui/SocialLink.astro';
 import { PROFILE, hasCv } from '../../data/profile';
 
 const codeHtml = `<span class="c-key">public class</span> <span class="c-cls">Developer</span> {
-  <span class="c-key">private</span> String name = <span class="c-str">"Álvaro Castilla"</span>;
+  <span class="c-key">private</span> String name = <span class="c-str">"Alvaro Castilla"</span>;
   <span class="c-key">private</span> String role = <span class="c-str">"Backend Developer"</span>;
-  <span class="c-key">private</span> String company = <span class="c-str">"GRUPO CAJAMAR"</span>;
+  <span class="c-key">private</span> String company = <span class="c-str">"Cajamar Tecnología"</span>;
 
   <span class="c-key">private</span> String[] stack = {
     <span class="c-str">"Java"</span>, <span class="c-str">"Spring Boot"</span>,
@@ -48,7 +48,7 @@ const showCv = hasCv();
       style="--reveal-delay: 110ms"
       class="mt-4 font-mono text-sm sm:text-base text-accent"
     >
-      Java · Spring Boot · REST APIs · MySQL · Docker
+      {PROFILE.stack.join(' · ')}
     </p>
 
     <p

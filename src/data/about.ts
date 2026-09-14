@@ -8,12 +8,13 @@ export interface AboutData {
   current: string;
   approach: ApproachPrinciple[];
   interests: string[];
+  future: string;
   personalNote: string;
 }
 
 export const ABOUT: AboutData = {
   intro:
-    'Backend Developer en Grupo Cajamar, trabajando en el desarrollo e integración de APIs REST para entornos empresariales. Me centro en Java, Spring Boot y en construir software que sea mantenible a largo plazo.',
+    'Me interesa entender qué hay detrás de cada problema antes de decidir cómo resolverlo. Para mí, desarrollar software no consiste solo en escribir código que funcione, sino en construir soluciones que puedan entenderse, mantenerse y evolucionar con el tiempo. Esa forma de trabajar se refleja en los principios que intento aplicar en cada proyecto.',
   current:
     'Mi día a día consiste en desarrollar y mantener servicios REST, definir flujos de datos entre sistemas y validar que cada integración funcione de forma consistente.',
   approach: [
@@ -28,14 +29,24 @@ export const ABOUT: AboutData = {
         'Aplico la solución más simple que resuelve el problema real. Si la complejidad es necesaria, la añado de forma deliberada.',
     },
     {
-      title: 'Responsabilidades claras',
+      title: 'Mantenible desde el principio',
       description:
-        'Separo las capas de una aplicación y mantengo contratos explícitos entre ellas. El código bien estructurado se entiende y se mantiene solo.',
+        'Me importa que el código sea claro, estructurado y mantenible: que no solo funcione ahora, sino que pueda entenderse y modificarse después. Intento evitar soluciones innecesariamente complejas y prefiero estructuras claras con responsabilidades bien separadas.',
     },
     {
-      title: 'Iterar para mejorar',
+      title: 'Entender el conjunto',
       description:
-        'Trabajo en ciclos: implemento, valido, detecto problemas y mejoro. Es la forma más sólida de crecer y de aprender.',
+        'Me interesa cómo encajan las partes de un sistema: una API, una base de datos o un servicio solo tienen sentido dentro del conjunto. Trabajo con interfaces y contratos claros entre las distintas partes para que esa conexión sea comprensible y consistente.',
+    },
+    {
+      title: 'Aprender llevándolo a la práctica',
+      description:
+        'Combino el trabajo del día a día, la documentación, la formación específica y los proyectos personales. Intento que lo aprendido no se quede en teoría: me gusta aplicarlo construyendo. La formación y las certificaciones me ayudan a estructurar y validar esa práctica.',
+    },
+    {
+      title: 'Código que otra persona pueda continuar',
+      description:
+        'Valoro un equipo con comunicación clara, donde se entienda qué se necesita antes de implementar y queden definidas las responsabilidades. Antes de escribir código me gusta ponernos de acuerdo en cómo debe funcionar algo, sobre todo cuando hay APIs o comunicación entre frontend y backend. Que el código pueda retomarlo otra persona forma parte de esa forma de trabajar.',
     },
   ],
   interests: [
@@ -49,6 +60,8 @@ export const ABOUT: AboutData = {
     'Cloud',
     'Data',
   ],
+  future:
+    'Consolidar mi base como Backend Developer: APIs, arquitectura, diseño de sistemas, bases de datos, testing, seguridad y buenas prácticas. A partir de ahí, seguir explorando áreas como cloud, DevOps, IA o Data antes de decidir dónde especializarme. Estoy preparando la AWS Certified AI Practitioner para entender cómo la IA se aplica a servicios reales, dentro de esa exploración, no como una especialización cerrada.',
   personalNote:
-    'Fuera del código, entreno habitualmente en el gimnasio. La constancia que aplico al entrenamiento también la aplico a mi desarrollo profesional.',
+    'Fuera del código, entreno habitualmente en el gimnasio. La disciplina y constancia que aplico al entrenamiento también forman parte de mi forma de afrontar el desarrollo profesional.',
 };

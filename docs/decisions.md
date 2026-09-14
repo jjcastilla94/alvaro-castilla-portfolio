@@ -513,7 +513,7 @@ The "no invented data" rule. An empty rendered section would look broken; a fill
 
 ### Status
 
-Accepted
+Accepted — superseded in Phase 6.5 Block 6.5-D, when the user provided real certifications and `certifications.ts` was populated (Spring Boot/MVC 5, JavaScript Asincronía/Prototipos/Clases, Sass, AWS AI Practitioner in-progress), rendered as a "Formación & Certificaciones" sub-block in the Skills section (Home) via `CertificationCard.astro`.
 
 ---
 
@@ -550,6 +550,86 @@ Model skills in `src/data/skills.ts` with three levels: `core` (main/proficient)
 ### Reason
 
 Levels communicate honest depth without inventing metrics or percentages. They are qualitative (core/working/exposure), not quantitative, so they cannot be called fabrications.
+
+### Status
+
+Accepted
+
+---
+
+## ADR-026 — Project Images Auto-Discovered from a Folder
+
+### Context
+
+Adding a project required wiring images by hand (an `image`/`gallery` list per project), and the user planned several more projects whose screenshots they want to drop in without touching code.
+
+### Decision
+
+Screenshots live in `public/images/projects/<id>/` and are discovered at build time by `src/utils/projectImages.ts` (Node `fs`). `main.png` is the cover (cards + detail banner); every other image in the folder is the detail-page gallery automatically. Sorting is alphabetical with `main.png` forced first (prefix `01-`, `02-`, … to control order). `image`/`gallery` in `projects.ts` remain as optional per-project overrides.
+
+### Reason
+
+The maintenance cost is zero for the user: dropping captures in a folder updates covers and the click-to-zoom gallery on rebuild. Static Astro output makes build-time `fs` scanning reliable (Node-only import, requires `@types/node`).
+
+### Status
+
+Accepted
+
+---
+
+## ADR-027 — Project Detail Structured Sections, Rendered Only When Data Exists
+
+### Context
+
+Detail pages were a photo + one long paragraph — thin for recruiters. The original short `description`/`longDescription` pair was already simplified (ADR-024).
+
+### Decision
+
+The detail page renders three numbered sections — **El problema**, **Mi contribución**, **Lo que aprendí** — each from an optional project field, plus the screenshot gallery and clear link CTAs. Sections are rendered only when their data field is present, so partial projects degrade gracefully.
+
+### Reason
+
+The structure scaffolds a professional case study without inventing content: fields stay optional and the "no invented data" rule holds. It also gives the detail page a consistent, recruiter-friendly reading order.
+
+### Status
+
+Accepted
+
+---
+
+## ADR-028 — Multi-Repository Projects via a `repositories` List
+
+### Context
+
+Course Management Platform lives across two repos (application development + containerization/deployment/CI-CD). A single `github` URL could not represent both, and the deployment repo is as relevant as the code repo.
+
+### Decision
+
+`Project` gains `repositories?: { label, url }[]` used when a project has several repos (e.g. "Desarrollo", "Despliegue e infraestructura"). Helpers `getProjectRepos` (returns `repositories`, falling back to a single `GitHub` entry from `github`) and `getProjectPrimaryRepo` (first entry, used on cards) centralize the logic. The detail page renders one real button per repository with its label; cards show the primary repo. Non-deployed projects show their repo buttons plus a clarifying "sin despliegue en producción todavía" note instead of a dead CTA.
+
+### Reason
+
+Both repos are real, clickable and accurately labeled, keeping the rule that every visible link must resolve. Cards stay uniform (single primary hint) while the detail page carries the full repo list.
+
+### Status
+
+Accepted
+
+---
+
+## ADR-029 — Status Badge Color Language
+
+### Context
+
+`status` had three values (`'active' | 'completed' | 'in-development'`) but the badge visuals and wording were worth a design decision that reads well to recruiters on small previews and large covers.
+
+### Decision
+
+`ProjectStatus.astro` maps each status to a color + dot language in the design tokens: **En producción** (emerald, pulse "live" dot via `animate-ping`), **En desarrollo** (amber), **Completado** (neutral). The pulse is neutralized by the global `prefers-reduced-motion` override.
+
+### Reason
+
+Green/amber/neutral gives an at-a-glance lifecycle signal consistent across cards and detail banners, using literal labels (no invented metrics) and respecting the site's motion policy.
 
 ### Status
 

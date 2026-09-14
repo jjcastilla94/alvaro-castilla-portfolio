@@ -42,6 +42,7 @@ PASS / FAIL                alvarocastilla.vercel.app
 ## Preview Deployments
 
 Vercel automatically creates preview deployments for:
+
 - Pull requests
 - Non-main branches
 
@@ -52,6 +53,7 @@ This allows reviewing changes before merging to production.
 No environment variables are currently required.
 
 If added in the future, they should be configured in:
+
 - Vercel dashboard (for production/preview)
 - `.env.local` (for local development, gitignored)
 

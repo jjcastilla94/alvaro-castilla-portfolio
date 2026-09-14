@@ -394,14 +394,14 @@ Work was executed in blocks A–H, each validated with `lint` + `typecheck` + `b
 
 #### Block A — Accessibility & Semantic Foundation
 
-| Step | Description |
-| --- | --- |
-| A1 | Skip link "Saltar al contenido" in `BaseLayout.astro` linking to `main#main-content`. |
-| A2 | Added `<div id="top">` anchor target; footer aside now links `#top`. |
-| A3 | `SectionHeading.astro` accepts `level` prop (1–6, default 2) with conditional h1/h2/h3 (resolves Astro tag type error). |
-| A4 | `projects.astro`, `experience.astro`, `contact.astro` use `level={1}` for the page H1. |
-| A5 | `aria-current="page"` on active nav link in `Header.astro` and `Breadcrumbs.astro`. |
-| A6 | Dark `--color-text-dim` fixed to `#7e8fa6` (WCAG AA on `#090a0f`). |
+| Step | Description                                                                                                             |
+| ---- | ----------------------------------------------------------------------------------------------------------------------- |
+| A1   | Skip link "Saltar al contenido" in `BaseLayout.astro` linking to `main#main-content`.                                   |
+| A2   | Added `<div id="top">` anchor target; footer aside now links `#top`.                                                    |
+| A3   | `SectionHeading.astro` accepts `level` prop (1–6, default 2) with conditional h1/h2/h3 (resolves Astro tag type error). |
+| A4   | `projects.astro`, `experience.astro`, `contact.astro` use `level={1}` for the page H1.                                  |
+| A5   | `aria-current="page"` on active nav link in `Header.astro` and `Breadcrumbs.astro`.                                     |
+| A6   | Dark `--color-text-dim` fixed to `#7e8fa6` (WCAG AA on `#090a0f`).                                                      |
 
 Validation: lint 0, typecheck 0, build 6 pages.
 
@@ -469,7 +469,40 @@ The user provided the CV. Applied:
 
 #### Block H — Git
 
-- Pending explicit user approval to commit and push.
+- Committed and pushed as `cb78eac` — `feat: refine data, sections, hero and SEO (Phase 6.5)` (33 files, +736/−258). Working tree clean at that point.
+
+#### Block 6.5-B — Copy refinement
+
+- `PROFILE.bio` → "Desarrollo APIs REST para entornos empresariales con Java y Spring Boot, con foco en código claro y mantenible a largo plazo." (short hero paragraph, no company mention — distinct role from About intro).
+- About intro (6.5-F) later replaced per user request by the "Cómo abordo el desarrollo" paragraph (understanding the problem before coding, maintainable/evolving solutions, principles intro) — heading 01 already carried that title; principles remain intact.
+- Experience/projects/build descriptions rewritten, clichés removed ("crecimiento continuo", "demuestran mi capacidad", "aprender y crecer").
+- Contact Home/CTA and contact page description rewritten (avoids freelance/agency tone).
+- Naming unified to "Cajamar Tecnología": stats label, Experience section/page company (`experience.ts`, both entries), Hero decorative code window (was "GRUPO CAJAMAR").
+- Tagline, hero stack pills, title, Skills and Architecture descriptions unchanged.
+
+#### Block 6.5-D — Certifications
+
+- `src/data/certifications.ts` reworked — schema with optional `description?`, `skills[]`, `date?`; 4 real certifications (Spring Boot/MVC 5 2026-05, JavaScript Asincronía/Prototipos/Clases 2026-04, Sass 2026-03, AWS AI Practitioner in-progress; "SAP Workflow" autocomplete error removed).
+- `src/components/ui/CertificationCard.astro` new; "Formación & Certificaciones" sub-block added to Skills section (Home) inside `border-t`, grid `sm:grid-cols-2`, status badges (Obtenida/En curso), "Ver credencial" links.
+- `src/utils/dates.ts` — `formatMonthYear()` (full Spanish month names).
+- Priority: certifications are complementary to the About, not the center of the profile.
+
+#### Block 6.5-F — Personality / About
+
+- `src/data/about.ts` — final user-authored text: intro, current, 6 principles, future (exploration of cloud/DevOps/AI/Data as exploration, not specialization decision), personalNote (gym).
+- `About.astro` renders "Dónde quiero ir" block (`border-l-2`).
+- Verified cliché-free.
+
+#### Block 6.5-G — Skills / Stack técnico (visual proposal)
+
+- `src/data/skills.ts` — new model: flat `Skill[]` (`level`, `category`, `name`). Levels: `core` / `working` / `exposure` / `complementary`.
+- `src/components/sections/Skills.astro` — Home section 05 extracted from `index.astro` (includes the certifications sub-block):
+  - Core: accent tags row (Java · Spring Boot · REST APIs · MySQL/SQL · Docker · Git).
+  - Working: grouped by category with mono micro-labels (Backend, Frontend, Bases de datos, Herramientas); backend enriched with Hibernate, Spring Security, Spring Data JPA, Lombok, JUnit.
+  - Explorando: small, dimmer tags (AWS · Microservicios · DevOps · IA), no dominance implied.
+  - Complementarias: native collapsible `<details>` (Angular, Bootstrap, Sass, Python, FastAPI, PHP, Laravel) with description referencing "mi formación" instead of DAW.
+  - No progress bars/percentages (user rule); hierarchy via size/contrast/grouping.
+- Feedback applied: featured cards removed from Core (all core items are equal-weight accent tags); Working expanded with tooling (IntelliJ IDEA, MySQL Workbench) and database category; complementary description now "…durante mi formación y otros proyectos". `featured` field dropped from the model (unused). Follow-up adds (user-confirmed): GitHub in Working · Tools; CI/CD, Arquitectura hexagonal and API Gateway in Explorando. _(Note: the project-model `featured` was a separate field — it was removed here and re-introduced in the 6.5-C final pass, see Block 6.5-C below.)_
 
 ### Decisions (Phase 6.5)
 
@@ -477,13 +510,89 @@ See ADR-020 to ADR-025 in `docs/decisions.md`.
 
 ### Content Notes
 
-- No certifications, metrics, or achievements were invented; placeholders are `TODO_ALVARO`.
+- No certifications, metrics, or achievements were invented; placeholders are `TODO_ALVARO`. Certifications only real ones provided by the user.
 - CV active: `public/cv/alvaro-castilla-cv.pdf`, linked via `cvUrl` in `src/data/profile.ts`.
 
 ### Commit
 
-Not committed yet — awaiting explicit approval (Block H).
+- `cb78eac` committed & pushed (Blocks A–F + docs + CV).
+- All blocks since (`6.5-B/C/D/E/F/G/H/I/J/K/L/M/N` + ADR-026–029 + final docs/README pass) are uncommitted and pending explicit user approval of the proposed message:
+  - **Suggested:** `feat: finalize projects (gallery, multi-repo links, colors) and polish Phase 6.5`
+
+#### Block 6.5-C — Project cards (iteration, final)
+
+- Cards grid → 2 columns (Home + `/projects`) with `object-cover` screenshots (fills frame, minimal crop; images are wide ~2.2:1), preview `h-48 sm:h-60`.
+- Cards equal height (`h-full` + `flex flex-col`, footer pinned with `mt-auto`) for symmetry.
+- `image` prop wired in `/projects` listing page (was missing).
+- Project status badges: `ProjectStatus.astro` (En producción / En desarrollo / Completado, mirrored from projectStyles color language). Arcadia = in-development, DetuBarrio = active. Shown on cards (top-left) and detail banner (top-left).
+- **Featured vs. all:** `featured?: boolean` re-added to the `Project` model. Home (`index.astro`) renders only `featured` projects (currently Arcadia + DetuBarrio stay featured); `/projects` lists every project — ready for the 4–5 additional projects the user will add. Architected so adding a project = add a data object; it appears on `/projects` automatically and only on Home if `featured: true`.
+- **Richer project detail** (`projects/[slug].astro`): the page now goes beyond the banner + short paragraph. It renders structured sections — `El problema`, `Mi contribución`, `Lo que aprendí` (3 cards, numbered, only when data exists; drafts written 2026-09-14 for Arcadia and DetuBarrio) — and says clearly when a project has no production deployment yet ("Disponible en GitHub · sin despliegue en producción todavía").
+- **Links always visible:** every project card and detail page shows the GitHub link whenever a repo exists; the live "Visitar proyecto" button appears only when the project is deployed (`url`). Non-deployed projects are never dead links.
+- **Gallery + lightbox:** `ProjectGallery.astro` (native `<dialog>`, no library). Screenshots grid with hover "Ampliar" hint; clicking opens a fullscreen view with prev/next, backdrop click or «Esc» to close, `aria` labelled, reduced-motion aware. CSS `.gallery-dialog::backdrop` added in `global.css`.
+
+#### Block 6.5-E — Visual resources
+
+- Favicon replaced: `public/favicon.svg` monogram "AC" (dark bg, accent ring/dot, matching design) + `public/favicon.ico` regenerated (32×32, was the default Astro icon).
+- `public/og-image.png` regenerated 1200×630 without tilde (user preference): "Alvaro Castilla · Backend Developer · Java · Spring Boot · REST APIs".
+- Image support wired (renders only when files exist; no broken images otherwise):
+  - `public/images/avatar.jpeg` (user-provided) → `PROFILE.image` → Header brand, Contact profile card.
+  - `public/images/projects/arcadia.png` + `detubarrio.png` (user-provided, renamed lowercase) → `image` on both projects → card thumbnail + detail banner.
+- Logos: decision recorded — **no technology logos** (kept per user rule, model remains extensible).
+
+#### Block 6.5-J — Pre-commit review fixes
+
+Fixes applied during the pre-commit review (cross-checking the plan against the implemented code). Lint, typecheck and build all pass before and after.
+
+- `ABOUT.current` ("Mi día a día") was defined in `about.ts` but never rendered — added a `border-l-2 border-accent` block in `About.astro` after the intro so the professional day-to-day paragraph is visible (not dead data).
+- Hero (`Hero.astro`) and Footer (`Footer.astro`) hardcoded the stack strings while `PROFILE.stack` existed — replaced the hardcoded "Java · Spring Boot · REST APIs …" strings with `PROFILE.stack.join(' · ')` (Hero) and `PROFILE.stack.slice(0, 3).join(' · ')` (Footer), restoring the "no hardcoded personal strings in `.astro`" rule.
+- Dead unused data removed: `PROFILE.tagline`, `PROFILE.shortRole` (profile), `SITE.defaultDescription` (site).
+
+#### Block 6.5-H — Visual polish (final pass)
+
+- First pass done in 6.5-C; final pass executed against the finished content (all 6 projects with real screenshots):
+  - All 10 routes return HTTP 200 with no dev-server runtime errors; no broken internal links across the site.
+  - Project galleries verified at runtime via the built HTML: every detail page renders its full screenshot set (arcadia 4, detubarrio 5, gestor-restaurante-tpv 5, app-backend-bottle 6, course-management-platform 3, task-management-app 3) with `main.png` first, plus cover banner and card thumbnails.
+  - Lightbox (`<dialog>`) present on every detail page (`data-gallery-dialog`, prev/next at runtime).
+  - Status badges render per project; "En producción" shows the `animate-ping` pulse dot; reduced-motion coverage confirmed (global override neutralizes the ping).
+  - Gallery hover "Ampliar" hint, image scale and backdrop blur are present; consistent border/surface tokens.
+
+#### Block 6.5-I — Recruiter review (final pass)
+
+- Inferior HTML titles and meta descriptions present and correct on all pages (`Home`, `Proyectos`, each project, `Experiencia`, `Contacto`); canonical URLs and Open Graph image tags checked.
+- CV served at `/cv/alvaro-castilla-cv.pdf` (200, `application/pdf`); "Descargar CV" button active (Hero).
+- Repo links verified against real URLs per project: single-repo projects show one real GitHub button; Course Management Platform shows both "Desarrollo" and "Despliegue e infraestructura" buttons; "Visitar proyecto" only where deployed (DetuBarrio, Course Management); non-deployed projects show the clarifying "sin despliegue en producción todavía" note and a working GitHub button instead of a dead CTA.
+- Home shows exactly the two featured projects; `/projects` lists all six; no placeholders or invented claims found anywhere in `src/`.
+
+#### Block 6.5-K — Auto gallery from image folders + project template
+
+- Images moved to the folder convention `public/images/projects/<id>/` (`arcadia/main.png`, `detubarrio/main.png`).
+- `src/utils/projectImages.ts` (`getProjectImages` / `getProjectMainImage`) scans a project's image folder at build time (Node `fs`). `main.png` → cover (cards + detail banner); every other image in the folder → the detail gallery automatically. Dropping screenshots in the folder is enough, no code changes needed.
+- `image` / `gallery` values removed from Arcadia and DetuBarrio in `projects.ts` (now auto-resolved); the interface keeps them as optional overrides.
+- `@types/node` added as dev dependency for the build-time scan.
+- `docs/project-template.md` added — copy-paste object template + image steps so the user can prep their next projects. _(Removed in 6.5-M per user request — project fields are documented inline in the `src/data/projects.ts` interface.)_
+- README updated ("Adding a Project" + gallery convention + docs list); `architecture.md` updated (utils tree, data model, projects paragraph).
+
+#### Block 6.5-L — Multi-repo model + per-project colors + status badges (user-added projects onboarded)
+
+- **Multi-repo projects:** `ProjectRepository` interface + `repositories?: { label, url }[]` on `Project`. New helpers `getProjectRepos` (returns `repositories`, falling back to a single `GitHub` entry from `github`) and `getProjectPrimaryRepo` (first entry, used by cards' repo hint). Detail page renders one button per repo with its label ("Desarrollo", "Despliegue e infraestructura", …); single-repo projects keep showing "Ver en GitHub".
+- **Course Management Platform:** removed the duplicated `github` field (it pointed at the same repo as `repositories[0]`); the two repo links (Desarrollo + Despliegue e infraestructura) are now real, working buttons on the detail page.
+- User-added projects onboarded: `gestor-restaurante-tpv` (TPV JavaFX), `app-backend-bottle` (Python/Bottle), `course-management-platform` (Vue+Laravel full-stack with Docker/CI-CD), `task-management-app` (Angular). Statuses `completed`, featured `false`, so they appear on `/projects` but not Home.
+- **Per-project colors added** in `projectStyles.ts`: `restaurante` (red/rose), `bottle` (teal/cyan), `practicafinal` (emerald/green), `task-management` (sky/indigo) — each with matching gradient + dot pattern.
+- **Status badges polished** (`ProjectStatus.astro`): "En producción" emerald with `animate-ping` pulse dot, "En desarrollo" amber, "Completado" neutral — consistent border/bg/dot tokens.
+
+#### Block 6.5-M — Gallery folders for the new projects + template removed
+
+- Gallery folders created for the four user-added projects: `public/images/projects/gestor-restaurante-tpv/`, `app-backend-bottle/`, `course-management-platform/`, `task-management-app/` (`.gitkeep` so the empty folders are tracked until screenshots are dropped in).
+- `docs/project-template.md` deleted on user request; README and `architecture.md` no longer reference it (project fields are documented in the `Project` interface in `src/data/projects.ts`).
+
+#### Block 6.5-N — 6.5-C finalized: galleries populated for all projects
+
+- User uploaded screenshots for every project (6/6): `arcadia` (3), `detubarrio` (5), `gestor-restaurante-tpv` (5), `app-backend-bottle` (6), `course-management-platform` (3), `task-management-app` (3). `.gitkeep` placeholders removed implicitly once folders were non-empty.
+- Home covers (`main.png`), detail banners and click-to-zoom galleries now show real captures on every project — 6.5-C (project cards + detail + gallery + featured) is finalized per user.
+- Validation re-run with the full screenshot set: lint 0, typecheck 0, build 10 pages (all 6 project details resolve their images via `getProjectImages`).
 
 ### Status
 
-Blocks A–G complete and validated (including CV finalization, Block G2). Block H (Git) awaiting approval.
+Blocks A–H + 6.5-B/C/D/E/F/G/H/I/J/K/L/M/N complete and validated. 6.5-C finalized (real screenshots on all projects); 6.5-H (visual polish) and 6.5-I (recruiter review) executed as a final pass on the finished content — lint 0, typecheck 0, build 10 pages, all routes 200, no broken links.
+
+**Pending: your confirmation to close Phase 6.5.** After that: final README/docs touch and commit of the whole 6.5 batch (pending explicit approval). Phase 7 (Vitest + Playwright) and Phase 8 (CI/CD + Vercel deploy) are the planned follow-ups.

@@ -5,9 +5,10 @@ import SectionHeading from '../components/ui/SectionHeading.astro';
 import Breadcrumbs from '../components/ui/Breadcrumbs.astro';
 import ProjectCard from '../components/ui/ProjectCard.astro';
 
-import { PROJECTS } from '../data/projects';
+import { PROJECTS, getProjectPrimaryRepo } from '../data/projects';
 import { PROFILE } from '../data/profile';
 import { SITE } from '../data/site';
+import { getProjectMainImage } from '../utils/projectImages';
 
 const title = `Proyectos — ${PROFILE.name}`;
 ---
@@ -19,12 +20,12 @@ const title = `Proyectos — ${PROFILE.name}`;
       index="01"
       label="Proyectos"
       title="Lo que he construido"
-      description="Proyectos Full Stack que demuestran mi capacidad técnica en el stack backend y su integración con el frontend."
+      description="Proyectos full stack en los que he trabajado tanto en backend como en frontend, con foco en la integración entre sistemas."
       level={1}
       class="border-b border-border pb-8"
     />
 
-    <div class="mt-10 grid grid-cols-1 gap-6">
+    <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-6">
       {
         PROJECTS.map((project, i) => (
           <Reveal class="h-full" delay={i * 80}>
@@ -35,7 +36,11 @@ const title = `Proyectos — ${PROFILE.name}`;
               technologies={project.technologies}
               href={project.href}
               github={project.github}
-              color={project.color}
+              url={project.url}
+color={project.color}
+              image={project.image ?? getProjectMainImage(project.id)}
+              github={getProjectPrimaryRepo(project)?.url}
+              status={project.status}
               index={i + 1}
             />
           </Reveal>

@@ -566,6 +566,16 @@ html.light .c-fn {
 }
 
 /* ==========================================================================
+   Utility — Project gallery lightbox
+   Native <dialog> with a dimmed, blurred backdrop.
+   ========================================================================== */
+
+.gallery-dialog::backdrop {
+  background: rgba(3, 5, 9, 0.72);
+  backdrop-filter: blur(4px);
+}
+
+/* ==========================================================================
    Utility — Experience list markers
    ▹ instead of plain bullets, echoing the reference timeline aesthetic.
    ========================================================================== */
@@ -646,6 +656,10 @@ html.light .c-fn {
 
   .code-window {
     transform: none;
+  }
+
+  [data-gallery-item] img {
+    transform: none !important;
   }
 
   .scroll-progress {

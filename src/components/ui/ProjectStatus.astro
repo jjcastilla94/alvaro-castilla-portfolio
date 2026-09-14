@@ -1,0 +1,61 @@
+---
+import type { Project } from '../../data/projects';
+
+interface Props {
+  status: NonNullable<Project['status']>;
+}
+
+const { status } = Astro.props;
+
+interface StatusStyle {
+  label: string;
+  text: string;
+  border: string;
+  bg: string;
+  dot: string;
+  pulse: boolean;
+}
+
+const config: Record<NonNullable<Project['status']>, StatusStyle> = {
+  active: {
+    label: 'En producción',
+    text: 'text-emerald-400',
+    border: 'border-emerald-400/40',
+    bg: 'bg-emerald-400/10',
+    dot: 'bg-emerald-400',
+    pulse: true,
+  },
+  completed: {
+    label: 'Completado',
+    text: 'text-text-dim',
+    border: 'border-border',
+    bg: 'bg-surface',
+    dot: 'bg-text-dim',
+    pulse: false,
+  },
+  'in-development': {
+    label: 'En desarrollo',
+    text: 'text-amber-400',
+    border: 'border-amber-400/40',
+    bg: 'bg-amber-400/10',
+    dot: 'bg-amber-400',
+    pulse: false,
+  },
+};
+
+const { label, text, border, bg, dot, pulse } = config[status];
+---
+
+<span
+  class={`inline-flex items-center gap-1.5 font-mono text-[0.625rem] uppercase tracking-widest px-2.5 py-1 rounded-full border ${text} ${border} ${bg}`}
+>
+  <span class="relative flex h-1.5 w-1.5" aria-hidden="true">
+    {pulse && (
+      <span
+        class={`absolute inline-flex h-full w-full rounded-full ${dot} opacity-60 animate-ping`}
+      ></span>
+    )}
+    <span class={`relative inline-flex h-1.5 w-1.5 rounded-full ${dot}`}></span>
+  </span>
+  {label}
+</span>

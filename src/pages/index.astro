@@ -7,14 +7,16 @@ import Tag from '../components/ui/Tag.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
 import ProjectCard from '../components/ui/ProjectCard.astro';
 import ServiceCard from '../components/ui/ServiceCard.astro';
+import { getProjectMainImage } from '../utils/projectImages';
+import { getProjectPrimaryRepo } from '../data/projects';
 import Hero from '../components/sections/Hero.astro';
 import About from '../components/sections/About.astro';
 import Architecture from '../components/sections/Architecture.astro';
+import Skills from '../components/sections/Skills.astro';
 
 import { PROFILE } from '../data/profile';
 import { EXPERIENCE } from '../data/experience';
 import { PROJECTS } from '../data/projects';
-import { SKILLS } from '../data/skills';
 import { CAPABILITIES } from '../data/services';
 import { formatDate } from '../utils/dates';
 
@@ -22,6 +24,7 @@ const title = `${PROFILE.name} — ${PROFILE.role}`;
 const description = PROFILE.bio;
 
 const currentExperience = EXPERIENCE.find((e) => e.endDate === null);
+const featuredProjects = PROJECTS.filter((p) => p.featured);
 ---
 
 <BaseLayout title={title} description={description}>
@@ -36,7 +39,7 @@ const currentExperience = EXPERIENCE.find((e) => e.endDate === null);
       index="02"
       label="Experiencia profesional"
       title="Donde aplico lo que sé"
-      description="Mi experiencia profesional en desarrollo backend, trabajando en el desarrollo y mantenimiento de APIs REST en entornos empresariales."
+      description="Desarrollo y mantenimiento de APIs REST en el departamento de Apificación de Cajamar Tecnología."
       class="border-b border-border pb-8"
     />
 
@@ -106,13 +109,13 @@ const currentExperience = EXPERIENCE.find((e) => e.endDate === null);
       index="03"
       label="Proyectos"
       title="Lo que he construido"
-      description="Proyectos Full Stack que demuestran mi capacidad técnica en el stack backend y su integración con el frontend."
+      description="Proyectos full stack en los que he trabajado tanto en backend como en frontend, con foco en la integración entre sistemas."
       class="border-b border-border pb-8"
     />
 
-    <div class="mt-10 grid grid-cols-1 gap-6">
+    <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-6">
       {
-        PROJECTS.map((project, i) => (
+        featuredProjects.map((project, i) => (
           <Reveal class="h-full" delay={i * 80}>
             <ProjectCard
               title={project.title}
@@ -121,7 +124,11 @@ const currentExperience = EXPERIENCE.find((e) => e.endDate === null);
               technologies={project.technologies}
               href={project.href}
               github={project.github}
-              color={project.color}
+              url={project.url}
+color={project.color}
+              image={project.image ?? getProjectMainImage(project.id)}
+              github={getProjectPrimaryRepo(project)?.url}
+              status={project.status}
               index={i + 1}
             />
           </Reveal>
@@ -144,40 +151,7 @@ const currentExperience = EXPERIENCE.find((e) => e.endDate === null);
   <Architecture />
 
   <!-- ===== SKILLS ===== -->
-  <section class="max-w-6xl mx-auto px-6 sm:px-8 py-16">
-    <SectionHeading
-      index="05"
-      label="Skills"
-      title="Mi stack técnico"
-      description="Diferencio entre las tecnologías que definen mi perfil, las que manejo con soltura y las áreas en las que estoy creciendo."
-      class="border-b border-border pb-8"
-    />
-
-    <div class="mt-10 flex flex-col gap-8">
-      {
-        SKILLS.map((group, i) => (
-          <div data-reveal style={`--reveal-delay: ${i * 70}ms`} class="flex flex-col gap-3">
-            <div class="flex flex-col gap-1">
-              <span
-                class={`font-mono text-xs uppercase tracking-widest ${
-                  group.level === 'core' ? 'text-accent' : 'text-text-dim'
-                }`}
-              >
-                <span class="mr-1.5 text-text-dim">{String(i + 1).padStart(2, '0')}</span>
-                {group.label}
-              </span>
-              <span class="text-xs text-text-muted">{group.description}</span>
-            </div>
-            <div class="flex flex-wrap gap-1.5">
-              {group.skills.map((skill) => (
-                <Tag variant={group.level === 'core' ? 'accent' : 'default'}>{skill}</Tag>
-              ))}
-            </div>
-          </div>
-        ))
-      }
-    </div>
-  </section>
+  <Skills />
 
   <!-- ===== WHAT I BUILD ===== -->
   <section class="max-w-6xl mx-auto px-6 sm:px-8 py-16">
@@ -185,7 +159,7 @@ const currentExperience = EXPERIENCE.find((e) => e.endDate === null);
       index="06"
       label="Lo que construyo"
       title="Áreas donde puedo aportar"
-      description="La combinación de mi stack técnico y mi forma de trabajar me permite contribuir en varias áreas del desarrollo de software."
+      description="El tipo de software que sé construir con mi stack y mi forma de trabajar."
       class="border-b border-border pb-8"
     />
 
@@ -212,7 +186,7 @@ const currentExperience = EXPERIENCE.find((e) => e.endDate === null);
         <span class="font-mono text-xs uppercase tracking-widest text-accent">07 · Contacto</span>
         <h2 class="mt-3 text-2xl sm:text-3xl font-semibold tracking-tight text-text">¿Hablamos?</h2>
         <p class="mt-3 text-sm sm:text-base text-text-muted max-w-xl mx-auto leading-relaxed">
-          Dispuesto a colaborar, aprender y crecer como profesional del desarrollo de software.
+          Si quieres hablar sobre desarrollo de software, un proyecto o una oportunidad, puedes escribirme.
         </p>
         <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
           <Button href={`mailto:${PROFILE.email}`}>Contáctame por email</Button>

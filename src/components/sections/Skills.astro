@@ -1,0 +1,173 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+import Reveal from '../ui/Reveal.astro';
+import CertificationCard from '../ui/CertificationCard.astro';
+import { SKILLS, LEVELS, type Skill, type SkillLevel, type SkillCategory } from '../../data/skills';
+import { CERTIFICATIONS } from '../../data/certifications';
+
+const byLevel = (level: SkillLevel) => SKILLS.filter((s) => s.level === level);
+
+const working = byLevel('working');
+const exposure = byLevel('exposure');
+const complementary = byLevel('complementary');
+
+const CATEGORY_LABELS: Record<SkillCategory, string> = {
+  backend: 'Backend',
+  frontend: 'Frontend',
+  databases: 'Bases de datos',
+  infrastructure: 'Infraestructura',
+  tools: 'Herramientas',
+  cloud: 'Cloud',
+  ai: 'IA',
+  languages: 'Lenguajes',
+};
+
+const groupByCategory = (items: Skill[]) => {
+  const groups = new Map<SkillCategory, Skill[]>();
+  for (const item of items) {
+    const list = groups.get(item.category) ?? [];
+    list.push(item);
+    groups.set(item.category, list);
+  }
+  return Array.from(groups.entries());
+};
+---
+
+<section class="max-w-6xl mx-auto px-6 sm:px-8 py-16">
+  <SectionHeading
+    index="05"
+    label="Skills"
+    title="Mi stack técnico"
+    description="Mi stack principal está centrado en backend con Java y Spring Boot, complementado con experiencia en frontend, bases de datos, infraestructura y herramientas de desarrollo."
+    class="border-b border-border pb-8"
+  />
+
+  <!-- ===== CORE ===== -->
+  <div class="mt-10 flex flex-col gap-8">
+    <div data-reveal class="flex flex-col gap-3">
+      <div class="flex flex-col gap-1">
+        <span class="font-mono text-xs uppercase tracking-widest text-accent">
+          <span class="mr-1.5 text-text-dim">01</span>
+          {LEVELS[0].label}
+        </span>
+        <span class="text-xs text-text-muted">{LEVELS[0].description}</span>
+      </div>
+
+      <div class="flex flex-wrap gap-1.5 mt-1">
+        {
+          byLevel('core').map((skill) => (
+            <span class="inline-flex items-center px-3 py-1.5 rounded text-sm font-mono border border-accent/25 bg-accent-subtle text-accent transition-colors duration-150 hover:border-accent/45">
+              {skill.name}
+            </span>
+          ))
+        }
+      </div>
+    </div>
+
+    <!-- ===== WORKING ===== -->
+    <div data-reveal class="flex flex-col gap-3">
+      <div class="flex flex-col gap-1">
+        <span class="font-mono text-xs uppercase tracking-widest text-text-dim">
+          <span class="mr-1.5 text-text-dim">02</span>
+          {LEVELS[1].label}
+        </span>
+        <span class="text-xs text-text-muted">{LEVELS[1].description}</span>
+      </div>
+
+      <div class="flex flex-col gap-3 mt-1">
+        {
+          groupByCategory(working).map(([category, items]) => (
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
+              <span class="font-mono text-[0.625rem] uppercase tracking-widest text-text-dim w-[6.5rem] shrink-0">
+                {CATEGORY_LABELS[category]}
+              </span>
+              <span class="flex flex-wrap gap-1.5">
+                {
+                  items.map((skill) => (
+                    <span class="inline-flex items-center px-2.5 py-1 rounded text-[0.8125rem] font-mono border border-border bg-surface-hover text-text-muted transition-colors duration-150 hover:border-border-hover hover:text-text">
+                      {skill.name}
+                    </span>
+                  ))
+                }
+              </span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <!-- ===== EXPLORING ===== -->
+    <div data-reveal class="flex flex-col gap-3">
+      <div class="flex flex-col gap-1">
+        <span class="font-mono text-xs uppercase tracking-widest text-text-dim">
+          <span class="mr-1.5 text-text-dim">03</span>
+          {LEVELS[2].label}
+        </span>
+        <span class="text-xs text-text-muted">{LEVELS[2].description}</span>
+      </div>
+
+      <div class="flex flex-wrap gap-1.5 mt-1">
+        {
+          exposure.map((skill) => (
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-mono text-text-dim border border-transparent bg-surface/60 transition-colors duration-150 hover:text-text">
+              {skill.name}
+            </span>
+          ))
+        }
+      </div>
+    </div>
+
+    <!-- ===== COMPLEMENTARY ===== -->
+    <div data-reveal class="flex flex-col gap-3">
+      <details class="group">
+        <summary class="flex flex-col gap-1 cursor-pointer select-none list-none">
+          <span class="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-text-dim group-open:text-text">
+            <span class="mr-1.5 text-text-dim">04</span>
+            {LEVELS[3].label}
+            <span class="ml-auto inline-flex items-center justify-center w-6 h-6 rounded-md border border-border text-text-dim transition-transform duration-200 group-open:rotate-45">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" d="M12 5v14M5 12h14" />
+              </svg>
+            </span>
+          </span>
+          <span class="text-xs text-text-muted">{LEVELS[3].description}</span>
+        </summary>
+
+        <div class="flex flex-wrap gap-1.5 mt-4">
+          {
+            complementary.map((skill) => (
+              <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-mono text-text-dim border border-border bg-surface/60 transition-colors duration-150 hover:text-text">
+                {skill.name}
+              </span>
+            ))
+          }
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <!-- ===== CERTIFICATIONS ===== -->
+  {
+    CERTIFICATIONS.length > 0 && (
+      <div data-reveal class="mt-12 pt-10 border-t border-border">
+        <div class="flex flex-col gap-1">
+          <span class="font-mono text-xs uppercase tracking-widest text-accent">
+            Formación & Certificaciones
+          </span>
+          <span class="text-xs text-text-muted">
+            Acreditaciones y formación continua, obtenidas o en curso.
+          </span>
+        </div>
+        <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {
+            CERTIFICATIONS.map((cert, i) => (
+              <Reveal class="h-full" delay={i * 60}>
+                <CertificationCard certification={cert} />
+              </Reveal>
+            ))
+          }
+        </div>
+      </div>
+    )
+  }
+</section>

@@ -7,7 +7,7 @@ import SectionHeading from '../components/ui/SectionHeading.astro';
 import Breadcrumbs from '../components/ui/Breadcrumbs.astro';
 import SocialLink from '../components/ui/SocialLink.astro';
 
-import { PROFILE } from '../data/profile';
+import { PROFILE, hasCv } from '../data/profile';
 import { SITE } from '../data/site';
 
 const title = `Contacto — ${PROFILE.name}`;
@@ -20,12 +20,40 @@ const title = `Contacto — ${PROFILE.name}`;
       index="01"
       label="Contacto"
       title="¿Hablamos?"
-      description="Dispuesto a colaborar, aprender y crecer como profesional del desarrollo de software. Puedes escribirme directamente o conectar conmigo por redes."
+      description="Escríbeme directamente o conéctate conmigo por redes."
       level={1}
       class="border-b border-border pb-8"
     />
 
-    <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-6">
+    <Reveal class="mt-10" delay={0}>
+      <Card class="p-6 sm:p-8">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+          {PROFILE.image && (
+            <img
+              src={PROFILE.image}
+              alt={`${PROFILE.name} — fotografía`}
+              width={112}
+              height={112}
+              class="w-28 h-28 shrink-0 rounded-full object-cover border border-border"
+            />
+          )}
+          <div class="flex flex-col gap-2">
+            <h2 class="text-xl font-semibold text-text">{PROFILE.name}</h2>
+            <p class="font-mono text-xs text-accent">{PROFILE.role}</p>
+            <div class="flex flex-wrap gap-3 mt-1">
+              <Button href={`mailto:${PROFILE.email}`}>Escribirme</Button>
+              {hasCv() && (
+                <Button href={PROFILE.cvUrl} external variant="secondary">
+                  Descargar CV
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+      </Card>
+    </Reveal>
+
+    <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
       <Reveal class="h-full" delay={40}>
         <Card class="p-6 sm:p-8 h-full">
           <div class="flex flex-col gap-4 h-full">
