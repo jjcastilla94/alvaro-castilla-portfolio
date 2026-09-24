@@ -76,7 +76,18 @@ export const PROJECTS: Project[] = [
       'Plataforma full-stack de digitalización del comercio local. Spring Boot en backend, Vue.js en frontend, MySQL como base de datos y Docker para containerización.',
     longDescription:
       'DetuBarrio es mi proyecto de Trabajo de Fin de Grado, desarrollado junto a Alejandro López Garrido. Es una plataforma de digitalización del comercio local con Spring Boot en el backend, Vue.js en el frontend, autenticación JWT, persistencia en MySQL, imágenes gestionadas con Cloudinary y despliegue containerizado con Docker.',
-    technologies: ['Spring Boot', 'Vue.js', 'MySQL', 'Docker', 'REST APIs', 'JWT', 'Vercel', 'Render', 'Aiven', 'Cloudinary'],
+    technologies: [
+      'Spring Boot',
+      'Vue.js',
+      'MySQL',
+      'Docker',
+      'REST APIs',
+      'JWT',
+      'Vercel',
+      'Render',
+      'Aiven',
+      'Cloudinary',
+    ],
     href: '/projects/detubarrio',
     github: 'https://github.com/DetuBarrio/DetuBarrio',
     url: 'https://detubarrio.vercel.app',
@@ -98,16 +109,7 @@ export const PROJECTS: Project[] = [
       'Aplicación de escritorio desarrollada con JavaFX y MySQL para gestionar empleados, productos, comandas, cobros y tickets dentro de un flujo completo de TPV.',
     longDescription:
       'Proyecto final de primero de Desarrollo de Aplicaciones Web centrado en la creación de un sistema TPV de escritorio para un restaurante. La aplicación permite gestionar el flujo completo de venta en sala, desde la autenticación de empleados y la gestión del catálogo de productos hasta la creación de comandas por mesa, aplicación de descuentos, cobro, consulta histórica de tickets y generación de tickets en PDF. El proyecto combina JavaFX para la interfaz, MySQL para la persistencia, JDBC para el acceso a datos y Maven para la gestión del proyecto y sus dependencias.',
-    technologies: [
-      'Java 11',
-      'JavaFX 21',
-      'FXML',
-      'CSS',
-      'MySQL 8',
-      'JDBC',
-      'Maven',
-      'iTextPDF',
-    ],
+    technologies: ['Java 11', 'JavaFX 21', 'FXML', 'CSS', 'MySQL 8', 'JDBC', 'Maven', 'iTextPDF'],
     href: '/projects/gestor-restaurante-tpv',
     github: 'https://github.com/jjcastilla94/gestor-de-un-restaurante-tpv',
     color: 'restaurante',
@@ -171,14 +173,7 @@ export const PROJECTS: Project[] = [
       'Aplicación web desarrollada con Python y Bottle que implementa una tienda online con autenticación, gestión de productos, carrito de compra y persistencia mediante SQLAlchemy.',
     longDescription:
       'Aplicación web backend desarrollada con Python y Bottle siguiendo una estructura tipo MVC. El proyecto implementa una tienda online sencilla con autenticación mediante sesión, gestión de categorías y artículos, carrito de compra y confirmación de pedidos. La persistencia se realiza mediante SQLAlchemy ORM sobre SQLite y el proyecto incorpora un sistema de migraciones versionadas para gestionar la evolución del esquema de base de datos.',
-    technologies: [
-      'Python 3',
-      'Bottle 0.13.4',
-      'SQLAlchemy 2.0',
-      'SQLite',
-      'HTML',
-      'Bootstrap',
-    ],
+    technologies: ['Python 3', 'Bottle 0.13.4', 'SQLAlchemy 2.0', 'SQLite', 'HTML', 'Bootstrap'],
     href: '/projects/app-backend-bottle',
     github: 'https://github.com/jjcastilla94/app_backend_con_bottle',
     color: 'bottle',
@@ -199,13 +194,7 @@ export const PROJECTS: Project[] = [
       'Aplicación frontend para la gestión de tareas, desarrollada con Angular y TypeScript. Proyecto orientado a trabajar la construcción de interfaces interactivas y la organización de una aplicación frontend moderna.',
     longDescription:
       'Aplicación web frontend centrada en la creación y gestión de tareas. El proyecto está desarrollado con Angular y TypeScript, utilizando la estructura y herramientas proporcionadas por Angular CLI. Su desarrollo permite trabajar conceptos fundamentales del ecosistema Angular, como la organización de componentes, construcción de interfaces dinámicas y separación de responsabilidades dentro de una aplicación frontend.',
-    technologies: [
-      'Angular',
-      'TypeScript',
-      'HTML',
-      'CSS',
-      'Vitest',
-    ],
+    technologies: ['Angular', 'TypeScript', 'HTML', 'CSS', 'Vitest'],
     href: '/projects/task-management-app',
     github: 'https://github.com/jjcastilla94/todoAppAngular',
     color: 'task-management',
@@ -217,5 +206,5 @@ export const PROJECTS: Project[] = [
       'Desarrollé la aplicación frontend utilizando Angular y TypeScript, estructurando sus componentes y lógica para implementar la gestión de tareas y la interacción con la interfaz. También trabajé con las herramientas del ecosistema Angular para ejecutar el proyecto, generar la build y preparar su entorno de pruebas mediante Vitest.',
     learnings:
       'Este proyecto me permitió reforzar mis conocimientos de Angular y TypeScript y trabajar de forma práctica con la estructura de una aplicación frontend basada en componentes. También profundicé en el flujo de desarrollo con Angular CLI, la construcción de aplicaciones para producción y la ejecución de pruebas unitarias con Vitest.',
-  }
+  },
 ];

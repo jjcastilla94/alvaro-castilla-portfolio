@@ -34,8 +34,8 @@ export const PROFILE: ProfileData = {
   },
   stats: [
     { value: '2026', label: 'En Cajamar Tecnología' },
-    { value: '2', suffix: '', label: 'Proyectos full-stack', countTo: 2 },
-    { value: '6', suffix: '+', label: 'Tecnologías en producción', countTo: 6 },
+    { value: '3', suffix: '', label: 'Proyectos full-stack', countTo: 3 },
+    { value: '8', suffix: '+', label: 'Tecnologías en producción', countTo: 8 },
     { value: 'REST', label: 'APIs en entornos reales' },
   ] satisfies Stat[],
 };

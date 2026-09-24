@@ -123,9 +123,8 @@ const featuredProjects = PROJECTS.filter((p) => p.featured);
               description={project.description}
               technologies={project.technologies}
               href={project.href}
-              github={project.github}
               url={project.url}
-color={project.color}
+              color={project.color}
               image={project.image ?? getProjectMainImage(project.id)}
               github={getProjectPrimaryRepo(project)?.url}
               status={project.status}
@@ -186,7 +185,8 @@ color={project.color}
         <span class="font-mono text-xs uppercase tracking-widest text-accent">07 · Contacto</span>
         <h2 class="mt-3 text-2xl sm:text-3xl font-semibold tracking-tight text-text">¿Hablamos?</h2>
         <p class="mt-3 text-sm sm:text-base text-text-muted max-w-xl mx-auto leading-relaxed">
-          Si quieres hablar sobre desarrollo de software, un proyecto o una oportunidad, puedes escribirme.
+          Si quieres hablar sobre desarrollo de software, un proyecto o una oportunidad, puedes
+          escribirme.
         </p>
         <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
           <Button href={`mailto:${PROFILE.email}`}>Contáctame por email</Button>

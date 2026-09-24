@@ -1,14 +1,7 @@
 export type SkillLevel = 'core' | 'working' | 'exposure' | 'complementary';
 
 export type SkillCategory =
-  | 'backend'
-  | 'frontend'
-  | 'databases'
-  | 'infrastructure'
-  | 'tools'
-  | 'cloud'
-  | 'ai'
-  | 'languages';
+  'backend' | 'frontend' | 'databases' | 'infrastructure' | 'tools' | 'cloud' | 'ai' | 'languages';
 
 export interface Skill {
   name: string;

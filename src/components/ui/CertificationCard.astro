@@ -35,38 +35,44 @@ const status = statusLabels[certification.status];
     {certification.date && ` · ${formatMonthYear(certification.date)}`}
   </p>
 
-  {certification.description && (
-    <p class="text-xs text-text-muted leading-relaxed">{certification.description}</p>
-  )}
+  {
+    certification.description && (
+      <p class="text-xs text-text-muted leading-relaxed">{certification.description}</p>
+    )
+  }
 
-  {certification.skills && certification.skills.length > 0 && (
-    <div class="flex flex-wrap gap-1.5">
-      {certification.skills.map((skill) => (
-        <Tag>{skill}</Tag>
-      ))}
-    </div>
-  )}
+  {
+    certification.skills && certification.skills.length > 0 && (
+      <div class="flex flex-wrap gap-1.5">
+        {certification.skills.map((skill) => (
+          <Tag>{skill}</Tag>
+        ))}
+      </div>
+    )
+  }
 
-  {certification.url && (
-    <a
-      href={certification.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      class="mt-auto inline-flex items-center gap-1 font-mono text-xs text-accent hover:text-accent-hover transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-sm w-fit"
-    >
-      Ver credencial
-      <svg
-        class="w-3.5 h-3.5 opacity-70"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.5"
-        aria-hidden="true"
+  {
+    certification.url && (
+      <a
+        href={certification.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mt-auto inline-flex items-center gap-1 font-mono text-xs text-accent hover:text-accent-hover transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-sm w-fit"
       >
-        <path stroke-linecap="round" stroke-linejoin="round" d="m3 21 4.5-4.5" />
-        <path stroke-linecap="round" stroke-linejoin="round" d="M9 8h6v6" />
-        <path stroke-linecap="round" stroke-linejoin="round" d="m12 12 6-6" />
-      </svg>
-    </a>
-  )}
+        Ver credencial
+        <svg
+          class="w-3.5 h-3.5 opacity-70"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          aria-hidden="true"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="m3 21 4.5-4.5" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 8h6v6" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="m12 12 6-6" />
+        </svg>
+      </a>
+    )
+  }
 </Card>

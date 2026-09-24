@@ -56,14 +56,16 @@ const detailSections = [
       class={`mt-8 relative h-48 sm:h-72 rounded-xl overflow-hidden bg-gradient-to-br ${gradient} border border-border`}
     >
       <div class="absolute inset-0" style={pattern}></div>
-      {image && (
-        <img
-          src={image}
-          alt={`${project.title} — captura`}
-          loading="lazy"
-          class="absolute inset-0 w-full h-full object-cover object-top"
-        />
-      )}
+      {
+        image && (
+          <img
+            src={image}
+            alt={`${project.title} — captura`}
+            loading="lazy"
+            class="absolute inset-0 w-full h-full object-cover object-top"
+          />
+        )
+      }
     </div>
 
     <div data-reveal class="mt-6 flex flex-wrap items-center gap-2">
@@ -100,16 +102,18 @@ const detailSections = [
 
     {
       detailSections.length > 0 && (
-        <div data-reveal style="--reveal-delay: 160ms" class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {
-            detailSections.map((section, i) => (
-              <Card class="p-6 sm:p-7">
-                <span class="font-mono text-xs text-accent">{String(i + 1).padStart(2, '0')}</span>
-                <h3 class="mt-2 text-base font-semibold text-text">{section.label}</h3>
-                <p class="mt-2 text-sm text-text-muted leading-relaxed">{section.text}</p>
-              </Card>
-            ))
-          }
+        <div
+          data-reveal
+          style="--reveal-delay: 160ms"
+          class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4"
+        >
+          {detailSections.map((section, i) => (
+            <Card class="p-6 sm:p-7">
+              <span class="font-mono text-xs text-accent">{String(i + 1).padStart(2, '0')}</span>
+              <h3 class="mt-2 text-base font-semibold text-text">{section.label}</h3>
+              <p class="mt-2 text-sm text-text-muted leading-relaxed">{section.text}</p>
+            </Card>
+          ))}
         </div>
       )
     }
@@ -119,9 +123,7 @@ const detailSections = [
         <div data-reveal style="--reveal-delay: 200ms" class="mt-8">
           <Card class="p-4 sm:p-6">
             <h2 class="text-lg font-semibold text-text">Galería</h2>
-            <p class="mt-1 text-xs text-text-muted">
-              Pulsa en una captura para ampliarla.
-            </p>
+            <p class="mt-1 text-xs text-text-muted">Pulsa en una captura para ampliarla.</p>
             <ProjectGallery title={project.title} images={gallery} class="mt-4" />
           </Card>
         </div>

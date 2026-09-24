@@ -19,7 +19,7 @@ export const EXPERIENCE: ExperienceEntry[] = [
     company: 'Cajamar Tecnología',
     department: 'Apificación',
     location: 'Almería, Andalucía, España · Presencial',
-    type: 'Jornada completa',
+    type: 'Contrato de formación',
     startDate: '2026-07',
     endDate: null,
     description:

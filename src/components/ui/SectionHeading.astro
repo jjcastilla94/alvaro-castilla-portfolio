@@ -19,9 +19,27 @@ const { label, title, description, index, level = 2, class: className = '' } = A
     </span>
     <span class="section-rule" aria-hidden="true"></span>
   </div>
-  {level === 1 && <h1 class="mt-1 font-display text-2xl sm:text-3xl font-semibold tracking-tight text-text">{title}</h1>}
-  {level === 2 && <h2 class="mt-1 font-display text-2xl sm:text-3xl font-semibold tracking-tight text-text">{title}</h2>}
-  {level === 3 && <h3 class="mt-1 font-display text-2xl sm:text-3xl font-semibold tracking-tight text-text">{title}</h3>}
+  {
+    level === 1 && (
+      <h1 class="mt-1 font-display text-2xl sm:text-3xl font-semibold tracking-tight text-text">
+        {title}
+      </h1>
+    )
+  }
+  {
+    level === 2 && (
+      <h2 class="mt-1 font-display text-2xl sm:text-3xl font-semibold tracking-tight text-text">
+        {title}
+      </h2>
+    )
+  }
+  {
+    level === 3 && (
+      <h3 class="mt-1 font-display text-2xl sm:text-3xl font-semibold tracking-tight text-text">
+        {title}
+      </h3>
+    )
+  }
   {
     description && (
       <p class="text-sm sm:text-base text-text-muted max-w-2xl leading-relaxed">{description}</p>

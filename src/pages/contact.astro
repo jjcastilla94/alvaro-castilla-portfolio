@@ -28,25 +28,29 @@ const title = `Contacto — ${PROFILE.name}`;
     <Reveal class="mt-10" delay={0}>
       <Card class="p-6 sm:p-8">
         <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6">
-          {PROFILE.image && (
-            <img
-              src={PROFILE.image}
-              alt={`${PROFILE.name} — fotografía`}
-              width={112}
-              height={112}
-              class="w-28 h-28 shrink-0 rounded-full object-cover border border-border"
-            />
-          )}
+          {
+            PROFILE.image && (
+              <img
+                src={PROFILE.image}
+                alt={`${PROFILE.name} — fotografía`}
+                width={112}
+                height={112}
+                class="w-28 h-28 shrink-0 rounded-full object-cover border border-border"
+              />
+            )
+          }
           <div class="flex flex-col gap-2">
             <h2 class="text-xl font-semibold text-text">{PROFILE.name}</h2>
             <p class="font-mono text-xs text-accent">{PROFILE.role}</p>
             <div class="flex flex-wrap gap-3 mt-1">
               <Button href={`mailto:${PROFILE.email}`}>Escribirme</Button>
-              {hasCv() && (
-                <Button href={PROFILE.cvUrl} external variant="secondary">
-                  Descargar CV
-                </Button>
-              )}
+              {
+                hasCv() && (
+                  <Button href={PROFILE.cvUrl} external variant="secondary">
+                    Descargar CV
+                  </Button>
+                )
+              }
             </div>
           </div>
         </div>

@@ -448,11 +448,7 @@ html.js .tag-appear.is-visible {
   left: 0;
   height: 3px;
   width: 0%;
-  background: linear-gradient(
-    90deg,
-    var(--color-accent),
-    var(--color-accent-hover)
-  );
+  background: linear-gradient(90deg, var(--color-accent), var(--color-accent-hover));
   z-index: 110;
   pointer-events: none;
   box-shadow: 0 0 12px color-mix(in srgb, var(--color-accent) 45%, transparent);

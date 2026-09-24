@@ -26,7 +26,6 @@ const showCv = hasCv();
 ---
 
 <section
-  id="top"
   class="glow-accent relative max-w-6xl mx-auto px-6 sm:px-8 pt-32 sm:pt-40 pb-16 lg:grid lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:items-center"
 >
   <div>
@@ -59,31 +58,42 @@ const showCv = hasCv();
       {PROFILE.bio}
     </p>
 
-    <div data-reveal style="--reveal-delay: 230ms" class="mt-8 flex flex-col sm:flex-row flex-wrap gap-4">
+    <div
+      data-reveal
+      style="--reveal-delay: 230ms"
+      class="mt-8 flex flex-col sm:flex-row flex-wrap gap-4"
+    >
       <Button href="/projects" class="w-full sm:w-auto justify-center">Ver proyectos</Button>
       <div class="flex gap-4 sm:flex-none">
         <Button href="/contact" variant="secondary" class="flex-1 sm:flex-none justify-center">
           Contactar
         </Button>
-        {showCv && (
-          <Button href={PROFILE.cvUrl} variant="secondary" external class="flex-1 sm:flex-none justify-center">
-            Descargar CV
-            <svg
-              class="w-4 h-4"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.5"
-              aria-hidden="true"
+        {
+          showCv && (
+            <Button
+              href={PROFILE.cvUrl}
+              variant="secondary"
+              external
+              class="flex-1 sm:flex-none justify-center"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
-              />
-            </svg>
-          </Button>
-        )}
+              Descargar CV
+              <svg
+                class="w-4 h-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
+                />
+              </svg>
+            </Button>
+          )
+        }
       </div>
     </div>
 

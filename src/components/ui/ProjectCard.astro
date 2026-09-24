@@ -56,18 +56,18 @@ const pattern = getProjectPattern(color);
         />
       )
     }
-    <div
-      class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-surface to-transparent"
-    >
+    <div class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-surface to-transparent">
     </div>
     <div class="absolute top-4 right-4 font-mono text-5xl font-bold text-white/[0.04] select-none">
       {String(index).padStart(2, '0')}
     </div>
-    {status && (
-      <div class="absolute top-4 left-4">
-        <ProjectStatus status={status} />
-      </div>
-    )}
+    {
+      status && (
+        <div class="absolute top-4 left-4">
+          <ProjectStatus status={status} />
+        </div>
+      )
+    }
     <div class="absolute bottom-4 left-4 right-4 flex items-end justify-between">
       <div>
         <h3 class="text-xl font-bold text-text">{title}</h3>

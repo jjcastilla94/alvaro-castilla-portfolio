@@ -21,8 +21,6 @@ const { title, description, technologies, index, class: className = '' } = Astro
   <h3 class="font-display text-lg font-semibold text-text">{title}</h3>
   <p class="text-sm text-text-muted leading-relaxed">{description}</p>
   <div class="mt-auto flex flex-wrap gap-1.5 pt-2">
-    {technologies.map((tech) => (
-      <Tag>{tech}</Tag>
-    ))}
+    {technologies.map((tech) => <Tag>{tech}</Tag>)}
   </div>
 </div>

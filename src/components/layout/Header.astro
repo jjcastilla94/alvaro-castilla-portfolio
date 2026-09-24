@@ -16,15 +16,17 @@ function isActive(href: string): boolean {
       href="/"
       class="flex items-center gap-2.5 group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-sm"
     >
-      {PROFILE.image && (
-        <img
-          src={PROFILE.image}
-          alt=""
-          width="64"
-          height="64"
-          class="w-8 h-8 rounded-full object-cover border border-border"
-        />
-      )}
+      {
+        PROFILE.image && (
+          <img
+            src={PROFILE.image}
+            alt=""
+            width="64"
+            height="64"
+            class="w-8 h-8 rounded-full object-cover border border-border"
+          />
+        )
+      }
       <span class="flex flex-col text-left">
         <span
           class="font-medium text-sm tracking-tight text-text group-hover:opacity-80 transition-opacity"
@@ -118,12 +120,11 @@ function isActive(href: string): boolean {
 </header>
 
 <script>
-  const toggle = document.getElementById('menu-toggle');
-  const menu = document.getElementById('mobile-menu');
-  const iconOpen = document.getElementById('menu-icon-open');
-  const iconClose = document.getElementById('menu-icon-close');
-
-  function setMenuState(open: boolean) {
+  function setMenuState(open: boolean): void {
+    const menu = document.getElementById('mobile-menu');
+    const toggle = document.getElementById('menu-toggle');
+    const iconOpen = document.getElementById('menu-icon-open');
+    const iconClose = document.getElementById('menu-icon-close');
     if (!menu || !toggle || !iconOpen || !iconClose) return;
     menu.classList.toggle('hidden', !open);
     iconOpen.classList.toggle('hidden', open);
@@ -135,24 +136,33 @@ function isActive(href: string): boolean {
     );
   }
 
-  if (toggle && menu) {
-    toggle.addEventListener('click', () => {
-      const isOpen = !menu.classList.contains('hidden');
-      setMenuState(!isOpen);
-    });
+  // Event delegation bound once on the document: survives View Transition
+  // navigation, where the header (and its menu) is re-created on every page
+  // but module scripts are evaluated only once.
+  document.addEventListener('click', (event: Event) => {
+    const target = event.target as HTMLElement | null;
+    if (!target || typeof target.closest !== 'function') return;
 
-    menu.addEventListener('click', (event: Event) => {
-      const target = event.target as HTMLElement;
-      if (target.tagName === 'A') {
-        setMenuState(false);
-      }
-    });
+    if (target.closest('#menu-toggle')) {
+      const menu = document.getElementById('mobile-menu');
+      setMenuState(menu?.classList.contains('hidden') ?? true);
+      return;
+    }
 
-    window.addEventListener('keydown', (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && !menu.classList.contains('hidden')) {
-        setMenuState(false);
-        toggle?.focus();
-      }
-    });
-  }
+    const menu = document.getElementById('mobile-menu');
+    if (!menu || menu.classList.contains('hidden')) return;
+
+    if (target.closest('#mobile-menu a') || !target.closest('#mobile-menu')) {
+      setMenuState(false);
+    }
+  });
+
+  document.addEventListener('keydown', (event: KeyboardEvent) => {
+    if (event.key !== 'Escape') return;
+    const menu = document.getElementById('mobile-menu');
+    const toggle = document.getElementById('menu-toggle');
+    if (!menu || menu.classList.contains('hidden')) return;
+    setMenuState(false);
+    toggle?.focus();
+  });
 </script>
