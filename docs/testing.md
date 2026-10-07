@@ -89,6 +89,9 @@ npm run format:check  # Prettier
 - Hero **Descargar CV** button only renders when `cvUrl` is set; it opens the PDF in a new tab
 - Navigation works, `/about` is not present in any navigation link
 - `robots.txt` serves with `Sitemap: https://alvarocastilladev.vercel.app/sitemap-index.xml`; `sitemap-index.xml` and `sitemap-0.xml` return 200 with all 10 page URLs (Phase 7)
+- Meta descriptions are unique per page: `/` = profile bio; `/experience`, `/projects`, `/contact` = page-specific (final audit, change 1)
+- Certification CTAs: active certifications show "Ver credencial" (issuer link); the in-progress AWS certification shows "Información sobre la certificación" → official AWS page — never "Ver credencial" (final audit, change 2)
+- `/projects` display order: Arcadia → DetuBarrio → Course Management Platform → Gestor TPV → App Backend Bottle → Task Management App (final audit, change 3)
 - Theme toggle works in both directions; no flash on reload; theme persists in `localStorage`
 - Mobile menu opens/closes, Escape closes it, `aria-expanded` updates
 - Banner: no hidden content — all `[data-reveal]` elements become visible when in viewport

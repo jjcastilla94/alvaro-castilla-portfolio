@@ -718,3 +718,65 @@ Deploy the static site to production on Vercel, establish the canonical producti
 ### Status
 
 Completed — Phase 7 closed. CI/CD (GitHub Actions) remains Phase 9; automated tests Phase 8.
+
+---
+
+## Final Audit (pre-completion) + Approved Fixes
+
+**Date:** 2026-10-07
+**Status:** Completed
+
+### Objective
+
+Full review of the live portfolio before considering the project finished: recruiter / senior-developer / first-time-visitor perspectives, covering first impression, hero, experience, projects, technical credibility, UX/UI, SEO and accessibility. Only high-value issues were to be fixed; no changes for taste.
+
+### Production validation (before fixes)
+
+- Deployment of `254f6ad` validated live (then superseded by docs-only `0126a1a`): robots.txt 200 + exact sitemap reference, `sitemap-index.xml` / `sitemap-0.xml` 200, 10/10 URLs on the correct domain, zero old-domain references, 10/10 routes 200, canonical/`og:url` correct.
+- Full link crawl: 14/14 internal links 200, 8/8 GitHub repos 200, both live demos 200 (DetuBarrio, Course Management), CV 200, credentials 200, 404 route works.
+
+### Audit findings
+
+- 🔴 Critical: none.
+- 🟠 Approved for fixing (changes 1–3 below): duplicated meta descriptions on 4 pages; "Ver credencial" CTA on the in-progress AWS certification linking to AWS marketing; project order burying Course Management Platform below the desktop TPV.
+- 🟠 Deferred by user: deploy Arcadia demo (later phase).
+- 🟡 Rejected/deferred by user (changes 5–9): ES/EN language consistency, JSON-LD, h1→h3 heading skip on `/projects` and `/experience`, "8+ tecnologías en producción" wording, extra real metrics on DetuBarrio.
+
+### Implemented (approved fixes)
+
+- **Change 1 — unique meta descriptions:** `/experience`, `/projects` and `/contact` now pass specific, factual descriptions to `BaseLayout` (165/158/140 chars); `/` keeps `PROFILE.bio` (adequate).
+- **Change 2 — honest AWS CTA:** `CertificationCard.astro` renders the link label from `certification.status` — `active` → "Ver credencial", otherwise → "Información sobre la certificación" (official AWS page). Badge "En curso" unchanged; the three OpenWebinars credentials keep "Ver credencial".
+- **Change 3 — project order:** `PROJECTS` array reordered (display order): Arcadia → DetuBarrio → Course Management Platform → Gestor TPV → App Backend Bottle → Task Management App. Content untouched; Home (featured-only) unaffected.
+
+### Validation
+
+- Typecheck: PASS (0/0/0, 40 files); Lint: PASS; Format: PASS; Build: PASS (10 pages, 115 images)
+- dist checks: 10/10 routes; 4 unique meta descriptions (home = original bio verbatim); AWS block has no "Ver credencial" and links to `aws.amazon.com/certification/…`; active certs unchanged; `/projects` order as specified; 14 internal links, 0 broken; `sitemap-0.xml` (10 URLs) and `robots.txt` byte-identical in behavior
+
+### Commits
+
+- `bd9e136` — `fix: unique meta descriptions, honest AWS cert CTA and project order`, pushed.
+
+### Status
+
+Completed — final audit closed with the three approved fixes.
+
+---
+
+## What Remains (roadmap status)
+
+| Phase | Focus                                                                                                                                       | Status            |
+| ----- | ------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| 6.6   | Technical Polish                                                                                                                            | ✅ completed      |
+| 7     | Deployment (Vercel) + sitemap                                                                                                               | ✅ completed      |
+| —     | Final audit + approved fixes (this entry)                                                                                                   | ✅ completed      |
+| 8     | Testing — Vitest (unit) + Playwright (E2E), `tests/` scaffold                                                                               | ⬜ planned (next) |
+| 9     | CI/CD — GitHub Actions (lint + typecheck + tests + build on push/PR)                                                                        | ⬜ planned        |
+| 10    | SEO / Discoverability — JSON-LD, unique-per-page social images, heading hierarchy (h1→h3 on `/projects` + `/experience`), sitemap `lastmod` | ⬜ planned        |
+| 11    | Final Visual Polish                                                                                                                         | ⬜ planned        |
+| 12    | Final Audit (formal, against Phase 8–11 output)                                                                                             | ⬜ planned        |
+
+Deferred beyond the roadmap (user decision):
+
+- Deploy Arcadia to a free host so the flagship backend project has a live demo (audit change 4).
+- Audit optionals 5–9: ES/EN copy consistency, "8+ tecnologías" wording, DetuBarrio real metrics.
