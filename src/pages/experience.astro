@@ -14,7 +14,11 @@ import { formatRange, getYear } from '../utils/dates';
 const title = `Experiencia — ${PROFILE.name}`;
 ---
 
-<BaseLayout title={title} description={PROFILE.bio} canonical={`${SITE.url}/experience`}>
+<BaseLayout
+  title={title}
+  description="Experiencia de Alvaro Castilla en Cajamar Tecnología: desarrollo y mantenimiento de APIs REST, integración de sistemas, flujos de datos y validación de servicios."
+  canonical={`${SITE.url}/experience`}
+>
   <section class="max-w-6xl mx-auto px-6 sm:px-8 pt-32 sm:pt-40 pb-16">
     <Breadcrumbs crumbs={[{ label: 'Experiencia' }]} />
     <SectionHeading

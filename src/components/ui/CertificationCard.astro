@@ -18,6 +18,9 @@ const statusLabels: Record<Certification['status'], { label: string; className: 
 };
 
 const status = statusLabels[certification.status];
+
+const ctaLabel =
+  certification.status === 'active' ? 'Ver credencial' : 'Información sobre la certificación';
 ---
 
 <Card class="p-5 sm:p-6 flex flex-col gap-3 h-full">
@@ -59,7 +62,7 @@ const status = statusLabels[certification.status];
         rel="noopener noreferrer"
         class="mt-auto inline-flex items-center gap-1 font-mono text-xs text-accent hover:text-accent-hover transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-sm w-fit"
       >
-        Ver credencial
+        {ctaLabel}
         <svg
           class="w-3.5 h-3.5 opacity-70"
           viewBox="0 0 24 24"

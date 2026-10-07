@@ -14,7 +14,11 @@ import { SITE } from '../data/site';
 const title = `Contacto — ${PROFILE.name}`;
 ---
 
-<BaseLayout title={title} description={PROFILE.bio} canonical={`${SITE.url}/contact`}>
+<BaseLayout
+  title={title}
+  description="Contacto de Alvaro Castilla: email, GitHub y LinkedIn. Hablemos de desarrollo de software, proyectos o oportunidades como Backend Developer."
+  canonical={`${SITE.url}/contact`}
+>
   <section class="max-w-6xl mx-auto px-6 sm:px-8 pt-32 sm:pt-40 pb-16">
     <Breadcrumbs crumbs={[{ label: 'Contacto' }]} />
     <SectionHeading

@@ -13,7 +13,11 @@ import { getProjectMainImage } from '../utils/projectImages';
 const title = `Proyectos — ${PROFILE.name}`;
 ---
 
-<BaseLayout title={title} description={PROFILE.bio} canonical={`${SITE.url}/projects`}>
+<BaseLayout
+  title={title}
+  description="Proyectos de Alvaro Castilla con Spring Boot, Vue, Docker y CI/CD: casos de estudio técnicos, galería de capturas y enlaces a GitHub y demos en producción."
+  canonical={`${SITE.url}/projects`}
+>
   <section class="max-w-6xl mx-auto px-6 sm:px-8 pt-32 sm:pt-40 pb-16">
     <Breadcrumbs crumbs={[{ label: 'Proyectos' }]} />
     <SectionHeading

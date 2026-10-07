@@ -103,27 +103,6 @@ export const PROJECTS: Project[] = [
       'Desarrollar un proyecto full-stack en equipo me enseñó a dividir el trabajo en responsabilidades bien definidas y a integrar sistemas que dependen entre sí. Gestionar imágenes con un servicio externo (Cloudinary), asegurar la autenticación y preparar el despliegue me dieron práctica real con infraestructura, no solo con el código.',
   },
   {
-    id: 'gestor-restaurante-tpv',
-    title: 'Gestor de Restaurante · TPV',
-    subtitle: 'Aplicación de escritorio para digitalizar la operativa de un restaurante',
-    description:
-      'Aplicación de escritorio desarrollada con JavaFX y MySQL para gestionar empleados, productos, comandas, cobros y tickets dentro de un flujo completo de TPV.',
-    longDescription:
-      'Proyecto final de primero de Desarrollo de Aplicaciones Web centrado en la creación de un sistema TPV de escritorio para un restaurante. La aplicación permite gestionar el flujo completo de venta en sala, desde la autenticación de empleados y la gestión del catálogo de productos hasta la creación de comandas por mesa, aplicación de descuentos, cobro, consulta histórica de tickets y generación de tickets en PDF. El proyecto combina JavaFX para la interfaz, MySQL para la persistencia, JDBC para el acceso a datos y Maven para la gestión del proyecto y sus dependencias.',
-    technologies: ['Java 11', 'JavaFX 21', 'FXML', 'CSS', 'MySQL 8', 'JDBC', 'Maven', 'iTextPDF'],
-    href: '/projects/gestor-restaurante-tpv',
-    github: 'https://github.com/jjcastilla94/gestor-de-un-restaurante-tpv',
-    color: 'restaurante',
-    status: 'completed',
-    featured: false,
-    problem:
-      'La operativa diaria de un restaurante requiere gestionar de forma rápida y coordinada productos, mesas, comandas y cobros. Cuando estas tareas se realizan mediante procesos manuales o herramientas no centralizadas, pueden producirse errores y resulta más difícil mantener la trazabilidad de las ventas. El objetivo del proyecto fue desarrollar un TPV que centralizara este flujo en una única aplicación, permitiendo gestionar las operaciones del servicio desde un mismo punto.',
-    contribution:
-      'Desarrollé la aplicación de principio a fin como proyecto final de primero de Desarrollo de Aplicaciones Web. Implementé la interfaz de escritorio con JavaFX, FXML y CSS, la lógica de interacción mediante controladores y la persistencia de datos utilizando MySQL y JDBC. También trabajé en el modelado de las principales entidades del dominio, la gestión de productos y comandas, el cálculo de importes y descuentos, el registro de tickets y la generación de documentos PDF mediante iTextPDF.',
-    learnings:
-      'Este proyecto consolidó mis fundamentos de Java y programación orientada a objetos y fue una de mis primeras experiencias desarrollando una aplicación completa conectada a una base de datos. Aprendí a modelar un problema real de negocio, diseñar una interfaz orientada a la operativa de un usuario y conectar diferentes partes de una aplicación, desde la interfaz hasta la persistencia. También me permitió identificar las ventajas de separar responsabilidades y las limitaciones de un acceso directo a datos, conocimientos que posteriormente he podido aplicar en proyectos backend con arquitecturas más estructuradas.',
-  },
-  {
     id: 'course-management-platform',
     title: 'Course Management Platform',
     subtitle: 'Full-stack application with Docker, cloud deployment and CI/CD',
@@ -165,6 +144,27 @@ export const PROJECTS: Project[] = [
       'Desarrollé la aplicación full-stack utilizando Vue 3 y Laravel, estructurando el frontend y la API REST para gestionar cursos y estudiantes. Posteriormente trabajé en la preparación del proyecto para producción mediante Docker y Docker Compose, creando los contenedores y configuraciones necesarias para ejecutar sus diferentes servicios. También configuré CORS y variables de entorno, desplegué el frontend en Vercel, el backend en Render y MySQL en Railway, y establecí workflows de GitHub Actions para automatizar los despliegues. El trabajo se mantiene organizado en dos repositorios: uno para el desarrollo de la aplicación y otro para la containerización, despliegue y CI/CD.',
     learnings:
       'El proyecto me permitió entender de forma práctica el ciclo completo de una aplicación web, desde su desarrollo hasta su ejecución en producción. Profundicé en Docker y Docker Compose, separación de servicios, configuración de entornos, CORS y comunicación entre componentes desplegados de forma independiente. También adquirí experiencia con plataformas cloud como Vercel, Render y Railway y con la automatización de despliegues mediante GitHub Actions.',
+  },
+  {
+    id: 'gestor-restaurante-tpv',
+    title: 'Gestor de Restaurante · TPV',
+    subtitle: 'Aplicación de escritorio para digitalizar la operativa de un restaurante',
+    description:
+      'Aplicación de escritorio desarrollada con JavaFX y MySQL para gestionar empleados, productos, comandas, cobros y tickets dentro de un flujo completo de TPV.',
+    longDescription:
+      'Proyecto final de primero de Desarrollo de Aplicaciones Web centrado en la creación de un sistema TPV de escritorio para un restaurante. La aplicación permite gestionar el flujo completo de venta en sala, desde la autenticación de empleados y la gestión del catálogo de productos hasta la creación de comandas por mesa, aplicación de descuentos, cobro, consulta histórica de tickets y generación de tickets en PDF. El proyecto combina JavaFX para la interfaz, MySQL para la persistencia, JDBC para el acceso a datos y Maven para la gestión del proyecto y sus dependencias.',
+    technologies: ['Java 11', 'JavaFX 21', 'FXML', 'CSS', 'MySQL 8', 'JDBC', 'Maven', 'iTextPDF'],
+    href: '/projects/gestor-restaurante-tpv',
+    github: 'https://github.com/jjcastilla94/gestor-de-un-restaurante-tpv',
+    color: 'restaurante',
+    status: 'completed',
+    featured: false,
+    problem:
+      'La operativa diaria de un restaurante requiere gestionar de forma rápida y coordinada productos, mesas, comandas y cobros. Cuando estas tareas se realizan mediante procesos manuales o herramientas no centralizadas, pueden producirse errores y resulta más difícil mantener la trazabilidad de las ventas. El objetivo del proyecto fue desarrollar un TPV que centralizara este flujo en una única aplicación, permitiendo gestionar las operaciones del servicio desde un mismo punto.',
+    contribution:
+      'Desarrollé la aplicación de principio a fin como proyecto final de primero de Desarrollo de Aplicaciones Web. Implementé la interfaz de escritorio con JavaFX, FXML y CSS, la lógica de interacción mediante controladores y la persistencia de datos utilizando MySQL y JDBC. También trabajé en el modelado de las principales entidades del dominio, la gestión de productos y comandas, el cálculo de importes y descuentos, el registro de tickets y la generación de documentos PDF mediante iTextPDF.',
+    learnings:
+      'Este proyecto consolidó mis fundamentos de Java y programación orientada a objetos y fue una de mis primeras experiencias desarrollando una aplicación completa conectada a una base de datos. Aprendí a modelar un problema real de negocio, diseñar una interfaz orientada a la operativa de un usuario y conectar diferentes partes de una aplicación, desde la interfaz hasta la persistencia. También me permitió identificar las ventajas de separar responsabilidades y las limitaciones de un acceso directo a datos, conocimientos que posteriormente he podido aplicar en proyectos backend con arquitecturas más estructuradas.',
   },
   {
     id: 'app-backend-bottle',
