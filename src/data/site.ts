@@ -1,5 +1,5 @@
 export const SITE = {
-  url: 'https://alvarocastilla.vercel.app',
+  url: 'https://alvarocastilladev.vercel.app',
   name: 'Alvaro Castilla',
   ogImage: '/og-image.png',
   locale: 'es_ES',
