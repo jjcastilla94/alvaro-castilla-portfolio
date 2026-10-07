@@ -69,9 +69,9 @@ npm run test:e2e      # Playwright
 
 Unit and E2E tests are not yet implemented. They will be added in Phase 8 (Testing).
 
-## Manual Validation Baseline (Phases 1-6.6)
+## Manual Validation Baseline (Phases 1-7)
 
-Until automated tests exist (Phase 8), every phase is validated with this reproducible manual checklist. Phase 5 (Visual Polish + Animations) added the animation-related checks; Phase 6.5 added the accessibility (skip link, heading levels, `aria-current`), new-section and CV checks.
+Until automated tests exist (Phase 8), every phase is validated with this reproducible manual checklist. Phase 5 (Visual Polish + Animations) added the animation-related checks; Phase 6.5 added the accessibility (skip link, heading levels, `aria-current`), new-section and CV checks; Phase 7 added the sitemap/robots checks.
 
 ### Static checks (run at every phase)
 
@@ -88,6 +88,7 @@ npm run format:check  # Prettier
 - CV asset `/cv/alvaro-castilla-cv.pdf` returns 200 with `application/pdf`
 - Hero **Descargar CV** button only renders when `cvUrl` is set; it opens the PDF in a new tab
 - Navigation works, `/about` is not present in any navigation link
+- `robots.txt` serves with `Sitemap: https://alvarocastilladev.vercel.app/sitemap-index.xml`; `sitemap-index.xml` and `sitemap-0.xml` return 200 with all 10 page URLs (Phase 7)
 - Theme toggle works in both directions; no flash on reload; theme persists in `localStorage`
 - Mobile menu opens/closes, Escape closes it, `aria-expanded` updates
 - Banner: no hidden content — all `[data-reveal]` elements become visible when in viewport

@@ -9,7 +9,7 @@ Personal portfolio for Alvaro Castilla (Backend Developer), showcasing his profe
 - **Styling:** Tailwind CSS v4 (CSS-first configuration)
 - **Linting:** ESLint + Prettier
 - **Testing:** planned — Vitest (unit) + Playwright (E2E), Phase 8 (not yet installed)
-- **Deployment:** planned — Vercel (auto-deploy from GitHub), Phase 7
+- **Deployment:** Vercel (auto-deploy from GitHub `main`) — live at https://alvarocastilladev.vercel.app
 
 ## Routes
 
@@ -25,7 +25,7 @@ Personal portfolio for Alvaro Castilla (Backend Developer), showcasing his profe
 
 ```
 alvaro-castilla-portfolio/
-├── public/              # Static assets (favicon, robots.txt, og-image, CV)
+├── public/              # Static assets (favicon, robots.txt + sitemap pointer, og-image, CV)
 ├── src/
 │   ├── assets/          # Images processed by astro:assets (screenshots, avatar)
 │   ├── components/
@@ -54,7 +54,7 @@ Planned (not yet created):
 
 All of the site's content lives in `src/data/` — no personal strings are hardcoded in components:
 
-- `public/` — Static assets: favicon, `robots.txt`, `og-image.png`, `cv/alvaro-castilla-cv.pdf`
+- `public/` — Static assets: favicon, `robots.txt` (allows crawling + `Sitemap:` → `sitemap-index.xml`), `og-image.png`, `cv/alvaro-castilla-cv.pdf`
 - `site.ts` — Site-wide constants: URL, name, OG image, locale, navigation links (including Inicio)
 - `profile.ts` — Name, role, bio, email, social links, CV URL (`cvUrl` + `hasCv()`), stats
 - `experience.ts` — Work experience entries (typed)

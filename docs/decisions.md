@@ -638,3 +638,31 @@ Green/amber/neutral gives an at-a-glance lifecycle signal consistent across card
 ### Status
 
 Accepted
+
+---
+
+## ADR-030 — Sitemap via `@astrojs/sitemap` (`sitemap-index.xml`, No Custom Endpoint)
+
+### Context
+
+Phase 7 (deployment) required an SEO sitemap for the production site (`https://alvarocastilladev.vercel.app`). Common convention and many guides assume a single `/sitemap.xml`; `@astrojs/sitemap` however emits a sitemap **index** file (`sitemap-index.xml`) pointing at one or more child sitemaps, and provides no option to output a plain `sitemap.xml`.
+
+### Decision
+
+Use the official `@astrojs/sitemap` integration configured with `site: 'https://alvarocastilladev.vercel.app'` in `astro.config.mjs`. The canonical sitemap entry point is **`/sitemap-index.xml`**, declared in `public/robots.txt` (`Sitemap:` line). No custom endpoint, no `sitemap.xml` alias, and no Vercel rewrite/redirect are configured.
+
+### Reason
+
+- The official integration always matches the build output (all 10 pages, updated automatically when pages are added) — a hand-rolled endpoint would duplicate that logic and could drift out of sync.
+- `sitemap-index.xml` is fully valid per the sitemap protocol; Google and other crawlers consume it via the `Sitemap:` directive, so a `sitemap.xml` alias adds no SEO value.
+- A rewrite would add platform-specific configuration (Vercel) to an otherwise portable static build.
+
+### Alternatives Considered
+
+- **Custom `/sitemap.xml` endpoint or Vercel rewrite:** rejected — duplicates plugin logic, couples config to one host.
+- **Hand-maintained static `sitemap.xml`:** rejected — must be edited on every page addition; drift risk.
+- **Another sitemap generator:** unnecessary — `@astrojs/sitemap` is the official Astro integration, zero-config, build-time only.
+
+### Status
+
+Accepted

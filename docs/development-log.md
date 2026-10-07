@@ -296,7 +296,7 @@ Manual visual review of the finished Phase 5 site on the running dev server (all
 
 ### Issues found and fixed
 
-1. **Duplicate canonicals (all pages → homepage)** — every page emitted `rel="canonical" href="https://alvarocastilla.vercel.app/"`. Fixed by passing an explicit canonical per page: `/experience`, `/projects`, `/projects/{id}`, `/contact` (`index` keeps the site root). Verified in built HTML.
+1. **Duplicate canonicals (all pages → homepage)** — every page emitted `rel="canonical" href="https://alvarocastilla.vercel.app/"` (the placeholder URL used before the production domain existed). Fixed by passing an explicit canonical per page: `/experience`, `/projects`, `/projects/{id}`, `/contact` (`index` keeps the site root). Verified in built HTML.
 2. **Broken og:image / twitter:image references** — pointed to `og-image.png`, which does not exist in `public/`. Fixed by removing those meta tags from `HeadSEO` (SocialLink/OG image card restored later with a real asset).
 3. **Cosmetic whitespace** — hardcoded `04 · Contacto` label trimmed to `04 · Contacto`.
 4. **Dark-mode primary CTA contrast (WCAG AA)** — white text on `--color-accent` (3.68:1) and hover `--color-accent-hover` (2.54:1) failed AA. Fixed with two component-specific tokens used only in dark mode (ADR-015): `--color-accent-cta` `#1d4ed8` (blue-700) and `--color-accent-cta-hover` `#2563eb` (blue-600), applied via `dark:` only on the primary Button. Verified contrast: base 6.70:1, hover 5.17:1 (both ≥ 4.5). Light mode untouched (already AA: 6.70 base, 8.72 hover).
@@ -382,11 +382,11 @@ Completed
 
 ### Objective
 
-Refine and finalize the design and content before automated tests are written, so Phase 7 tests are written once against the definitive design. Leaving the UI/content unfinalized would make tests break and require rework.
+Refine and finalize the design and content before automated tests are written, so Phase 8 tests are written once against the definitive design. Leaving the UI/content unfinalized would make tests break and require rework.
 
 ### Constraint (from the plan)
 
-This phase is the last one that can touch design/content cheaply. After it, Phase 7 (testing) must target a fixed UI/content, and Phase 8 (CI/CD + deploy) must not be blocked by further design changes.
+This phase is the last one that can touch design/content cheaply. After it, Phase 8 (testing) must target a fixed UI/content, and Phase 9 (CI/CD) must not be blocked by further design changes.
 
 ### Execution (agreed blocks)
 
@@ -632,9 +632,10 @@ Completed — Phase 6.5 fully closed.
 
 ---
 
-## Phase 6.6 — Technical Polish (in progress)
+## Phase 6.6 — Technical Polish
 
 **Date:** 2026-10-07
+**Status:** Completed
 
 ### Objective
 
@@ -649,4 +650,71 @@ Short production-quality pass before tests: sync documentation with reality, mig
 
 ### Status
 
-In progress (no commit until full-phase validation and user approval).
+Completed
+
+### Validation
+
+- Lint: PASS, Typecheck: PASS (0/0/0, 40 files), Format: PASS, Build: PASS (10 pages, 115 images)
+- Runtime QA: 32/32 checks via Chrome headless + CDP (lightbox open/close/nav, mobile menu across SPA navigations, theme toggle, reduced-motion, meta tags)
+
+### Commit
+
+`3b53a06` — `Phase 6.6 — Technical polish: docs sync, dialog a11y, og:type, astro:assets images`, pushed.
+
+---
+
+## Content Sanity Check — post-6.6
+
+**Date:** 2026-10-07
+**Status:** Completed
+
+### Objective
+
+Correctness sweep of visible copy before deployment: no invented data, consistent terminology.
+
+### Findings
+
+- `full stack` → `full-stack` normalized in `index.astro` and `projects.astro` (compound modifier).
+- "Apificación" — user-confirmed department name (4 occurrences), kept as-is.
+- Stat "3 Proyectos full-stack" verified correct against the actual project content.
+
+### Commit
+
+`5a100cb` — `Content sanity check: normalize 'full stack' to 'full-stack' copy`, pushed.
+
+---
+
+## Phase 7 — Deployment (Vercel) + Production URL + Sitemap
+
+**Date:** 2026-10-07
+**Status:** Completed
+
+### Objective
+
+Deploy the static site to production on Vercel, establish the canonical production URL, and ship the SEO sitemap.
+
+### Implemented
+
+- **Production deployment:** Vercel Free, auto-deploy from GitHub `main` → **https://alvarocastilladev.vercel.app** (all 10 routes return 200 in production).
+- **Canonical production URL** (`e01dbc5`): `SITE.url` in `src/data/site.ts` and `site` in `astro.config.mjs` set to `https://alvarocastilladev.vercel.app` — canonicals, `og:url`, `og:image` and all absolute URLs now resolve to the real deployment. Zero references to any previous/old domain remain in the repository.
+- **Sitemap** (`254f6ad`): `@astrojs/sitemap ^3.7.4` integration (`astro.config.mjs`), generating `sitemap-index.xml` + `sitemap-0.xml` with all 10 page URLs. `public/robots.txt` points crawlers to `https://alvarocastilladev.vercel.app/sitemap-index.xml` (ADR-030).
+- **Note:** `alvarocastilla.vercel.app` is not part of this project (unrelated deployment) — never referenced in code or docs.
+
+### Validation
+
+- Production: 10/10 routes HTTP 200; canonical/`og:url`/`og:image` correct per page
+- Sitemap: 10/10 URLs match the 10 pages in `dist/`; `robots.txt` target exists (200)
+- Lint / Typecheck / Format / Build: PASS
+
+### Decisions
+
+- Sitemap served as `sitemap-index.xml` (plugin output; single `sitemap.xml` not supported by `@astrojs/sitemap`) — no custom endpoint, no Vercel rewrites (ADR-030).
+
+### Commits
+
+- `e01dbc5` — `fix: update production site URL`, pushed.
+- `254f6ad` — `feat: add sitemap for SEO`, pushed.
+
+### Status
+
+Completed — Phase 7 closed. CI/CD (GitHub Actions) remains Phase 9; automated tests Phase 8.
