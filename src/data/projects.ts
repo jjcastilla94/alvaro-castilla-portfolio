@@ -1,7 +1,8 @@
 /**
  * Project model. Images (cover + gallery) resolve automatically from
- * `public/images/projects/<id>/` at build time (see `src/utils/projectImages.ts`).
+ * `src/assets/projects/<id>/` at build time (see `src/utils/projectImages.ts`).
  * Set `image` / `gallery` explicitly only to override the auto behavior.
+ * Overrides use `astro:assets` metadata (imported image modules).
  */
 export interface ProjectRepository {
   label: string;
@@ -20,8 +21,8 @@ export interface Project {
   url?: string;
   repositories?: ProjectRepository[];
   color: string;
-  image?: string;
-  gallery?: string[];
+  image?: ImageMetadata;
+  gallery?: ImageMetadata[];
   problem?: string;
   contribution?: string;
   learnings?: string;

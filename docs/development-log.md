@@ -515,9 +515,9 @@ See ADR-020 to ADR-025 in `docs/decisions.md`.
 
 ### Commit
 
-- `cb78eac` committed & pushed (Blocks A–F + docs + CV).
-- All blocks since (`6.5-B/C/D/E/F/G/H/I/J/K/L/M/N` + ADR-026–029 + final docs/README pass) are uncommitted and pending explicit user approval of the proposed message:
-  - **Suggested:** `feat: finalize projects (gallery, multi-repo links, colors) and polish Phase 6.5`
+- `cb78eac` — `feat: refine data, sections, hero and SEO (Phase 6.5)` (Blocks A–F + docs + CV), pushed.
+- `7c90967` — `feat: complete Phase 6.5 (project galleries, refined content and docs)` (blocks `6.5-B/C/D/E/F/G/H/I/J/K/L/M/N` + ADR-026–029 + final docs/README pass), pushed.
+- Final hardening pass committed separately: `34dd6be` — see the "Phase 6.5 — Hardening" entry below.
 
 #### Block 6.5-C — Project cards (iteration, final)
 
@@ -593,6 +593,60 @@ Fixes applied during the pre-commit review (cross-checking the plan against the 
 
 ### Status
 
-Blocks A–H + 6.5-B/C/D/E/F/G/H/I/J/K/L/M/N complete and validated. 6.5-C finalized (real screenshots on all projects); 6.5-H (visual polish) and 6.5-I (recruiter review) executed as a final pass on the finished content — lint 0, typecheck 0, build 10 pages, all routes 200, no broken links.
+Completed. Blocks A–H + 6.5-B/C/D/E/F/G/H/I/J/K/L/M/N complete and validated — lint 0, typecheck 0, build 10 pages, all routes 200, no broken links. Closed by the hardening pass recorded in the next entry.
 
-**Pending: your confirmation to close Phase 6.5.** After that: final README/docs touch and commit of the whole 6.5 batch (pending explicit approval). Phase 7 (Vitest + Playwright) and Phase 8 (CI/CD + Vercel deploy) are the planned follow-ups.
+---
+
+## Phase 6.5 — Hardening (final pass)
+
+**Date:** 2026-09-24
+**Status:** Completed
+
+### Objective
+
+Last correctness pass before Phase 6.6 (Technical Polish): fix navigation bugs surfaced by SPA/View-Transition behaviour, make the repository pass `format:check` cleanly, and align the remaining content/stats with the real data.
+
+### Implemented
+
+- **Mobile menu compatible with SPA navigation** (`Header.astro`): the menu script was bound once to elements that are re-created on every View Transition navigation, so after the first client-side navigation the hamburger stopped working. Rewritten with event delegation on `document` (`click` + `keydown`), re-querying `#menu-toggle` / `#mobile-menu` per event; Escape still closes and restores focus to the toggle; clicking a link or outside the menu closes it.
+- **Prettier across the whole repository**: 31 files reformatted so `npm run format:check` passes with zero diffs (component indentation, long attribute/array wrapping in `projects.ts`, `eslint.config.js`, data files).
+- **Stats corrected** (`profile.ts`): "Proyectos full-stack" 2 → 3 and "Tecnologías en producción" 6 → 8+ to match the actual content (6 projects on `/projects`, 2 featured on Home).
+- **Content consistency sweep** across `src/data/*` and components (naming, trailing newlines, dead fields) — no invented data.
+
+### Validation
+
+- Lint: PASS (0 errors)
+- Typecheck: PASS (0 errors, 0 warnings, 0 hints)
+- Format: `npm run format:check` PASS (all files)
+- Build: PASS (10 pages)
+- Responsive + navigation manual check (mobile menu open/close across routes, Escape, SPA navigation)
+- Working tree clean; `main` in sync with `origin/main`
+
+### Commit
+
+`34dd6be` — `fix: harden portfolio navigation, formatting and content consistency` (31 files, +333/−256), pushed.
+
+### Status
+
+Completed — Phase 6.5 fully closed.
+
+---
+
+## Phase 6.6 — Technical Polish (in progress)
+
+**Date:** 2026-10-07
+
+### Objective
+
+Short production-quality pass before tests: sync documentation with reality, migrate project imagery to `astro:assets` (`<Image />`) for transfer size + CLS, fix the gallery dialog's accessible name, and wire `ogType` correctly (project details → `article`).
+
+### Blocks
+
+- **A — Docs sync**: README structure/testing/deployment references corrected; `testing.md` (10 pages, tests marked Phase 8/planned); `deployment.md` (GitHub Actions planned, new phase order); this log updated (Phase 6.5 hardening entry + formal 6.5 closure).
+- **C — Dialog accessibility**: `aria-labelledby` on the gallery `<dialog>` tied to the lightbox title.
+- **D — SEO ogType**: `BaseLayout` forwards `ogType`; `/projects/[slug]` emits `og:type=article`, other pages `website`.
+- **B — Images/performance**: `public/images/**` → `src/assets/**`; `projectImages.ts` rewritten on `import.meta.glob`; all `<img>` replaced by Astro `<Image />` (WebP/AVIF, srcset, automatic dimensions); detail banner `loading="eager"` + `fetchpriority="high"`.
+
+### Status
+
+In progress (no commit until full-phase validation and user approval).

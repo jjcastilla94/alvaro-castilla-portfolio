@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import Tag from './Tag.astro';
 import ProjectStatus from './ProjectStatus.astro';
 import { getProjectGradient, getProjectPattern } from '../../data/projectStyles';
@@ -13,7 +14,7 @@ interface Props {
   github?: string;
   url?: string;
   color: string;
-  image?: string;
+  image?: ImageMetadata;
   status?: Project['status'];
   index: number;
   class?: string;
@@ -48,10 +49,12 @@ const pattern = getProjectPattern(color);
     <div class="absolute inset-0" style={pattern}></div>
     {
       image && (
-        <img
+        <Image
           src={image}
           alt={`${title} — captura de pantalla`}
           loading="lazy"
+          widths={[480, 768, 1088]}
+          sizes="(min-width: 640px) 544px, calc(100vw - 48px)"
           class="absolute inset-0 w-full h-full object-cover object-top"
         />
       )

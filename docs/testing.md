@@ -2,26 +2,26 @@
 
 ## Overview
 
-The project uses a layered testing approach:
+The project follows a layered testing approach (**planned — Phase 8**, not yet installed):
 
 - **Unit tests:** Vitest for data validation and utility functions
 - **E2E tests:** Playwright for navigation, responsive, and accessibility verification
 
-## Tools
+## Tools (planned, Phase 8)
 
-- **Vitest:** Unit testing framework (fast, TypeScript-native)
-- **Playwright:** Cross-browser E2E testing
+- **Vitest:** Unit testing framework (fast, TypeScript-native) — not installed yet
+- **Playwright:** Cross-browser E2E testing — not installed yet
 
-## Running Tests
+## Running Tests (Phase 8 — commands do not exist yet)
 
 ```bash
-# Unit tests
+# Unit tests (planned)
 npm run test
 
-# E2E tests
+# E2E tests (planned)
 npm run test:e2e
 
-# Unit tests in watch mode
+# Unit tests in watch mode (planned)
 npm run test:watch
 ```
 
@@ -58,31 +58,33 @@ tests/e2e/
 ```bash
 npm run lint          # ESLint
 npm run typecheck     # TypeScript
-npm run test          # Vitest
 npm run build         # Astro build
+npm run format:check  # Prettier
+# Planned (Phase 8):
+npm run test          # Vitest
 npm run test:e2e      # Playwright
 ```
 
 ## Status
 
-Unit and E2E tests are not yet implemented. They will be added in Phase 7.
+Unit and E2E tests are not yet implemented. They will be added in Phase 8 (Testing).
 
-## Manual Validation Baseline (Phases 1-6.5)
+## Manual Validation Baseline (Phases 1-6.6)
 
-Until automated tests exist (Phase 7), every phase is validated with this reproducible manual checklist. Phase 5 (Visual Polish + Animations) added the animation-related checks; Phase 6.5 added the accessibility (skip link, heading levels, `aria-current`), new-section and CV checks.
+Until automated tests exist (Phase 8), every phase is validated with this reproducible manual checklist. Phase 5 (Visual Polish + Animations) added the animation-related checks; Phase 6.5 added the accessibility (skip link, heading levels, `aria-current`), new-section and CV checks.
 
 ### Static checks (run at every phase)
 
 ```bash
 npm run lint          # ESLint
 npm run typecheck     # Astro + TypeScript
-npm run build         # Astro build (confirm expected page count: 6 pages since Phase 4)
-npm run format:check  # Prettier (scoped to changed files to avoid unrelated debt)
+npm run build         # Astro build (confirm expected page count: 10 pages since Phase 6.5)
+npm run format:check  # Prettier
 ```
 
 ### Runtime checks (dev server)
 
-- All routes return HTTP 200: `/`, `/experience`, `/projects`, `/projects/arcadia`, `/projects/detubarrio`, `/contact`
+- All routes return HTTP 200: `/`, `/experience`, `/projects`, `/contact` and the 6 project details (`/projects/arcadia`, `/projects/detubarrio`, `/projects/gestor-restaurante-tpv`, `/projects/app-backend-bottle`, `/projects/course-management-platform`, `/projects/task-management-app`) — 10 pages total
 - CV asset `/cv/alvaro-castilla-cv.pdf` returns 200 with `application/pdf`
 - Hero **Descargar CV** button only renders when `cvUrl` is set; it opens the PDF in a new tab
 - Navigation works, `/about` is not present in any navigation link

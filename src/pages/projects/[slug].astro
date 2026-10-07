@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Button from '../../components/ui/Button.astro';
 import Card from '../../components/ui/Card.astro';
@@ -48,6 +49,7 @@ const detailSections = [
   title={title}
   description={description}
   canonical={`${SITE.url}/projects/${project.id}`}
+  ogType="article"
 >
   <section class="max-w-6xl mx-auto px-6 sm:px-8 pt-32 sm:pt-40 pb-16">
     <Breadcrumbs crumbs={[{ href: '/projects', label: 'Proyectos' }, { label: project.title }]} />
@@ -58,10 +60,13 @@ const detailSections = [
       <div class="absolute inset-0" style={pattern}></div>
       {
         image && (
-          <img
+          <Image
             src={image}
             alt={`${project.title} — captura`}
-            loading="lazy"
+            loading="eager"
+            fetchpriority="high"
+            widths={[768, 1024, 1280, 1600]}
+            sizes="(min-width: 1280px) 1104px, calc(100vw - 48px)"
             class="absolute inset-0 w-full h-full object-cover object-top"
           />
         )

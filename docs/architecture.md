@@ -11,9 +11,9 @@ Personal portfolio for Alvaro Castilla, built as a static site with Astro. It is
 - **Styling:** Tailwind CSS v4 (CSS-first configuration, no `tailwind.config.js`)
 - **Fonts:** Inter (body), JetBrains Mono (labels/metadata), Space Grotesk (display headings)
 - **Linting:** ESLint + Prettier
-- **Testing:** planned — Vitest (unit) + Playwright (E2E), Phase 7
-- **CI/CD:** planned — GitHub Actions + Vercel, Phase 8
-- **Deployment:** Vercel Free tier (planned Domain: alvarocastilla.vercel.app)
+- **Testing:** planned — Vitest (unit) + Playwright (E2E), Phase 8
+- **Deployment:** planned — Vercel Free tier (Phase 7, domain alvarocastilla.vercel.app)
+- **CI/CD:** planned — GitHub Actions, Phase 9
 
 No client-side framework (React/Vue/Svelte). All interactivity is vanilla JS: theme toggle, mobile menu, scroll progress, stats animation, and the reveal system.
 
@@ -21,8 +21,9 @@ No client-side framework (React/Vue/Svelte). All interactivity is vanilla JS: th
 
 ```
 alvaro-castilla-portfolio/
-├── public/              # Static assets (favicon.ico, favicon.svg, robots.txt, og-image.png, images/, cv/alvaro-castilla-cv.pdf)
+├── public/              # Static assets (favicon.ico, favicon.svg, robots.txt, og-image.png, cv/alvaro-castilla-cv.pdf)
 ├── src/
+│   ├── assets/          # Images processed by astro:assets (project screenshots/, avatar.jpeg)
 │   ├── components/
 │   │   ├── layout/      # Header.astro, Footer.astro
 │   │   ├── sections/    # Hero.astro, About.astro, Architecture.astro, Skills.astro
@@ -36,7 +37,7 @@ alvaro-castilla-portfolio/
 │   ├── styles/          # global.css (tokens, motion, code-window, stats)
 │   └── utils/           # dates.ts (formatDate, formatRange, getYear, formatMonthYear), projectImages.ts (build-time project gallery scanner)
 ├── docs/                # Project documentation
-└── tests/               # Test files (planned, Phase 7)
+└── tests/               # Test files (planned, Phase 8)
 ```
 
 ## Data Model
@@ -53,7 +54,7 @@ Professional content is separated from presentation in `src/data/`:
 - `certifications.ts` — Real certifications + AWS AI Practitioner in progress (ADR-023)
 - `projectStyles.ts` — Per-color CSS gradients/patterns for project visuals
 - `utils/dates.ts` — date formatting helpers used by experience/home
-- `utils/projectImages.ts` — build-time project screenshot scanner (`getProjectImages`, `getProjectMainImage`; uses Node `fs` on `public/images/projects/<id>/`, requires `@types/node`)
+- `utils/projectImages.ts` — build-time project screenshot scanner (`getProjectImages`, `getProjectMainImage`; `import.meta.glob` over `src/assets/projects/<id>/`, returns `ImageMetadata` for `astro:assets` `<Image />`)
 
 Components import data from these files — no personal strings are hardcoded in `.astro` files. This rule is validated at each phase.
 
@@ -76,7 +77,7 @@ Components import data from these files — no personal strings are hardcoded in
 - Borders: primarily `rounded` / `rounded-lg`; pills reserved for tags/statuses.
 - Glassmorphism restricted to floating/substrate elements (navbar, mobile menu, contact card). Content cards stay solid.
 - UI primitives: `Button`, `Card`, `Tag`, `SectionHeading` (with gradient rule + display font), `SocialLink`, `ThemeToggle`, `Reveal`, `ProjectCard` (screenshot previews + hover effects), `ProjectStatus` (En producción / En desarrollo / Completado badge), `ProjectGallery` (native-`<dialog>` lightbox, prev/next, Ese/backdrop close, reduced-motion aware), `CertificationCard` (status badge, skills, "Ver credencial"), `Breadcrumbs` (navigation trail for subpages), `ServiceCard` (capability card, "Lo que construyo").
-- Projects: cards on Home show only `featured` projects; `/projects` lists all. Detail page (`projects/[slug].astro`) renders banner, status, chips, "Acerca del proyecto", numbered `El problema` / `Mi contribución` / `Lo que aprendí` sections (only when data exists), the gallery, and CTAs — one button per repository (GitHub always when a repo exists; the label comes from `repositories` when present), "Visitar proyecto" only when deployed, and a clarifying note for non-deployed projects. Screenshots live in `public/images/projects/<id>/` and are discovered at build time by `src/utils/projectImages.ts` (`getProjectImages` / `getProjectMainImage`, Node `fs`): `main.png` is the cover (cards + detail banner) and every other image in the folder is the click-to-zoom gallery automatically — no code changes needed when capturing new screenshots. Set `image`/`gallery` in `projects.ts` only to override.
+- Projects: cards on Home show only `featured` projects; `/projects` lists all. Detail page (`projects/[slug].astro`) renders banner, status, chips, "Acerca del proyecto", numbered `El problema` / `Mi contribución` / `Lo que aprendí` sections (only when data exists), the gallery, and CTAs — one button per repository (GitHub always when a repo exists; the label comes from `repositories` when present), "Visitar proyecto" only when deployed, and a clarifying note for non-deployed projects. Screenshots live in `src/assets/projects/<id>/` and are discovered at build time by `src/utils/projectImages.ts` (`getProjectImages` / `getProjectMainImage`, `import.meta.glob` + `astro:assets`): `main.png` is the cover (cards + detail banner) and every other image in the folder is the click-to-zoom gallery automatically — no code changes needed when capturing new screenshots. Images render through `<Image />` (WebP, srcset, automatic dimensions; detail banner is eager with `fetchpriority="high"` for LCP). Set `image`/`gallery` in `projects.ts` only to override.
 - Hero components: `Hero.astro` (2-col layout, code card with syntax highlighting, 3 CTAs — Ver proyectos / Contactar / Descargar CV conditional on `hasCv()`), `About.astro` (intro + "Mi día a día" + principles grid + "Dónde quiero ir" + interests + "Fuera del código"), `Architecture.astro` (animated diagram section), `Skills.astro` (stack by level + certifications sub-block).
 - Scroll progress bar: global gradient bar at the top of the viewport, grows with scroll position.
 

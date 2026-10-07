@@ -2,9 +2,21 @@
 
 ## Overview
 
-The portfolio is deployed as a static site using Vercel, with automated quality checks via GitHub Actions.
+The portfolio is built as a static site and will be deployed on Vercel. Automated quality checks via GitHub Actions are **planned (Phase 9)** — not yet configured.
 
-## Architecture
+## Roadmap (current phase order)
+
+| Phase | Focus                         | Status      |
+| ----- | ----------------------------- | ----------- |
+| 6.6   | Technical Polish              | in progress |
+| 7     | Deployment (Vercel + domain)  | planned     |
+| 8     | Testing (Vitest + Playwright) | planned     |
+| 9     | CI/CD (GitHub Actions)        | planned     |
+| 10    | SEO / Discoverability         | planned     |
+| 11    | Final Visual Polish           | planned     |
+| 12    | Final Audit                   | planned     |
+
+## Architecture (target state)
 
 ```
 Developer
@@ -13,11 +25,11 @@ Git (local)
    ↓
 GitHub (remote)
    ↓
-GitHub Actions (CI)         Vercel (CD)
-   ↓                          ↓
+GitHub Actions (CI)          Vercel (CD)
+   ↓      (Phase 9, planned)    ↓   (Phase 7, planned)
 Lint                       Auto-detect
 Typecheck                  Build
-Tests                      Preview/Production
+Tests (Phase 8)            Preview/Production
 Build check
    ↓                          ↓
 PASS / FAIL                alvarocastilla.vercel.app
@@ -25,16 +37,16 @@ PASS / FAIL                alvarocastilla.vercel.app
 
 ## Hosting
 
-- **Provider:** Vercel
+- **Provider:** Vercel (planned — Phase 7)
 - **Tier:** Free
-- **Domain:** alvarocastilla.vercel.app
+- **Domain:** alvarocastilla.vercel.app (planned)
 - **Future domain:** alvarocastilla.dev (not yet purchased)
 
-## Deployment Flow
+## Deployment Flow (target state)
 
 1. Code is pushed to GitHub
-2. GitHub Actions validates lint, typecheck, tests, and build
-3. Vercel auto-deploys:
+2. GitHub Actions validates lint, typecheck, tests, and build _(planned, Phase 9)_
+3. Vercel auto-deploys _(planned, Phase 7)_:
    - `main` branch → production
    - PR branches → preview deployment
 4. No manual deployment steps required
@@ -72,4 +84,4 @@ Not configured yet. When ready:
 
 ## Status
 
-Deployment infrastructure is not yet configured. Vercel connection will be set up in Phase 8.
+Deployment infrastructure is not yet configured. Vercel connection is the next phase after Technical Polish (Phase 7). GitHub Actions CI comes after tests exist (Phase 9).

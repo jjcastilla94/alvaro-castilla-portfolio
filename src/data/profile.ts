@@ -1,3 +1,5 @@
+import avatar from '../assets/avatar.jpeg';
+
 export interface Stat {
   value: string;
   label: string;
@@ -12,7 +14,7 @@ export interface ProfileData {
   bio: string;
   email: string;
   cvUrl: string;
-  image?: string;
+  image?: ImageMetadata;
   social: {
     github: string;
     linkedin: string;
@@ -27,7 +29,7 @@ export const PROFILE: ProfileData = {
   bio: 'Desarrollo APIs REST para entornos empresariales con Java y Spring Boot, con foco en código claro y mantenible a largo plazo.',
   email: 'alvarocastilla49@gmail.com',
   cvUrl: '/cv/alvaro-castilla-cv.pdf',
-  image: '/images/avatar.jpeg',
+  image: avatar,
   social: {
     github: 'https://github.com/jjcastilla94',
     linkedin: 'https://www.linkedin.com/in/alvarocastillagonzalez',

@@ -1,47 +1,58 @@
-import { readdirSync } from 'node:fs';
-import { join } from 'node:path';
+type ProjectImageModule = { default: ImageMetadata };
 
-const IMAGE_EXTENSIONS = new Set(['png', 'jpg', 'jpeg', 'webp', 'avif', 'gif', 'svg']);
+const imageModules = import.meta.glob<ProjectImageModule>(
+  '../assets/projects/**/*.{png,jpg,jpeg,webp,avif}',
+  { eager: true },
+);
 
-function projectImagesDir(slug: string): string {
-  return join(process.cwd(), 'public', 'images', 'projects', slug);
+function buildGalleries(): Map<string, ImageMetadata[]> {
+  const galleries = new Map<string, { fileName: string; image: ImageMetadata }[]>();
+
+  for (const [path, module] of Object.entries(imageModules)) {
+    // Keys look like `../assets/projects/<slug>/<file>.png` (always POSIX slashes).
+    const match = path.match(/^..\/assets\/projects\/([^/]+)\/([^/]+)$/);
+    if (!match) continue;
+    const [, slug, fileName] = match;
+
+    const files = galleries.get(slug) ?? [];
+    files.push({ fileName, image: module.default });
+    galleries.set(slug, files);
+  }
+
+  const sorted = new Map<string, ImageMetadata[]>();
+  for (const [slug, files] of galleries) {
+    files.sort((a, b) => a.fileName.localeCompare(b.fileName));
+
+    const mainIndex = files.findIndex((file) => file.fileName === 'main.png');
+    if (mainIndex > 0) {
+      const [cover] = files.splice(mainIndex, 1);
+      files.unshift(cover);
+    }
+
+    sorted.set(
+      slug,
+      files.map((file) => file.image),
+    );
+  }
+
+  return sorted;
 }
 
-function toUrl(slug: string, fileName: string): string {
-  return `/images/projects/${slug}/${fileName}`.replaceAll(' ', '%20');
-}
+const galleries = buildGalleries();
 
 /**
- * Lists the screenshot images of a project from `public/images/projects/<slug>/`.
+ * Lists the screenshot images of a project from `src/assets/projects/<slug>/`.
+ * Images are discovered at build time with `import.meta.glob` and processed by
+ * `astro:assets` (`<Image />`): automatic dimensions, WebP output and srcset.
  * `main.png` (or the alphabetical first image) is always returned first so a
  * stable "cover" is used on cards and the detail banner. Extra captures are
  * ordered alphabetically — prefix with `01-`, `02-`, … to control the order.
  */
-export function getProjectImages(slug: string): string[] {
-  let entries: string[];
-  try {
-    entries = readdirSync(projectImagesDir(slug));
-  } catch {
-    return [];
-  }
-
-  const files = entries
-    .filter((file) => {
-      const ext = file.split('.').pop()?.toLowerCase() ?? '';
-      return IMAGE_EXTENSIONS.has(ext);
-    })
-    .sort();
-
-  const mainIndex = files.indexOf('main.png');
-  if (mainIndex > 0) {
-    const [cover] = files.splice(mainIndex, 1);
-    files.unshift(cover);
-  }
-
-  return files.map((file) => toUrl(slug, file));
+export function getProjectImages(slug: string): ImageMetadata[] {
+  return [...(galleries.get(slug) ?? [])];
 }
 
 /** Cover image of a project (first of its gallery images), or undefined. */
-export function getProjectMainImage(slug: string): string | undefined {
+export function getProjectMainImage(slug: string): ImageMetadata | undefined {
   return getProjectImages(slug)[0];
 }

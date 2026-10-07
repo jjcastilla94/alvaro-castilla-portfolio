@@ -575,6 +575,10 @@ The maintenance cost is zero for the user: dropping captures in a folder updates
 
 Accepted
 
+### Update (Phase 6.6, 2026-10-07)
+
+The folder moved from `public/images/projects/<id>/` to `src/assets/projects/<id>/` and the scanner now uses `import.meta.glob` (eager) instead of Node `fs`, so every screenshot is processed by `astro:assets`: `<Image />` output (WebP + srcset + automatic dimensions) instead of raw PNGs served from `public/`. The discovery contract is unchanged — drop captures in the folder, `main.png` is the cover, alphabetical order with `main.png` first, `image`/`gallery` still work as optional overrides (now typed `ImageMetadata`).
+
 ---
 
 ## ADR-027 — Project Detail Structured Sections, Rendered Only When Data Exists

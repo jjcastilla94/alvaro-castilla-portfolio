@@ -1,7 +1,9 @@
 ---
+import { Image } from 'astro:assets';
+
 interface Props {
   title: string;
-  images: string[];
+  images: ImageMetadata[];
   class?: string;
 }
 
@@ -17,10 +19,12 @@ const { title, images, class: className = '' } = Astro.props;
         class="group relative overflow-hidden rounded border border-border bg-surface text-left transition-colors duration-200 hover:border-accent/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         aria-label={`Ampliar captura ${i + 1} del proyecto ${title}`}
       >
-        <img
+        <Image
           src={img}
           alt={`${title} — captura ${i + 1}`}
           loading="lazy"
+          widths={[480, 768, 1088]}
+          sizes="(min-width: 640px) 544px, calc(100vw - 48px)"
           class="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-[1.02]"
         />
         <span
@@ -57,12 +61,16 @@ const { title, images, class: className = '' } = Astro.props;
 
 <dialog
   data-gallery-dialog
+  aria-labelledby="gallery-dialog-title"
   class="gallery-dialog m-auto w-[min(92vw,1100px)] rounded-xl border border-border bg-bg/95 backdrop-blur-xl p-0 shadow-2xl"
 >
   <div
     class="sticky top-0 flex items-center justify-between gap-4 px-5 sm:px-6 py-3 border-b border-border bg-surface"
   >
-    <span class="font-mono text-xs uppercase tracking-widest text-text-dim">{title}</span>
+    <span
+      id="gallery-dialog-title"
+      class="font-mono text-xs uppercase tracking-widest text-text-dim">{title}</span
+    >
     <button
       type="button"
       data-gallery-close
@@ -142,8 +150,13 @@ const { title, images, class: className = '' } = Astro.props;
     const img = dialog.querySelector<HTMLImageElement>('[data-lightbox-img]');
     if (!item || !img || !dialog) return;
     const itemImg = item.querySelector<HTMLImageElement>('img');
-    img.src = itemImg?.src ?? '';
-    img.alt = itemImg?.alt ?? '';
+    if (!itemImg) return;
+    // Thumbnails are responsive (srcset): open the lightbox with the largest
+    // available candidate so the fullscreen view stays sharp.
+    const candidates = (itemImg.getAttribute('srcset') ?? '').split(',');
+    const largest = candidates[candidates.length - 1]?.trim().split(/\s+/)[0];
+    img.src = largest || itemImg.src;
+    img.alt = itemImg.alt;
     dialog.dataset.index = String(index);
     dialog.showModal();
   }

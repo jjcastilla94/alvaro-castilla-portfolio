@@ -8,8 +8,8 @@ Personal portfolio for Alvaro Castilla (Backend Developer), showcasing his profe
 - **Language:** TypeScript (strict mode)
 - **Styling:** Tailwind CSS v4 (CSS-first configuration)
 - **Linting:** ESLint + Prettier
-- **Testing:** Vitest + Playwright (introduced in Phase 7)
-- **Deployment:** Vercel (auto-deploy from GitHub)
+- **Testing:** planned — Vitest (unit) + Playwright (E2E), Phase 8 (not yet installed)
+- **Deployment:** planned — Vercel (auto-deploy from GitHub), Phase 7
 
 ## Routes
 
@@ -25,8 +25,9 @@ Personal portfolio for Alvaro Castilla (Backend Developer), showcasing his profe
 
 ```
 alvaro-castilla-portfolio/
-├── public/              # Static assets (favicon, robots.txt)
+├── public/              # Static assets (favicon, robots.txt, og-image, CV)
 ├── src/
+│   ├── assets/          # Images processed by astro:assets (screenshots, avatar)
 │   ├── components/
 │   │   ├── layout/      # Header, Footer
 │   │   ├── sections/    # Hero (code card + CTAs), About, Architecture (diagram), Skills
@@ -39,9 +40,14 @@ alvaro-castilla-portfolio/
 │   ├── pages/           # Route pages
 │   ├── styles/          # Global CSS + design tokens + motion system
 │   └── utils/           # Utility functions (dates, projectImages)
-├── tests/               # Test files (unit + E2E)
 ├── docs/                # Project documentation
-└── .github/workflows/   # CI/CD configuration
+```
+
+Planned (not yet created):
+
+```
+├── tests/               # Unit + E2E tests (Phase 8)
+└── .github/workflows/   # CI/CD configuration (Phase 9)
 ```
 
 ## Content Management
@@ -59,7 +65,7 @@ All of the site's content lives in `src/data/` — no personal strings are hardc
 - `certifications.ts` — Real certifications (Spring Boot/MVC, JavaScript, Sass, AWS AI Practitioner in-progress)
 - `projectStyles.ts` — Per-color gradients/patterns for project visuals
 - `utils/dates.ts` — Date formatting helpers
-- `utils/projectImages.ts` — Build-time gallery scanner (`public/images/projects/<id>/`)
+- `utils/projectImages.ts` — Build-time gallery scanner (`src/assets/projects/<id>/`, `import.meta.glob` + `astro:assets`)
 
 ## Adding a Project
 
@@ -68,10 +74,11 @@ To add a new project, add an entry to `src/data/projects.ts` (fields documented 
 projects marked `featured: true`; `/projects` lists everything. Multi-repo projects use
 `repositories: [{ label, url }]` instead of the single `github` field.
 
-Project screenshots live in `public/images/projects/<id>/` and are picked up automatically:
-`main.png` is the cover (cards + detail banner) and the rest are the click-to-zoom gallery
-on the detail page. Prefix extra captures with numbers (`01-`, `02-`, …) to control the
-gallery order.
+Project screenshots live in `src/assets/projects/<id>/` and are picked up automatically
+via `import.meta.glob` + `astro:assets` (optimized `<Image />` with WebP, srcset and
+automatic dimensions): `main.png` is the cover (cards + detail banner) and the rest are
+the click-to-zoom gallery on the detail page. Prefix extra captures with numbers
+(`01-`, `02-`, …) to control the gallery order.
 
 ## Development
 

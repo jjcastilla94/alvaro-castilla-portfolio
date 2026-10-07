@@ -13,6 +13,13 @@ export default [
     },
   },
   {
+    // ImageMetadata is a global type declared by astro/client (.astro/types.d.ts).
+    files: ['**/*.astro'],
+    languageOptions: {
+      globals: { ImageMetadata: 'readonly' },
+    },
+  },
+  {
     ignores: ['dist/', '.astro/', 'node_modules/'],
   },
 ];
