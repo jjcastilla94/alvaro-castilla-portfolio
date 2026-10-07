@@ -2,35 +2,44 @@
 
 ## Overview
 
-The project follows a layered testing approach (**planned — Phase 8**, not yet installed):
+The project follows a layered testing approach (implemented in Phase 8, 2026-10-07):
 
 - **Unit tests:** Vitest for data validation and utility functions
 - **E2E tests:** Playwright for navigation, responsive, and accessibility verification
 
-## Tools (planned, Phase 8)
+## Tools (installed, Phase 8)
 
-- **Vitest:** Unit testing framework (fast, TypeScript-native) — not installed yet
-- **Playwright:** Cross-browser E2E testing — not installed yet
+- **Vitest 5** — unit testing (fast, TypeScript-native)
+- **Playwright 1.63** — E2E against a local `astro preview` server (Chromium only)
 
-## Running Tests (Phase 8 — commands do not exist yet)
+Both are devDependencies. Configuration lives in `vitest.config.ts` and `playwright.config.ts`.
+
+## Running Tests
 
 ```bash
-# Unit tests (planned)
-npm run test
+# Unit tests
+npm test
 
-# E2E tests (planned)
-npm run test:e2e
-
-# Unit tests in watch mode (planned)
+# Unit tests in watch mode
 npm run test:watch
+
+# E2E tests (builds the site and starts a local preview on http://localhost:4321)
+npm run test:e2e
 ```
+
+Playwright needs its browser once per machine: `npx playwright install chromium`.
+
+The E2E suite never depends on Vercel or the Internet: `tests/e2e/fixtures.ts` blocks every request that is not `http://localhost:4321` (Google Fonts, external demos) and fails any test where an uncaught JavaScript error fires.
 
 ## Unit Tests
 
 ### What They Cover
 
-- Data schema validation (ensure data files match interfaces)
-- Utility function correctness (SEO helpers, etc.)
+- `tests/unit/projects.test.ts` — integrity of the 6 projects: audited display order, unique ids/hrefs, `/projects/<id>` contract, required fields, color styles, https URLs, featured pair, plus the `getProjectRepos` / `getProjectPrimaryRepo` logic
+- `tests/unit/site.test.ts` — production URL invariant (`SITE.url`), locale, OG image and CV files exist, nav routes, real contact/social data
+- `tests/unit/dates.test.ts` — Spanish date formatting (`formatDate`, `formatRange`, `getYear`, `formatMonthYear`)
+
+Deliberately not unit-tested (covered by E2E or too trivial to be useful): `projectImages.ts` (depends on Vite / `astro:assets` transforms outside Node), Astro component conditionals, `hasCv()`.
 
 ### Location
 
@@ -42,10 +51,15 @@ tests/unit/
 
 ### What They Cover
 
-- Navigation (all links work, mobile menu, theme toggle)
-- Project pages (listing, individual case studies, back navigation)
-- Accessibility (focus states, heading hierarchy, landmarks)
-- Responsive (layout adapts, no horizontal scroll)
+- `home.spec.ts` — single h1, hero, main nav, CV link (file returns 200), featured project cards, honest certification CTAs, skip link + footer socials
+- `navigation.spec.ts` — desktop nav to all 4 sections with `aria-current`, brand link back home, footer routes, mobile menu open/navigate at 375px
+- `projects.spec.ts` — listing links to every detail; per detail: 200, h1 = title, breadcrumbs, banner image, content sections, repo/demo hrefs, back navigation
+- `contact.spec.ts` — heading, `mailto:` to the real email, CV link, GitHub/LinkedIn hrefs
+- `theme.spec.ts` — dark/light toggle with accessible name, persistence across reload
+- `responsive.spec.ts` — no horizontal overflow at 375px (3 routes), nav/menu-toggle visibility per viewport
+- `a11y.spec.ts` — all 10 routes: exactly one h1, `main#main-content`, labelled navs, skip link target, accessible names on every link/button, no duplicate ids
+
+Every E2E test also inherits two guarantees from the shared fixture: zero uncaught JavaScript errors, and no network access outside the local preview server.
 
 ### Location
 
@@ -60,18 +74,17 @@ npm run lint          # ESLint
 npm run typecheck     # TypeScript
 npm run build         # Astro build
 npm run format:check  # Prettier
-# Planned (Phase 8):
-npm run test          # Vitest
-npm run test:e2e      # Playwright
+npm test              # Vitest (unit)
+npm run test:e2e      # Playwright (E2E)
 ```
 
 ## Status
 
-Unit and E2E tests are not yet implemented. They will be added in Phase 8 (Testing).
+Phase 8 implemented (2026-10-07): 23 unit tests + 41 E2E tests, all green. The manual baseline below still applies to what automation does not cover (visual polish, motion details, contrast values).
 
 ## Manual Validation Baseline (Phases 1-7 + final audit)
 
-Until automated tests exist (Phase 8), every phase is validated with this reproducible manual checklist. Phase 5 (Visual Polish + Animations) added the animation-related checks; Phase 6.5 added the accessibility (skip link, heading levels, `aria-current`), new-section and CV checks; Phase 7 added the sitemap/robots checks; the final audit (2026-10-07) added the meta description, AWS CTA and project order checks.
+Complementing the automated suite (Phase 8), this reproducible manual checklist covers the checks automation does not. Phase 5 (Visual Polish + Animations) added the animation-related checks; Phase 6.5 added the accessibility (skip link, heading levels, `aria-current`), new-section and CV checks; Phase 7 added the sitemap/robots checks; the final audit (2026-10-07) added the meta description, AWS CTA and project order checks.
 
 ### Static checks (run at every phase)
 

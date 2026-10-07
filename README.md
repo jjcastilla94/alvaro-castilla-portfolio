@@ -8,7 +8,7 @@ Personal portfolio, showcasing his professional experience, projects and technic
 - **Language:** TypeScript (strict mode)
 - **Styling:** Tailwind CSS v4 (CSS-first configuration)
 - **Linting:** ESLint + Prettier
-- **Testing:** planned — Vitest (unit) + Playwright (E2E), Phase 8 (not yet installed)
+- **Testing:** Vitest (unit) + Playwright (E2E) — Phase 8, see `docs/testing.md`
 - **Deployment:** Vercel (auto-deploy from GitHub `main`) — live at https://alvarocastilladev.vercel.app
 
 ## Routes
@@ -41,12 +41,12 @@ alvaro-castilla-portfolio/
 │   ├── styles/          # Global CSS + design tokens + motion system
 │   └── utils/           # Utility functions (dates, projectImages)
 ├── docs/                # Project documentation
+├── tests/               # Unit (Vitest) + E2E (Playwright) tests
 ```
 
 Planned (not yet created):
 
 ```
-├── tests/               # Unit + E2E tests (Phase 8)
 └── .github/workflows/   # CI/CD configuration (Phase 9)
 ```
 
