@@ -78,9 +78,11 @@ npm test              # Vitest (unit)
 npm run test:e2e      # Playwright (E2E)
 ```
 
+Since Phase 9, the same commands run automatically in CI (`.github/workflows/ci.yml`) on every push and pull request to `main`, in that cheap-to-expensive order; Playwright failures upload traces/screenshots as workflow artifacts (7 days).
+
 ## Status
 
-Phase 8 implemented (2026-10-07): 23 unit tests + 41 E2E tests, all green. The manual baseline below still applies to what automation does not cover (visual polish, motion details, contrast values).
+Phase 8 implemented (2026-10-07): 23 unit tests + 41 E2E tests, all green. Phase 9 (2026-10-07) runs this suite automatically on GitHub Actions for every push/PR to `main` (E2E retries 2× on CI, 0 locally). The manual baseline below still applies to what automation does not cover (visual polish, motion details, contrast values).
 
 ## Manual Validation Baseline (Phases 1-7 + final audit)
 

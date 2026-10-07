@@ -2,6 +2,8 @@
 
 Personal portfolio, showcasing his professional experience, projects and technical skills. Built as a static site with Astro and TypeScript.
 
+[![CI](https://github.com/jjcastilla94/alvaro-castilla-portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/jjcastilla94/alvaro-castilla-portfolio/actions/workflows/ci.yml)
+
 ## Tech Stack
 
 - **Framework:** Astro (static site generation)
@@ -25,6 +27,7 @@ Personal portfolio, showcasing his professional experience, projects and technic
 
 ```
 alvaro-castilla-portfolio/
+├── .github/workflows/   # CI (GitHub Actions)
 ├── public/              # Static assets (favicon, robots.txt + sitemap pointer, og-image, CV)
 ├── src/
 │   ├── assets/          # Images processed by astro:assets (screenshots, avatar)
@@ -41,13 +44,7 @@ alvaro-castilla-portfolio/
 │   ├── styles/          # Global CSS + design tokens + motion system
 │   └── utils/           # Utility functions (dates, projectImages)
 ├── docs/                # Project documentation
-├── tests/               # Unit (Vitest) + E2E (Playwright) tests
-```
-
-Planned (not yet created):
-
-```
-└── .github/workflows/   # CI/CD configuration (Phase 9)
+└── tests/               # Unit (Vitest) + E2E (Playwright) tests
 ```
 
 ## Content Management

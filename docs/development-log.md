@@ -767,18 +767,94 @@ Completed — final audit closed with the three approved fixes.
 
 ---
 
+## Phase 8 — Testing (Vitest + Playwright)
+
+**Date:** 2026-10-07
+**Status:** Completed
+
+### Objective
+
+Add an automated test suite covering data/utility logic (unit) and critical user flows (E2E) against a local build, with no dependency on Vercel or external network.
+
+### Implemented
+
+- **Vitest 5.0.3 + Playwright 1.63.0** as devDependencies, with `vitest.config.ts` and `playwright.config.ts` (Chromium only, `webServer` = `npm run build && npm run preview` on `:4321`, `reducedMotion: 'reduce'`, `reuseExistingServer: !process.env.CI`).
+- **3 unit files, 23 tests:** `projects.test.ts` (audited display order, unique ids/hrefs, `/projects/<id>` contract, required fields, colors, https URLs, featured pair, `getProjectRepos`/`getProjectPrimaryRepo`), `site.test.ts` (production `SITE.url`, locale, OG image/CV assets exist, nav routes, real contact/social data), `dates.test.ts` (Spanish date formatting).
+- **7 E2E specs, 41 tests:** home, navigation (desktop + mobile menu at 375px), projects (listing + 6 details), contact, theme, responsive (no horizontal overflow), a11y (all 10 routes: one h1, landmarks, accessible names, no duplicate ids).
+- **Shared fixture** (`tests/e2e/fixtures.ts`): blocks every request that is not `http://localhost:4321` and fails a test on any uncaught page error.
+- **Scripts:** `test`, `test:watch`, `test:e2e`.
+- **Docs:** `docs/testing.md` moved from planned to implemented with full coverage; README testing bullet + `tests/` in the structure tree.
+
+### Validation
+
+- format:check / lint / typecheck: PASS (0 errors, 53 files)
+- Unit: 23/23 PASS; E2E: 41/41 PASS (local, offline); Build: PASS (10 pages, sitemap OK)
+
+### Decisions
+
+- No unit tests for `projectImages.ts` (Vite/`astro:assets` transforms outside Node), Astro component conditionals, or `hasCv()` (trivial) — justified in `docs/testing.md`.
+- E2E imports `PROJECTS`/`NAV_LINKS` from `src/data` (pure modules) but never `profile.ts` (imports `avatar.jpeg`, not portable to Playwright) — contact data asserted as a hardcoded contract.
+- Theme test seeds `localStorage` + reload instead of `addInitScript` (which re-seeds on every navigation); mobile nav located by CSS (`nav[aria-label=…]`) because it is `display:none` on desktop and absent from the accessibility tree.
+
+### Commits
+
+- `45321b7` — `test: add Vitest unit tests and Playwright E2E suite`, pushed.
+
+### Status
+
+Completed — 64/64 tests green locally. Phase 9 runs this suite in CI.
+
+---
+
+## Phase 9 — CI/CD (GitHub Actions)
+
+**Date:** 2026-10-07
+**Status:** Implemented (validated locally; awaiting commit approval)
+
+### Objective
+
+Automate on GitHub Actions the same quality gates already validated locally (format, lint, typecheck, unit tests, build, E2E) on every push and pull request to `main`, with minimal permissions and no secrets or deployment.
+
+### Implemented
+
+- **`.github/workflows/ci.yml`** — single `CI` workflow: `push` + `pull_request` on `main`; `permissions: contents: read`; concurrency group with `cancel-in-progress`; one `ubuntu-latest` job (15 min timeout) ordered cheap→expensive: `npm ci` (Node 24, npm cache) → format:check → lint → typecheck → unit → build → Playwright Chromium (browser cache keyed by version) → E2E → upload `test-results/` artifact (7 days) only when E2E fails.
+- **`playwright.config.ts`:** `retries: process.env.CI ? 2 : 0` — 2 retries on CI only, still 0 locally.
+- **README:** CI badge after the intro + `.github/workflows/` in the structure tree (Planned block removed).
+- **Docs:** `architecture.md` (Tech Stack testing/CI lines, tree, CI/CD section rewritten — CI no longer depicted as a gate to Vercel), `deployment.md` (overview, roadmap rows 8/9 → completed, diagram, deployment flow, status), `testing.md` (CI note under Validation Commands + Status), this log (Phase 8 retroactive entry + this entry + What Remains).
+
+### Validation
+
+- Workflow YAML parses (`js-yaml`); format:check / lint / typecheck PASS (0 errors, 53 files); unit 23/23; E2E 41/41; build 10 pages.
+- GitHub-side (workflow detection + first green run on push) requires push — reported separately after approval.
+
+### Decisions
+
+- Single job, no split: sequential cheap→expensive checks fail fast without duplicating setup (npm ci + Chromium ≈ 1–2 min per extra job).
+- `npm run build` kept as an explicit step although Playwright's `webServer` rebuilds (~0.7 s): fails before the ~300 MB Chromium download with a clear step name.
+- No secrets / no Vercel access / no CD: deploy remains Vercel's own git integration; CI only reports status on the repository.
+
+### Commits
+
+- Pending — single commit created after user approval (SHA recorded on the next docs sync).
+
+### Status
+
+Implemented — all local validations green; workflow active on first push to `main`.
+
+---
+
 ## What Remains (roadmap status)
 
-| Phase | Focus                                                                                                                                       | Status            |
-| ----- | ------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| 6.6   | Technical Polish                                                                                                                            | ✅ completed      |
-| 7     | Deployment (Vercel) + sitemap                                                                                                               | ✅ completed      |
-| —     | Final audit + approved fixes (this entry)                                                                                                   | ✅ completed      |
-| 8     | Testing — Vitest (unit) + Playwright (E2E), `tests/` scaffold                                                                               | ⬜ planned (next) |
-| 9     | CI/CD — GitHub Actions (lint + typecheck + tests + build on push/PR)                                                                        | ⬜ planned        |
-| 10    | SEO / Discoverability — JSON-LD, unique-per-page social images, heading hierarchy (h1→h3 on `/projects` + `/experience`), sitemap `lastmod` | ⬜ planned        |
-| 11    | Final Visual Polish                                                                                                                         | ⬜ planned        |
-| 12    | Final Audit (formal, against Phase 8–11 output)                                                                                             | ⬜ planned        |
+| Phase | Focus                                                                                                                                       | Status                   |
+| ----- | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
+| 6.6   | Technical Polish                                                                                                                            | ✅ completed             |
+| 7     | Deployment (Vercel) + sitemap                                                                                                               | ✅ completed             |
+| —     | Final audit + approved fixes (this entry)                                                                                                   | ✅ completed             |
+| 8     | Testing — Vitest (unit) + Playwright (E2E), `tests/` scaffold                                                                               | ✅ completed (`45321b7`) |
+| 9     | CI/CD — GitHub Actions (lint + typecheck + tests + build on push/PR)                                                                        | ✅ implemented           |
+| 10    | SEO / Discoverability — JSON-LD, unique-per-page social images, heading hierarchy (h1→h3 on `/projects` + `/experience`), sitemap `lastmod` | ⬜ planned (next)        |
+| 11    | Final Visual Polish                                                                                                                         | ⬜ planned               |
+| 12    | Final Audit (formal, against Phase 8–11 output)                                                                                             | ⬜ planned               |
 
 Deferred beyond the roadmap (user decision):
 

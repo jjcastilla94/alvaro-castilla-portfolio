@@ -2,7 +2,7 @@
 
 ## Overview
 
-The portfolio is a static site deployed on Vercel (Free tier), auto-deploying from the GitHub `main` branch. Production is live at **https://alvarocastilladev.vercel.app**. Automated quality checks via GitHub Actions are **planned (Phase 9)** — not yet configured.
+The portfolio is a static site deployed on Vercel (Free tier), auto-deploying from the GitHub `main` branch. Production is live at **https://alvarocastilladev.vercel.app**. Automated quality checks (format, lint, typecheck, tests, build) run via GitHub Actions on every push and pull request to `main` (`.github/workflows/ci.yml`, Phase 9).
 
 ## Roadmap (current phase order)
 
@@ -11,8 +11,8 @@ The portfolio is a static site deployed on Vercel (Free tier), auto-deploying fr
 | 6.6   | Technical Polish              | completed |
 | 7     | Deployment (Vercel) + sitemap | completed |
 | —     | Final audit + approved fixes  | completed |
-| 8     | Testing (Vitest + Playwright) | planned   |
-| 9     | CI/CD (GitHub Actions)        | planned   |
+| 8     | Testing (Vitest + Playwright) | completed |
+| 9     | CI/CD (GitHub Actions)        | completed |
 | 10    | SEO / Discoverability         | planned   |
 | 11    | Final Visual Polish           | planned   |
 | 12    | Final Audit                   | planned   |
@@ -27,8 +27,8 @@ Git (local)
 GitHub (remote)  — repo: jjcastilla94/alvaro-castilla-portfolio (main)
    ↓
 Vercel (CD)                      GitHub Actions (CI)
-   ↓   auto-deploy on push        ↓   (Phase 9, planned)
-Build (Astro static)          Lint + Typecheck + Tests + Build
+   ↓   auto-deploy on push        ↓   every push/PR to main (Phase 9)
+Build (Astro static)          Format + Lint + Typecheck + Tests + Build
    ↓
 Production
 https://alvarocastilladev.vercel.app
@@ -52,7 +52,7 @@ https://alvarocastilladev.vercel.app
 3. Build: Astro static output (`npm run build`), no server functions, no environment variables
 4. No manual deployment steps required
 
-GitHub Actions validation (lint, typecheck, tests, build) is planned for Phase 9 and will run before merges; Vercel keeps building on push until then.
+GitHub Actions validation (format, lint, typecheck, unit tests, build, Playwright E2E) runs automatically on every push and pull request to `main` (Phase 9); Vercel builds on push independently — CI does not gate the deployment, it flags failures on the repository.
 
 ## Preview Deployments
 
@@ -90,4 +90,4 @@ Not configured and not planned. The free `*.vercel.app` domain covers canonical/
 
 ## Status
 
-Phase 7 completed (2026-10-07): production live, canonical URL wired everywhere, sitemap + robots.txt validated (10/10 URLs, 10/10 routes 200). Next: Phase 8 (testing), then Phase 9 (GitHub Actions CI).
+Phase 7 completed (2026-10-07): production live, canonical URL wired everywhere, sitemap + robots.txt validated (10/10 URLs, 10/10 routes 200). Phases 8 and 9 completed the same day: automated test suite (23 unit + 41 E2E, all green) and GitHub Actions CI (`.github/workflows/ci.yml`) validating format, lint, typecheck, unit tests, build and E2E on every push/PR to `main`. Next: Phase 10 (SEO / Discoverability).

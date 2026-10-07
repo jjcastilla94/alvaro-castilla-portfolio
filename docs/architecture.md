@@ -11,9 +11,9 @@ Personal portfolio, built as a static site with Astro. It is a presentation and 
 - **Styling:** Tailwind CSS v4 (CSS-first configuration, no `tailwind.config.js`)
 - **Fonts:** Inter (body), JetBrains Mono (labels/metadata), Space Grotesk (display headings)
 - **Linting:** ESLint + Prettier
-- **Testing:** planned — Vitest (unit) + Playwright (E2E), Phase 8
+- **Testing:** Vitest (unit) + Playwright (E2E) — Phase 8, see `docs/testing.md`
 - **Deployment:** Vercel Free tier — live at https://alvarocastilladev.vercel.app (auto-deploy from `main`, Phase 7 completed)
-- **CI/CD:** planned — GitHub Actions, Phase 9
+- **CI/CD:** GitHub Actions (`.github/workflows/ci.yml`) — lint + typecheck + tests + build on push/PR to `main` (Phase 9)
 
 No client-side framework (React/Vue/Svelte). All interactivity is vanilla JS: theme toggle, mobile menu, scroll progress, stats animation, and the reveal system.
 
@@ -21,6 +21,7 @@ No client-side framework (React/Vue/Svelte). All interactivity is vanilla JS: th
 
 ```
 alvaro-castilla-portfolio/
+├── .github/workflows/   # CI (GitHub Actions)
 ├── public/              # Static assets (favicon.ico, favicon.svg, robots.txt, og-image.png, cv/alvaro-castilla-cv.pdf)
 │                        # (sitemap generated at build by @astrojs/sitemap → sitemap-index.xml + sitemap-0.xml)
 ├── src/
@@ -38,7 +39,7 @@ alvaro-castilla-portfolio/
 │   ├── styles/          # global.css (tokens, motion, code-window, stats)
 │   └── utils/           # dates.ts (formatDate, formatRange, getYear, formatMonthYear), projectImages.ts (build-time project gallery scanner)
 ├── docs/                # Project documentation
-└── tests/               # Test files (planned, Phase 8)
+└── tests/               # Vitest unit + Playwright E2E tests (Phase 8)
 ```
 
 ## Data Model
@@ -139,11 +140,14 @@ Decorative effects are clipped to section width (`min(640px, 100%)` glow) and no
 
 ## CI/CD
 
-Planned for Phase 9:
+GitHub Actions (`.github/workflows/ci.yml`, Phase 9):
 
 ```
-Push/PR → GitHub Actions → Lint + Typecheck + Tests + Build → Vercel → Production
+Push/PR → GitHub Actions → format + lint + typecheck + unit + build + E2E → merge (human)
+Push to main → Vercel → Production
 ```
+
+Single `CI` workflow on every `push` and `pull_request` to `main`: minimal permissions (`contents: read`), concurrency with `cancel-in-progress`, Node 24 + `npm ci` with npm cache, checks ordered cheap→expensive (format → lint → typecheck → unit → build → Playwright Chromium install with browser cache → E2E), and Playwright traces/screenshots uploaded as artifacts (7 days) only when E2E fails. No secrets, no Vercel access, no deployment — CD remains Vercel's git integration.
 
 ## Deployment
 
