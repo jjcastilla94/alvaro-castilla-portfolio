@@ -69,9 +69,9 @@ npm run test:e2e      # Playwright
 
 Unit and E2E tests are not yet implemented. They will be added in Phase 8 (Testing).
 
-## Manual Validation Baseline (Phases 1-7)
+## Manual Validation Baseline (Phases 1-7 + final audit)
 
-Until automated tests exist (Phase 8), every phase is validated with this reproducible manual checklist. Phase 5 (Visual Polish + Animations) added the animation-related checks; Phase 6.5 added the accessibility (skip link, heading levels, `aria-current`), new-section and CV checks; Phase 7 added the sitemap/robots checks.
+Until automated tests exist (Phase 8), every phase is validated with this reproducible manual checklist. Phase 5 (Visual Polish + Animations) added the animation-related checks; Phase 6.5 added the accessibility (skip link, heading levels, `aria-current`), new-section and CV checks; Phase 7 added the sitemap/robots checks; the final audit (2026-10-07) added the meta description, AWS CTA and project order checks.
 
 ### Static checks (run at every phase)
 

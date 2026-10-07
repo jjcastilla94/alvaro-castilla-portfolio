@@ -648,10 +648,6 @@ Short production-quality pass before tests: sync documentation with reality, mig
 - **D — SEO ogType**: `BaseLayout` forwards `ogType`; `/projects/[slug]` emits `og:type=article`, other pages `website`.
 - **B — Images/performance**: `public/images/**` → `src/assets/**`; `projectImages.ts` rewritten on `import.meta.glob`; all `<img>` replaced by Astro `<Image />` (WebP/AVIF, srcset, automatic dimensions); detail banner `loading="eager"` + `fetchpriority="high"`.
 
-### Status
-
-Completed
-
 ### Validation
 
 - Lint: PASS, Typecheck: PASS (0/0/0, 40 files), Format: PASS, Build: PASS (10 pages, 115 images)
@@ -660,6 +656,10 @@ Completed
 ### Commit
 
 `3b53a06` — `Phase 6.6 — Technical polish: docs sync, dialog a11y, og:type, astro:assets images`, pushed.
+
+### Status
+
+Completed — Phase 6.6 closed; content sanity check follows.
 
 ---
 
@@ -681,6 +681,10 @@ Correctness sweep of visible copy before deployment: no invented data, consisten
 ### Commit
 
 `5a100cb` — `Content sanity check: normalize 'full stack' to 'full-stack' copy`, pushed.
+
+### Status
+
+Completed.
 
 ---
 

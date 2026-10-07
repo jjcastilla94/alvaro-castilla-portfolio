@@ -555,6 +555,10 @@ Levels communicate honest depth without inventing metrics or percentages. They a
 
 Accepted
 
+### Update (Phase 6.5, 2026-09-14)
+
+A fourth level was added: `complementary` (adjacent/less-used technologies), giving the full type `core | working | exposure | complementary`. The data was flattened to a single `SKILLS: Skill[]` array (`level` + `category` fields) instead of grouped lists, the home Skills section renders four groups, and the `accentedOnly` prop was removed — every `core` item is an equal-weight accent tag. The rationale (honest qualitative depth, no metrics) is unchanged.
+
 ---
 
 ## ADR-026 — Project Images Auto-Discovered from a Folder

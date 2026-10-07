@@ -2,7 +2,7 @@
 
 ## Overview
 
-Personal portfolio for Alvaro Castilla, built as a static site with Astro. It is a presentation and credibility asset: it showcases the author's real professional experience (Cajamar), real projects (Arcadia, DetuBarrio), and engineering practice through the repository itself (small descriptive commits, phased development, documentation, validated builds).
+Personal portfolio, built as a static site with Astro. It is a presentation and credibility asset: it showcases the author's real professional experience (Cajamar), real projects (Arcadia, DetuBarrio), and engineering practice through the repository itself (small descriptive commits, phased development, documentation, validated builds).
 
 ## Tech Stack
 
@@ -31,7 +31,7 @@ alvaro-castilla-portfolio/
 │   │   ├── seo/         # HeadSEO.astro
 │   │   └── ui/          # Button, Card, Reveal, Tag, SectionHeading,
 │   │                    # SocialLink, ThemeToggle, ProjectCard, ProjectStatus,
-│   │                    # CertificationCard, Breadcrumbs, ServiceCard
+│   │                    # ProjectGallery, CertificationCard, Breadcrumbs, ServiceCard
 │   ├── data/            # profile, projects, experience, skills, site, about, services, certifications, projectStyles
 │   ├── layouts/         # BaseLayout.astro
 │   ├── pages/           # index, experience, projects, projects/[slug], contact

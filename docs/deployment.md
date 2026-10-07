@@ -10,6 +10,7 @@ The portfolio is a static site deployed on Vercel (Free tier), auto-deploying fr
 | ----- | ----------------------------- | --------- |
 | 6.6   | Technical Polish              | completed |
 | 7     | Deployment (Vercel) + sitemap | completed |
+| —     | Final audit + approved fixes  | completed |
 | 8     | Testing (Vitest + Playwright) | planned   |
 | 9     | CI/CD (GitHub Actions)        | planned   |
 | 10    | SEO / Discoverability         | planned   |

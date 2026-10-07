@@ -1,6 +1,6 @@
 # alvaro-castilla-portfolio
 
-Personal portfolio for Alvaro Castilla (Backend Developer), showcasing his professional experience, projects and technical skills. Built as a static site with Astro and TypeScript.
+Personal portfolio, showcasing his professional experience, projects and technical skills. Built as a static site with Astro and TypeScript.
 
 ## Tech Stack
 
@@ -59,7 +59,7 @@ All of the site's content lives in `src/data/` — no personal strings are hardc
 - `profile.ts` — Name, role, bio, email, social links, CV URL (`cvUrl` + `hasCv()`), stats
 - `experience.ts` — Work experience entries (typed)
 - `projects.ts` — Project list with color field, optional `longDescription`, `problem`, `contribution`, `learnings`, `status`, `featured`, `github`/`url`, `repositories` (multi-repo projects) and optional `image`/`gallery` overrides
-- `skills.ts` — Skills grouped by level (core / working / exposure)
+- `skills.ts` — Skills grouped by level (core / working / exposure / complementary)
 - `about.ts` — About section content (intro, approach, interests)
 - `services.ts` — `CAPABILITIES` (the "Lo que construyo" section)
 - `certifications.ts` — Real certifications (Spring Boot/MVC, JavaScript, Sass, AWS AI Practitioner in-progress)
@@ -87,9 +87,11 @@ npm install        # install dependencies
 npm run dev        # start dev server (foreground)
 npm run build      # production build
 npm run preview    # preview production build
-npm run lint       # ESLint
-npm run typecheck  # TypeScript + Astro check
-npm run format     # Prettier format
+npm run lint        # ESLint
+npm run lint:fix    # ESLint (auto-fix)
+npm run typecheck   # TypeScript + Astro check
+npm run format      # Prettier format
+npm run format:check # Prettier (check only, used in CI)
 ```
 
 To run the dev server in the background (recommended while working on multiple things):
