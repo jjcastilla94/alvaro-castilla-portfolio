@@ -808,8 +808,8 @@ Completed — 64/64 tests green locally. Phase 9 runs this suite in CI.
 
 ## Phase 9 — CI/CD (GitHub Actions)
 
-**Date:** 2026-10-07
-**Status:** Implemented (validated locally; awaiting commit approval)
+**Date:** 2026-10-07 (implementation) · 2026-10-08 (first green run)
+**Status:** ✅ Completed — GitHub Actions green on `main` (2026-10-08)
 
 ### Objective
 
@@ -825,7 +825,7 @@ Automate on GitHub Actions the same quality gates already validated locally (for
 ### Validation
 
 - Workflow YAML parses (`js-yaml`); format:check / lint / typecheck PASS (0 errors, 53 files); unit 23/23; E2E 41/41; build 10 pages.
-- GitHub-side (workflow detection + first green run on push) requires push — reported separately after approval.
+- GitHub-side: the first push run (`37755176634`) failed at `Install dependencies` — `npm ci` reported `Missing: @emnapi/runtime@1.11.3` / `@emnapi/core@1.11.3 from lock file` (optional deps of `@img/sharp-wasm32` and the `@tailwindcss/oxide-wasm32-wasi` bundle). The manual lock patch (`3c0dcce`) was not enough: npm on Windows filters platform-specific optional deps, so the lock could only be regenerated on Linux/Node 24 (npm 11.19, the same environment as the Actions runner). Fixed by `1014a9f`.
 
 ### Decisions
 
@@ -833,28 +833,35 @@ Automate on GitHub Actions the same quality gates already validated locally (for
 - `npm run build` kept as an explicit step although Playwright's `webServer` rebuilds (~0.7 s): fails before the ~300 MB Chromium download with a clear step name.
 - No secrets / no Vercel access / no CD: deploy remains Vercel's own git integration; CI only reports status on the repository.
 
+### First green run (2026-10-08)
+
+- Run [37766592048](https://github.com/jjcastilla94/alvaro-castilla-portfolio/actions/runs/37766592048) on `1014a9f` — conclusion **success**, 56 s (job `ci`, `ubuntu-latest`).
+- Every workflow step passed: `npm ci` ✅ · format:check ✅ · lint ✅ · typecheck ✅ · unit 23/23 ✅ · build ✅ (10 pages) · Playwright Chromium cache + install ✅ · **E2E 41/41 ✅ (9.8 s)** · artifacts upload skipped (only runs on failure).
+- This is the first green GitHub Actions run of the repository; the two previous runs (`37619769203`, `37755176634`) failed at `npm ci`.
+
 ### Commits
 
-- Pending — single commit created after user approval (SHA recorded on the next docs sync).
+- `889a6ae` — `ci: add GitHub Actions workflow for lint, tests and build`, pushed.
+- `1014a9f` — `fix: sync lockfile for npm ci on Linux CI`, pushed (makes `npm ci` pass on the Linux runner).
 
 ### Status
 
-Implemented — all local validations green; workflow active on first push to `main`.
+Completed — workflow active and green on `main` (2026-10-08): `npm ci`, format, lint, typecheck, **23/23 unit tests**, build and **41/41 E2E** all pass on GitHub Actions.
 
 ---
 
 ## What Remains (roadmap status)
 
-| Phase | Focus                                                                                                                                       | Status                   |
-| ----- | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
-| 6.6   | Technical Polish                                                                                                                            | ✅ completed             |
-| 7     | Deployment (Vercel) + sitemap                                                                                                               | ✅ completed             |
-| —     | Final audit + approved fixes (this entry)                                                                                                   | ✅ completed             |
-| 8     | Testing — Vitest (unit) + Playwright (E2E), `tests/` scaffold                                                                               | ✅ completed (`45321b7`) |
-| 9     | CI/CD — GitHub Actions (lint + typecheck + tests + build on push/PR)                                                                        | ✅ implemented           |
-| 10    | SEO / Discoverability — JSON-LD, unique-per-page social images, heading hierarchy (h1→h3 on `/projects` + `/experience`), sitemap `lastmod` | ⬜ planned (next)        |
-| 11    | Final Visual Polish                                                                                                                         | ⬜ planned               |
-| 12    | Final Audit (formal, against Phase 8–11 output)                                                                                             | ⬜ planned               |
+| Phase | Focus                                                                                                                                       | Status                              |
+| ----- | ------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
+| 6.6   | Technical Polish                                                                                                                            | ✅ completed                        |
+| 7     | Deployment (Vercel) + sitemap                                                                                                               | ✅ completed                        |
+| —     | Final audit + approved fixes (this entry)                                                                                                   | ✅ completed                        |
+| 8     | Testing — Vitest (unit) + Playwright (E2E), `tests/` scaffold                                                                               | ✅ completed (`45321b7`)            |
+| 9     | CI/CD — GitHub Actions (lint + typecheck + tests + build on push/PR)                                                                        | ✅ completed (`889a6ae`, `1014a9f`) |
+| 10    | SEO / Discoverability — JSON-LD, unique-per-page social images, heading hierarchy (h1→h3 on `/projects` + `/experience`), sitemap `lastmod` | ⬜ planned (next)                   |
+| 11    | Final Visual Polish                                                                                                                         | ⬜ planned                          |
+| 12    | Final Audit (formal, against Phase 8–11 output)                                                                                             | ⬜ planned                          |
 
 Deferred beyond the roadmap (user decision):
 
