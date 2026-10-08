@@ -1,8 +1,15 @@
-# alvaro-castilla-portfolio
+# Alvaro Castilla — Portfolio
 
-Personal portfolio, showcasing his professional experience, projects and technical skills. Built as a static site with Astro and TypeScript.
+Personal portfolio of **Alvaro Castilla**, Backend Developer: professional experience, project case studies with screenshot galleries, technical skills and certifications. Built as a fully static site (SSG) with **Astro**, **TypeScript** and **Tailwind CSS**, tested with **Vitest** + **Playwright**, automated with **GitHub Actions** and deployed on **Vercel**.
 
 [![CI](https://github.com/jjcastilla94/alvaro-castilla-portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/jjcastilla94/alvaro-castilla-portfolio/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Node](https://img.shields.io/badge/node-%3E%3D22.12-brightgreen.svg)](https://nodejs.org)
+[![Astro](https://img.shields.io/badge/Astro-7-FF5D01.svg)](https://astro.build)
+
+Live at **[alvarocastilladev.vercel.app](https://alvarocastilladev.vercel.app)**
+
+**Keywords:** `astro portfolio` · `backend developer portfolio` · `typescript` · `tailwind css` · `static site` · `ssg` · `vitest` · `playwright` · `github actions` · `seo` · `vercel` · `spanish portfolio`
 
 ## Tech Stack
 
@@ -10,7 +17,8 @@ Personal portfolio, showcasing his professional experience, projects and technic
 - **Language:** TypeScript (strict mode)
 - **Styling:** Tailwind CSS v4 (CSS-first configuration)
 - **Linting:** ESLint + Prettier
-- **Testing:** Vitest (unit) + Playwright (E2E) — Phase 8, see `docs/testing.md`
+- **Testing:** Vitest (unit) + Playwright (E2E) — see `docs/testing.md`
+- **CI:** GitHub Actions — format, lint, typecheck, unit tests, build and E2E on every push/PR to `main`
 - **Deployment:** Vercel (auto-deploy from GitHub `main`) — live at https://alvarocastilladev.vercel.app
 
 ## Routes
@@ -28,9 +36,10 @@ Personal portfolio, showcasing his professional experience, projects and technic
 ```
 alvaro-castilla-portfolio/
 ├── .github/workflows/   # CI (GitHub Actions)
+├── docs/                # Project documentation (architecture, ADRs, testing, deployment, log)
 ├── public/              # Static assets (favicon, robots.txt + sitemap pointer, og-image, CV)
 ├── src/
-│   ├── assets/          # Images processed by astro:assets (screenshots, avatar)
+│   ├── assets/          # Images processed by astro:assets (project galleries, avatar)
 │   ├── components/
 │   │   ├── layout/      # Header, Footer
 │   │   ├── sections/    # Hero (code card + CTAs), About, Architecture (diagram), Skills
@@ -43,8 +52,10 @@ alvaro-castilla-portfolio/
 │   ├── pages/           # Route pages
 │   ├── styles/          # Global CSS + design tokens + motion system
 │   └── utils/           # Utility functions (dates, projectImages)
-├── docs/                # Project documentation
-└── tests/               # Unit (Vitest) + E2E (Playwright) tests
+├── tests/               # Unit (Vitest) + E2E (Playwright) tests
+├── CONTRIBUTING.md      # Contribution workflow and PR checklist
+├── LICENSE              # MIT
+└── SECURITY.md          # Vulnerability reporting policy
 ```
 
 ## Content Management
@@ -80,16 +91,22 @@ the click-to-zoom gallery on the detail page. Prefix extra captures with numbers
 ## Development
 
 ```bash
-npm install        # install dependencies
-npm run dev        # start dev server (foreground)
-npm run build      # production build
-npm run preview    # preview production build
+npm install         # install dependencies
+npm run dev         # start dev server (foreground)
+npm run build       # production build
+npm run preview     # preview production build
 npm run lint        # ESLint
 npm run lint:fix    # ESLint (auto-fix)
 npm run typecheck   # TypeScript + Astro check
 npm run format      # Prettier format
 npm run format:check # Prettier (check only, used in CI)
+npm test            # Vitest (unit tests)
+npm run test:watch  # Vitest in watch mode
+npm run test:e2e    # Playwright (E2E tests)
 ```
+
+All of the commands above (except `dev`/`preview`/`test:watch`) run in CI on
+every push and pull request to `main` — see `.github/workflows/ci.yml`.
 
 To run the dev server in the background (recommended while working on multiple things):
 
@@ -107,3 +124,18 @@ npx astro dev logs           # logs
 - `docs/development-log.md` — Phase-by-phase development log
 - `docs/testing.md` — Testing strategy
 - `docs/deployment.md` — Deployment guide
+
+## Contributing
+
+Bug reports, accessibility/SEO findings and small pull requests are welcome.
+The contribution workflow, quality gates and PR checklist live in
+[CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Security
+
+To report a vulnerability privately, see [SECURITY.md](SECURITY.md) — please
+do not open a public issue for security matters.
+
+## License
+
+Released under the [MIT License](LICENSE) © 2026 Alvaro Castilla.
