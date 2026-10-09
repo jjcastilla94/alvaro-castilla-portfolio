@@ -24,9 +24,9 @@ Every push and pull request to `main` runs the same checks locally and in CI
 npm run format:check   # Prettier
 npm run lint           # ESLint
 npm run typecheck      # astro check
-npm test               # Vitest (23 unit tests)
+npm test               # Vitest (unit tests)
 npm run build          # production build
-npm run test:e2e       # Playwright (41 E2E tests)
+npm run test:e2e       # Playwright (E2E tests)
 ```
 
 Use `npm run lint:fix` and `npm run format` to fix most issues automatically.

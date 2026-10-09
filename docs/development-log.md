@@ -952,6 +952,66 @@ Completed — Groups A, B (selective) and C implemented and validated. Awaiting 
 
 ---
 
+## Phase 12 — Final Audit
+
+**Date:** 2026-10-07
+**Status:** Completed
+
+### Objective
+
+Formal audit of the Phase 8–11 output (tests, CI, SEO and visual polish) against three references: the repository CI, the live Vercel deployment and the Phase 10 SEO output. Reproduce every documented claim, confirm the deployed build equals the repo, and correct only what the audit verifies. No commit/push until user approval.
+
+### Method
+
+A read-only first pass checked routing/status, internal and external links, SEO equivalence, contrast and overflow, test/documentation counts, CI and the deployment. Corrections were then applied to exactly what the audit confirmed, leaving everything else untouched.
+
+### Findings & decisions
+
+- **M-1 (major) — overlay badge contrast: fixed.** The `ProjectStatus` badge rendered by `ProjectCard` over the project screenshot failed AA: light "En desarrollo" (`amber-800`) over a dark screenshot area measured 2.61:1, and dark "En producción" (`emerald-400`) over a light area 1.84:1. The badge is now wrapped in an opaque `bg-surface` backing (`ProjectCard.astro`, `absolute top-4 left-4 inline-flex rounded-full bg-surface`) — the same token as the card body — so the effective background no longer depends on the image. No colour token was added; `ProjectStatus.astro` and the solid-background instances (project-detail page and certification card) are unchanged.
+- **m-1 (minor) — stale counts: fixed.** `CONTRIBUTING.md` claimed 23 unit / 41 E2E tests (real: 63 / 84). The counts were removed from the comments to avoid future drift.
+- **m-2 (minor) — stale docs: fixed.** `docs/deployment.md` described Phase 11 as `focus.spec.ts`, 80/80 E2E; corrected to include `reduced-motion.spec.ts` and 84/84, and the Phase 12 outcome is recorded there.
+- **m-3 (minor) — no custom 404: deferred.** The site still relies on the default Astro/Vercel 404 (`/404` returns 404 without a branded page). Deferred by user decision.
+- **m-4 (minor) — E2E flake: investigated, deferred.** `projects.spec.ts:53` (`waitForURL(u => u.pathname === '/projects')` on course-management-platform) failed once under 7 parallel workers. Read-only investigation: `--repeat-each=12` (84 runs) and a click-trace of the "Volver a proyectos" link both stayed green; the URL is deterministic (`/projects`, 5/5), so URL tolerance is **not** the cause — it is a transient timing race under load. Proposed mitigation (not applied): wrap the click and `waitForURL` in `Promise.all`, or assert after an explicit load state. Deferred to keep the tested navigation path unchanged.
+- **m-5 (minor) — ES/EN copy consistency: deferred.** Project subtitles still mix Spanish and English under an `es_ES` locale. Deferred beyond the roadmap.
+
+### Implemented
+
+- `ProjectCard.astro` — opaque `bg-surface` backing behind the overlay `ProjectStatus` badge (M-1).
+- `CONTRIBUTING.md` — removed the stale unit/E2E counts (m-1).
+- `docs/deployment.md` — corrected the Phase 11 counts and recorded Phase 12 (m-2).
+- `docs/testing.md` — replaced the Phase 11 overlay-contrast limitation with the measured Phase 12 AA results.
+- This log — Phase 12 entry and roadmap status.
+
+### Validation
+
+- format:check / lint: PASS — typecheck: PASS (63 files, 0 errors, 0 warnings, 0 hints).
+- Unit: **63/63 PASS**; E2E: **84/84 PASS**; Build: PASS (10 pages, 9 `/og/*.png`).
+- Contrast (measured in-browser over real screenshot pixels with the opaque backing composited, light/dark): overlay badge "En producción" 4.66:1 / 8.18:1; "En desarrollo" 6.09:1 / 9.05:1; "Completado" 4.76:1 / 5.63:1 — all ≥ AA in both themes.
+- Reduced motion and keyboard focus re-verified by `reduced-motion.spec.ts` and `focus.spec.ts` (part of the 84 passing E2E).
+- SEO equivalence: canonical, `og:image`, `twitter:image` and the raw JSON-LD (SHA-256) are identical on all 10 routes against a fresh build of the Phase 10 commit (`60fdb6c`); the 9 OG PNGs, `og-image.png` and both sitemaps are byte-identical. The stored `seo-content.json` `ldSha` baseline is a capture artifact and is not reproducible from any build, so equivalence was proven directly against the Phase 10 commit output instead.
+- Routing: all 10 routes 200 locally and in production; 0 broken internal links/anchors; external links all 200 (LinkedIn returns 405 to HEAD probes only). Production (`9e08629`) verified as the deployed commit.
+
+### Decisions
+
+- The overlay fix preserves the visual identity: no new colours, `ProjectStatus.astro` untouched, and only the card's overlay instance gets a backing that matches the card body.
+- Counts were removed rather than hard-coded, so the docs cannot drift again.
+- m-3, m-4 and m-5 stay deferred; only verified items were changed.
+
+### Limitations
+
+- Rendering/appearance was validated via computed CSS, geometry and measured contrast — not by visually inspecting screenshots (no image review). Final visual sign-off remains with the user.
+- The `ldSha` component of the stored Phase 10 SEO baseline is unreliable (see Validation); the JSON-LD equivalence claim rests on a direct rebuild of the Phase 10 commit.
+
+### Commit
+
+Pending user approval (no commit/push made).
+
+### Status
+
+Completed — awaiting approval to commit.
+
+---
+
 ## What Remains (roadmap status)
 
 | Phase | Focus                                                                                                                                       | Status                              |
@@ -961,11 +1021,13 @@ Completed — Groups A, B (selective) and C implemented and validated. Awaiting 
 | —     | Final audit + approved fixes (this entry)                                                                                                   | ✅ completed                        |
 | 8     | Testing — Vitest (unit) + Playwright (E2E), `tests/` scaffold                                                                               | ✅ completed (`45321b7`)            |
 | 9     | CI/CD — GitHub Actions (lint + typecheck + tests + build on push/PR)                                                                        | ✅ completed (`889a6ae`, `1014a9f`) |
-| 10    | SEO / Discoverability — JSON-LD, unique-per-page social images, heading hierarchy (h1→h3 on `/projects` + `/experience`), sitemap `lastmod` | ✅ completed (pending commit)       |
-| 11    | Final Visual Polish — motion-token + focus-ring consolidation, wrapping/parity fixes, automated focus/reduced-motion checks                 | ✅ completed (pending commit)       |
-| 12    | Final Audit (formal, against Phase 8–11 output)                                                                                             | ⬜ planned (next)                   |
+| 10    | SEO / Discoverability — JSON-LD, unique-per-page social images, heading hierarchy (h1→h3 on `/projects` + `/experience`), sitemap `lastmod` | ✅ completed (`60fdb6c`)            |
+| 11    | Final Visual Polish — motion-token + focus-ring consolidation, wrapping/parity fixes, automated focus/reduced-motion checks                 | ✅ completed (`9e08629`)            |
+| 12    | Final Audit (formal, against Phase 8–11 output)                                                                                             | ✅ completed (pending commit)       |
 
 Deferred beyond the roadmap (user decision):
 
 - Deploy Arcadia to a free host so the flagship backend project has a live demo (audit change 4).
 - Audit optionals 5–9 still open: ES/EN copy consistency, "8+ tecnologías" wording, DetuBarrio real metrics (the JSON-LD and heading-skip items from that list are now done in Phase 10).
+- Add a custom branded 404 page — the default Astro/Vercel 404 is still served (Phase 12 finding m-3).
+- Harden the `projects.spec.ts:53` navigation assertion against parallel-load timing (Phase 12 finding m-4).
