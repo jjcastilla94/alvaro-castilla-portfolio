@@ -13,10 +13,7 @@ function isActive(href: string): boolean {
 
 <header class="fixed top-0 inset-x-0 z-50 border-b border-border bg-surface-glass backdrop-blur-xl">
   <div class="max-w-6xl mx-auto px-6 sm:px-8 py-4 flex items-center justify-between">
-    <a
-      href="/"
-      class="flex items-center gap-2.5 group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-sm"
-    >
+    <a href="/" class="flex items-center gap-2.5 group focus-ring rounded-sm">
       {
         PROFILE.image && (
           <Image
@@ -47,7 +44,7 @@ function isActive(href: string): boolean {
           <a
             href={link.href}
             aria-current={isActive(link.href) ? 'page' : undefined}
-            class={`group relative px-3 py-2 text-sm rounded-md transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
+            class={`group relative px-3 py-2 text-sm rounded-md transition-colors duration-150 focus-ring ${
               isActive(link.href) ? 'text-text' : 'text-text-muted hover:text-text'
             }`}
           >
@@ -68,7 +65,7 @@ function isActive(href: string): boolean {
       <button
         id="menu-toggle"
         type="button"
-        class="md:hidden p-2 rounded-lg border border-border text-text-muted hover:text-text transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        class="md:hidden p-2 rounded-lg border border-border text-text-muted hover:text-text transition-colors duration-150 focus-ring"
         aria-label="Abrir menú de navegación"
         aria-expanded="false"
         aria-controls="mobile-menu"
@@ -109,7 +106,7 @@ function isActive(href: string): boolean {
           <a
             href={link.href}
             aria-current={isActive(link.href) ? 'page' : undefined}
-            class={`py-2.5 text-sm rounded-md transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
+            class={`py-2.5 text-sm rounded-md transition-colors duration-150 focus-ring ${
               isActive(link.href) ? 'text-text' : 'text-text-muted hover:text-text'
             }`}
           >

@@ -32,6 +32,27 @@
   --color-accent-cta-hover: #2563eb;
 }
 
+/* ==========================================================================
+   Motion tokens — single source for the easing curve reused across the site.
+   The value is the exact curve previously written inline, so this is a
+   consolidation only: no duration, easing or visual result changes.
+   ========================================================================== */
+
+:root {
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ==========================================================================
+   Focus ring — one accessible focus treatment for every interactive element.
+   Replaces the repeated `focus-visible:outline*` utility chain (same values:
+   2px solid accent, 2px offset). Applied via the `focus-ring` class.
+   ========================================================================== */
+
+.focus-ring:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -96,7 +117,7 @@ body {
 [data-reveal] {
   transition:
     opacity 0.6s ease,
-    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transform 0.7s var(--ease-out-quint);
   transition-delay: var(--reveal-delay, 0ms);
 }
 
@@ -191,7 +212,7 @@ html.js .arch-node:not(.is-visible) {
 }
 
 html.js .arch-node.is-visible {
-  animation: arch-node-enter 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: arch-node-enter 0.5s var(--ease-out-quint) forwards;
 }
 
 /* ==========================================================================
@@ -214,7 +235,7 @@ html.js .arch-line {
 }
 
 html.js .arch-line.is-visible {
-  animation: draw-line 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: draw-line 0.4s var(--ease-out-quint) forwards;
 }
 
 /* ==========================================================================
@@ -260,7 +281,7 @@ html.js .arch-line.is-visible {
   position: relative;
   overflow: hidden;
   transition:
-    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.3s var(--ease-out-quint),
     border-color 0.3s ease,
     box-shadow 0.3s ease;
 }
@@ -273,7 +294,7 @@ html.js .arch-line.is-visible {
 
 .project-card .project-preview {
   transition:
-    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.4s var(--ease-out-quint),
     filter 0.4s ease;
 }
 
@@ -283,7 +304,7 @@ html.js .arch-line.is-visible {
 }
 
 .project-card .project-arrow {
-  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.25s var(--ease-out-quint);
 }
 
 .project-card:hover .project-arrow {
@@ -291,7 +312,7 @@ html.js .arch-line.is-visible {
 }
 
 .project-card .project-content {
-  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.3s var(--ease-out-quint);
 }
 
 .project-card:hover .project-content {
@@ -337,7 +358,7 @@ html.js .arch-line.is-visible {
 }
 
 .timeline-line.is-visible {
-  animation: line-grow 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: line-grow 1s var(--ease-out-quint) forwards;
 }
 
 /* ==========================================================================
@@ -361,7 +382,7 @@ html.js [data-reveal='slide-right']:not(.is-visible) {
 }
 
 html.js [data-reveal='slide-right'].is-visible {
-  animation: slide-in-right 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: slide-in-right 0.6s var(--ease-out-quint) forwards;
 }
 
 /* ==========================================================================
@@ -387,7 +408,7 @@ html.js .tag-appear:not(.is-visible) {
 }
 
 html.js .tag-appear.is-visible {
-  animation: tag-pop 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: tag-pop 0.4s var(--ease-out-quint) forwards;
 }
 
 /* ==========================================================================
@@ -484,7 +505,7 @@ html.light .scroll-progress {
   overflow: hidden;
   box-shadow: 0 30px 60px -24px rgba(0, 0, 0, 0.55);
   transform: perspective(1000px) rotateY(-7deg) rotateX(2deg);
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.5s var(--ease-out-quint);
 }
 
 .code-window:hover {

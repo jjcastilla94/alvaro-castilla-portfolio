@@ -16,7 +16,7 @@ const { title, images, class: className = '' } = Astro.props;
       <button
         type="button"
         data-gallery-item
-        class="group relative overflow-hidden rounded border border-border bg-surface text-left transition-colors duration-200 hover:border-accent/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        class="group relative overflow-hidden rounded border border-border bg-surface text-left transition-colors duration-200 hover:border-accent/40 focus-ring"
         aria-label={`Ampliar captura ${i + 1} del proyecto ${title}`}
       >
         <Image
@@ -74,7 +74,7 @@ const { title, images, class: className = '' } = Astro.props;
     <button
       type="button"
       data-gallery-close
-      class="inline-flex items-center justify-center w-8 h-8 rounded-md border border-border text-text-muted hover:text-text hover:border-border-hover transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+      class="inline-flex items-center justify-center w-8 h-8 rounded-md border border-border text-text-muted hover:text-text hover:border-border-hover transition-colors duration-150 focus-ring"
       aria-label="Cerrar visualización ampliada"
     >
       <svg
@@ -94,7 +94,7 @@ const { title, images, class: className = '' } = Astro.props;
     <button
       type="button"
       data-gallery-prev
-      class="absolute left-2 sm:left-4 z-10 inline-flex items-center justify-center w-9 h-9 rounded-full border border-border bg-surface/90 text-text-muted hover:text-text transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+      class="absolute left-2 sm:left-4 z-10 inline-flex items-center justify-center w-9 h-9 rounded-full border border-border bg-surface/90 text-text-muted hover:text-text transition-colors duration-150 focus-ring"
       aria-label="Imagen anterior"
     >
       <svg
@@ -114,7 +114,7 @@ const { title, images, class: className = '' } = Astro.props;
     <button
       type="button"
       data-gallery-next
-      class="absolute right-2 sm:right-4 z-10 inline-flex items-center justify-center w-9 h-9 rounded-full border border-border bg-surface/90 text-text-muted hover:text-text transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+      class="absolute right-2 sm:right-4 z-10 inline-flex items-center justify-center w-9 h-9 rounded-full border border-border bg-surface/90 text-text-muted hover:text-text transition-colors duration-150 focus-ring"
       aria-label="Imagen siguiente"
     >
       <svg

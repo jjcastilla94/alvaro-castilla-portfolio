@@ -45,7 +45,7 @@ const Heading = headingLevel === 2 ? 'h2' : 'h3';
 
 <a
   href={href}
-  class={`project-card block h-full rounded-xl border border-border bg-surface group flex flex-col ${className}`}
+  class={`project-card focus-ring block h-full rounded-xl border border-border bg-surface group flex flex-col ${className}`}
 >
   <div
     class={`project-preview relative h-48 sm:h-60 rounded-t-xl overflow-hidden bg-gradient-to-br ${gradient}`}
@@ -76,12 +76,12 @@ const Heading = headingLevel === 2 ? 'h2' : 'h3';
       )
     }
     <div class="absolute bottom-4 left-4 right-4 flex items-end justify-between">
-      <div>
+      <div class="min-w-0">
         <Heading class="text-xl font-bold text-text">{title}</Heading>
         <p class="font-mono text-xs text-text-dim mt-0.5">{subtitle}</p>
       </div>
       <span
-        class="project-arrow inline-flex items-center justify-center w-8 h-8 rounded-full border border-border bg-surface/80 text-text-muted group-hover:text-accent group-hover:border-accent/40 transition-all duration-200"
+        class="project-arrow shrink-0 inline-flex items-center justify-center w-8 h-8 rounded-full border border-border bg-surface/80 text-text-muted group-hover:text-accent group-hover:border-accent/40 transition-all duration-200"
       >
         <svg
           class="w-3.5 h-3.5"

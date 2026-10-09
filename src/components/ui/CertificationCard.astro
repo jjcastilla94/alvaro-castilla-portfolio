@@ -11,7 +11,11 @@ interface Props {
 const { certification } = Astro.props;
 
 const statusLabels: Record<Certification['status'], { label: string; className: string }> = {
-  active: { label: 'Obtenida', className: 'text-green-400 border-green-400/40 bg-green-400/10' },
+  active: {
+    label: 'Obtenida',
+    className:
+      'text-green-800 border-green-800/40 bg-green-800/10 dark:text-green-400 dark:border-green-400/40 dark:bg-green-400/10',
+  },
   'in-progress': { label: 'En curso', className: 'text-accent border-accent/40 bg-accent/10' },
   planned: { label: 'Próxima', className: 'text-accent border-accent/40 bg-accent/10' },
   expired: { label: 'Caducada', className: 'text-text-muted border-border bg-surface' },
@@ -60,7 +64,7 @@ const ctaLabel =
         href={certification.url}
         target="_blank"
         rel="noopener noreferrer"
-        class="mt-auto inline-flex items-center gap-1 font-mono text-xs text-accent hover:text-accent-hover transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-sm w-fit"
+        class="mt-auto inline-flex items-center gap-1 font-mono text-xs text-accent hover:text-accent-hover transition-colors duration-150 focus-ring rounded-sm w-fit"
       >
         {ctaLabel}
         <svg

@@ -14,7 +14,7 @@ The portfolio is a static site deployed on Vercel (Free tier), auto-deploying fr
 | 8     | Testing (Vitest + Playwright) | completed |
 | 9     | CI/CD (GitHub Actions)        | completed |
 | 10    | SEO / Discoverability         | completed |
-| 11    | Final Visual Polish           | planned   |
+| 11    | Final Visual Polish           | completed |
 | 12    | Final Audit                   | planned   |
 
 ## Architecture
@@ -90,4 +90,4 @@ Not configured and not planned. The free `*.vercel.app` domain covers canonical/
 
 ## Status
 
-Phase 7 completed (2026-10-07): production live, canonical URL wired everywhere, sitemap + robots.txt validated (10/10 URLs, 10/10 routes 200). Phases 8 and 9 completed the same day: automated test suite and GitHub Actions CI (`.github/workflows/ci.yml`) validating format, lint, typecheck, unit tests, build and E2E on every push/PR to `main`. Phase 10 (SEO / Discoverability) completed the same day: JSON-LD per route, unique build-time social image per page, h1→h2→h3 heading hierarchy and content-based sitemap `lastmod`. Next: Phase 11 (Final Visual Polish).
+Phase 7 completed (2026-10-07): production live, canonical URL wired everywhere, sitemap + robots.txt validated (10/10 URLs, 10/10 routes 200). Phases 8 and 9 completed the same day: automated test suite and GitHub Actions CI (`.github/workflows/ci.yml`) validating format, lint, typecheck, unit tests, build and E2E on every push/PR to `main`. Phase 10 (SEO / Discoverability) completed the same day: JSON-LD per route, unique build-time social image per page, h1→h2→h3 heading hierarchy and content-based sitemap `lastmod`. Phase 11 (Final Visual Polish) completed the same day: motion-token + focus-ring consolidation, wrapping/dark-light parity fixes (badges now pass AA in light mode) and an automated keyboard-focus E2E spec (`focus.spec.ts`, 80/80 E2E), with the Phase 10 SEO output byte-identical. Next: Phase 12 (Final Audit).

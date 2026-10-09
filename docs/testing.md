@@ -63,6 +63,8 @@ tests/unit/
 - `theme.spec.ts` — dark/light toggle with accessible name, persistence across reload
 - `responsive.spec.ts` — no horizontal overflow at 375px (3 routes), nav/menu-toggle visibility per viewport
 - `a11y.spec.ts` — all 10 routes: exactly one h1, `main#main-content`, labelled navs, skip link target, accessible names on every link/button, no duplicate ids
+- `focus.spec.ts` — Phase 11: keyboard-`Tab` sweep of all 10 routes; every tabbable element shows a visible focus indicator (accent `focus-ring` outline or the skip-link ring), with cycle detection, and asserts the `focus-ring` treatment is used
+- `reduced-motion.spec.ts` — Phase 11: with `prefers-reduced-motion: reduce` forced, asserts on 3 reveal-rich routes that `[data-reveal]` elements are fully visible (opacity `1`), carry no entry `transform`, and are rendered without waiting for the reveal animation (the `.js` hidden-by-default state is off); a keyboard sub-test proves focus still moves through interactive elements with a visible indicator under reduced motion
 - `seo.spec.ts` — Phase 10: valid JSON-LD per route (`@graph`/page types/`SoftwareSourceCode` coherent with the canonical, real repos, no `ProfilePage`/`SearchAction`/`BreadcrumbList`); heading hierarchy h1→h2→h3 with no skips on all 10 routes; one distinct absolute `og:image` per route mirrored by `twitter:image` and served as a real 1200×630 PNG; sitemap lists all 10 routes each with a content-based `lastmod` (valid ISO, never future, UTC midnight)
 
 Every E2E test also inherits two guarantees from the shared fixture: zero uncaught JavaScript errors, and no network access outside the local preview server.
@@ -88,7 +90,7 @@ Since Phase 9, the same commands run automatically in CI (`.github/workflows/ci.
 
 ## Status
 
-Phase 8 implemented (2026-10-07): 23 unit tests + 41 E2E tests, all green. Phase 9 (2026-10-07) runs this suite automatically on GitHub Actions for every push/PR to `main` (E2E retries 2× on CI, 0 locally). Phase 10 (2026-10-07) added SEO coverage: **63 unit tests** (+`seo`, `ogCard`, `pageDates`) and **70 E2E tests** (+`seo.spec.ts`), all green. The manual baseline below still applies to what automation does not cover (visual polish, motion details, contrast values).
+Phase 8 implemented (2026-10-07): 23 unit tests + 41 E2E tests, all green. Phase 9 (2026-10-07) runs this suite automatically on GitHub Actions for every push/PR to `main` (E2E retries 2× on CI, 0 locally). Phase 10 (2026-10-07) added SEO coverage: **63 unit tests** (+`seo`, `ogCard`, `pageDates`) and **70 E2E tests** (+`seo.spec.ts`). Phase 11 (2026-10-07) added `focus.spec.ts` and `reduced-motion.spec.ts` (**84 E2E tests**) and consolidated every focus treatment into the `focus-ring` class. The manual baseline below still applies to what automation does not cover (visual polish, motion details, contrast values).
 
 ## Manual Validation Baseline (Phases 1-7 + final audit)
 
@@ -151,4 +153,6 @@ npm run format:check  # Prettier
 - Primary CTA (dark mode): white on `#1d4ed8` = 6.70:1, hover `#2563eb` = 5.17:1 (ADR-015)
 - Primary CTA (light mode): white on `#1d4ed8` = 6.70:1, hover `#1e40af` = 8.72:1
 - Body text: dark `#f8fafc` on `#090a0f` = 18.9:1; light `#0f172a` on `#f8f9ff` = 16.99:1
-- Known borderliner (accepted, monitored): `--color-text-dim` in light mode requires checking; in dark it was raised to `#7e8fa6` for AA (Phase 6.5, Block A6)
+- Status/certification badges (Phase 11, measured in-browser over composited backgrounds): "En producción" light 5.10:1 / dark 10.20:1; "En desarrollo" light 6.75:1 / dark 11.48:1; certification "Obtenida" light 7.13:1 / dark 10.45:1 — all ≥ AA. Light shades are `emerald-700` / `amber-800` / `green-800` (`dark:` keeps the 400 shades).
+- Known limitation (Phase 11): the `ProjectStatus` badge is also rendered by `ProjectCard` **over the project screenshot** (`ProjectCard.astro`, `absolute top-4 left-4`), whose background is theme-independent and not a fixed solid colour. The AA figures above therefore apply only to the solid-background instances (project-detail page and certification card); AA is **not verified** for the image-overlay instance and is not claimed.
+- `--color-text-dim` in light mode (Phase 11 measurement): `#64748b` on `#f8f9ff` = 4.53:1 and on `#ffffff` = 4.76:1 → passes AA, left unchanged. In dark mode it was raised to `#7e8fa6` for AA (Phase 6.5, Block A6).

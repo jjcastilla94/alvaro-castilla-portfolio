@@ -898,6 +898,60 @@ Completed — all five approved items implemented and validated. Awaiting approv
 
 ---
 
+## Phase 11 — Final Visual Polish
+
+**Date:** 2026-10-07
+**Status:** Completed
+
+### Objective
+
+Final visual-polish pass with no changes to visual identity, colour tokens, fonts, layout, sections, copy or project data. Consolidate duplicated motion/focus treatments, fix verifiable wrapping/responsive and dark/light parity inconsistencies, and keep the Phase 10 SEO output byte-identical. No commit/push until user approval.
+
+### Constraint (approved scope)
+
+Group A (full): unify motion tokens + one focus treatment. Group B (selective): only verifiable typography/rhythm/surface inconsistencies; `--color-text-dim` in light mode only if measurements justify it. Group C (full): wrapping, image stability, dark/light parity. Group D (print styles, new micro-transitions) out of scope. No new dependencies; no changes to `.github/workflows`, backlog, routes or stack. If a requirement cannot be verified reliably, state the limitation instead of claiming validation.
+
+### Implemented
+
+- **Group A — motion token:** `--ease-out-quint` (exact `cubic-bezier(0.22, 1, 0.36, 1)`) declared once in `:root`; the 11 inline occurrences now reference it. Consolidation only — no duration/easing/visual change.
+- **Group A — unified focus ring:** `.focus-ring:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px }` in `global.css` replaces the repeated `focus-visible:outline*` utility chain in `Header`, `Footer`, `ProjectGallery`, `Button`, `CertificationCard`, `SocialLink`, `ThemeToggle`. Applied to previously-unstyled interactives (`Breadcrumbs`, `ProjectCard`, Hero scroll indicator, Skills `<summary>`); the skip link keeps its own `:focus` ring.
+- **Group C — wrapping & responsive:** `ProjectCard` title block `min-w-0` + arrow `shrink-0` so long titles wrap without pushing the arrow. Verified no horizontal overflow on all 10 routes at 375/412/768/1024/1280 px.
+- **Group C — dark/light parity + AA contrast:** status and certification badges were tuned for a dark background and failed AA in light mode (e.g. green-400 on white tint ≈ 1.6:1). Light mode now uses `emerald-700` / `amber-800` / `green-800` (`dark:` keeps the 400 shades); the Hero availability dot is `green-600 dark:green-400`. Measured in-browser, both themes pass AA (see Validation).
+- **Group B — selective (user decision):** fixed the one clearly-accidental outlier, the experience "Actual" badge (`text-[0.65625rem]`→`text-[0.625rem]`, `tracking-wide`→`tracking-widest`). Larger candidate inconsistencies (missing `font-display` on some headings, inner-page `<h1>` size on `/projects/[slug]`, `Card` `rounded-lg` vs `ProjectCard`/`ServiceCard` `rounded-xl`) were documented and deliberately left untouched to preserve the current visual identity.
+- **Automated focus/a11y check:** `tests/e2e/focus.spec.ts` — keyboard-`Tab` sweep of every route proving each tabbable element shows a visible focus indicator (accent outline or the skip-link ring), with cycle detection; also asserts the `focus-ring` treatment is actually used.
+- **Automated reduced-motion check:** `tests/e2e/reduced-motion.spec.ts` — forces `prefers-reduced-motion: reduce` and asserts on 3 reveal-rich routes that `[data-reveal]` elements are fully opaque, carry no entry `transform` and are rendered without triggering the reveal animation (the `html.js` hidden-by-default state is off), plus a keyboard sub-test proving focus still traverses interactive elements with a visible indicator.
+- **Docs:** `testing.md` (new E2E specs, counts, contrast values and the overlay-contrast limitation), `deployment.md` (roadmap/status), this log.
+
+### Validation
+
+- format:check / lint: PASS — typecheck: PASS (63 files, 0 errors, 0 warnings, 0 hints).
+- Unit: **63/63 PASS**; E2E: **84/84 PASS** (70 + 10 `focus.spec.ts` + 4 `reduced-motion.spec.ts`); Build: PASS (10 pages, 9 `/og/*.png`).
+- SEO equivalence vs the Phase 10 baseline: canonical, `og:image`, `twitter:image` and JSON-LD (SHA-256) identical on all 10 routes; the 9 generated OG PNGs, `og-image.png` and both sitemaps byte-identical.
+- Contrast (measured in-browser, computed over composited backgrounds): "En producción" light **5.10:1** / dark **10.20:1**; "En desarrollo" light **6.75:1** / dark **11.48:1**; certification "Obtenida" light **7.13:1** / dark **10.45:1** — all ≥ AA (4.5:1). These apply only to the solid-background instances (project-detail page, certification card); see Limitations for the image-overlay instance.
+- `--color-text-dim` (light) measured `#64748b` on `#f8f9ff` = 4.53:1 and on `#ffffff` = 4.76:1 → AA; left unchanged.
+- Reduced motion: `reduced-motion.spec.ts` forces `reduce` and proves in behaviour that reveals are visible with no entry transform and keyboard navigation still works; the rest of the suite also runs with `reducedMotion: 'reduce'` and stays green.
+
+### Decisions
+
+- Token consolidation preserves the exact curve (no behavioural change).
+- Light-mode badge shades are the minimum that reach AA on their own tint; dark mode is unchanged.
+- Group B kept minimal: only objectively-accidental token outliers, to honour "no visual-identity changes".
+
+### Limitations
+
+- Rendering/appearance was validated via computed CSS, geometry (scroll widths) and measured contrast — not by visually inspecting screenshots (no image review). The focus, reduced-motion and responsive checks are automated; final visual sign-off remains with the user.
+- **Badge contrast over images:** the `ProjectStatus` badge is rendered by `ProjectCard` on top of the project screenshot (`absolute top-4 left-4`), an image background that is theme-independent and not a fixed solid colour. The measured AA values cover only the solid-background instances (project-detail page and certification card); AA for the image-overlay instance is **not verified and not claimed**.
+
+### Commit
+
+Pending user approval (no commit/push made).
+
+### Status
+
+Completed — Groups A, B (selective) and C implemented and validated. Awaiting approval to commit.
+
+---
+
 ## What Remains (roadmap status)
 
 | Phase | Focus                                                                                                                                       | Status                              |
@@ -908,8 +962,8 @@ Completed — all five approved items implemented and validated. Awaiting approv
 | 8     | Testing — Vitest (unit) + Playwright (E2E), `tests/` scaffold                                                                               | ✅ completed (`45321b7`)            |
 | 9     | CI/CD — GitHub Actions (lint + typecheck + tests + build on push/PR)                                                                        | ✅ completed (`889a6ae`, `1014a9f`) |
 | 10    | SEO / Discoverability — JSON-LD, unique-per-page social images, heading hierarchy (h1→h3 on `/projects` + `/experience`), sitemap `lastmod` | ✅ completed (pending commit)       |
-| 11    | Final Visual Polish                                                                                                                         | ⬜ planned (next)                   |
-| 12    | Final Audit (formal, against Phase 8–11 output)                                                                                             | ⬜ planned                          |
+| 11    | Final Visual Polish — motion-token + focus-ring consolidation, wrapping/parity fixes, automated focus/reduced-motion checks                 | ✅ completed (pending commit)       |
+| 12    | Final Audit (formal, against Phase 8–11 output)                                                                                             | ⬜ planned (next)                   |
 
 Deferred beyond the roadmap (user decision):
 
