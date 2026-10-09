@@ -23,7 +23,7 @@ No client-side framework (React/Vue/Svelte). All interactivity is vanilla JS: th
 alvaro-castilla-portfolio/
 ├── .github/workflows/   # CI (GitHub Actions)
 ├── public/              # Static assets (favicon.ico, favicon.svg, robots.txt, og-image.png, cv/alvaro-castilla-cv.pdf)
-│                        # (sitemap generated at build by @astrojs/sitemap → sitemap-index.xml + sitemap-0.xml)
+│                        # (sitemap generated at build by @astrojs/sitemap → sitemap-index.xml + sitemap-0.xml, with per-URL lastmod)
 ├── src/
 │   ├── assets/          # Images processed by astro:assets (project screenshots/, avatar.jpeg)
 │   ├── components/
@@ -33,11 +33,11 @@ alvaro-castilla-portfolio/
 │   │   └── ui/          # Button, Card, Reveal, Tag, SectionHeading,
 │   │                    # SocialLink, ThemeToggle, ProjectCard, ProjectStatus,
 │   │                    # ProjectGallery, CertificationCard, Breadcrumbs, ServiceCard
-│   ├── data/            # profile, projects, experience, skills, site, about, services, certifications, projectStyles
+│   ├── data/            # profile, projects, experience, skills, site, about, services, certifications, projectStyles, pageDates
 │   ├── layouts/         # BaseLayout.astro
-│   ├── pages/           # index, experience, projects, projects/[slug], contact
+│   ├── pages/           # index, experience, projects, projects/[slug], contact, og/[slug].png (build-time OG images)
 │   ├── styles/          # global.css (tokens, motion, code-window, stats)
-│   └── utils/           # dates.ts (formatDate, formatRange, getYear, formatMonthYear), projectImages.ts (build-time project gallery scanner)
+│   └── utils/           # dates.ts (formatDate, formatRange, getYear, formatMonthYear), projectImages.ts (build-time project gallery scanner), seo.ts (JSON-LD builders), ogCard.ts (OG card model + satori/resvg renderer)
 ├── docs/                # Project documentation
 └── tests/               # Vitest unit + Playwright E2E tests (Phase 8)
 ```
@@ -55,8 +55,11 @@ Professional content is separated from presentation in `src/data/`:
 - `services.ts` — `CAPABILITIES` framed as "Lo que construyo" (ADR-021)
 - `certifications.ts` — Real certifications + AWS AI Practitioner in progress (ADR-023)
 - `projectStyles.ts` — Per-color CSS gradients/patterns for project visuals
+- `pageDates.ts` — Hand-maintained sitemap `lastmod` content dates (`PAGE_LASTMOD`, `lastmodFor`) — never the build clock (ADR-033)
 - `utils/dates.ts` — date formatting helpers used by experience/home
 - `utils/projectImages.ts` — build-time project screenshot scanner (`getProjectImages`, `getProjectMainImage`; `import.meta.glob` over `src/assets/projects/<id>/`, returns `ImageMetadata` for `astro:assets` `<Image />`)
+- `utils/seo.ts` — JSON-LD builders (`websiteSchema`, `personSchema`, `pageSchema`, `projectSchema`) with stable `@id`s (ADR-031)
+- `utils/ogCard.ts` — OG card model + renderer (`cardFor`, `cardElement`, `renderCard`, `OG_SLUGS`) built with `satori` + `@resvg/resvg-js` (ADR-032)
 
 Components import data from these files — no personal strings are hardcoded in `.astro` files. This rule is validated at each phase.
 
@@ -69,6 +72,8 @@ Components import data from these files — no personal strings are hardcoded in
 | `/projects`        | ✅     | Project listing                                                                                               |
 | `/projects/[slug]` | ✅     | Individual project case studies (via `getStaticPaths`)                                                        |
 | `/contact`         | ✅     | Contact information (email, GitHub, LinkedIn)                                                                 |
+
+Besides these pages, `src/pages/og/[slug].png.ts` is a build-time static endpoint that emits one 1200×630 Open Graph PNG per page (`/og/<slug>.png`) with `satori` + `@resvg/resvg-js` (ADR-032); the home uses the static `/og-image.png` fallback.
 
 ## Design System
 
@@ -103,14 +108,17 @@ Motion principles: subtle, fast (150–450 ms), purposeful, no hacker/terminal a
 
 ## SEO
 
-- Per-page `<title>` and meta description
+Implemented per page in `HeadSEO.astro` (+ JSON-LD builders in `src/utils/seo.ts`).
+
+- Per-page `<title>` and meta description (unique per route)
 - Open Graph tags (including `og:image` with width/height/alt, `og:type` = `article` on project details, `website` elsewhere) and Twitter card tags (`summary_large_image`)
+- **Unique social image per page:** `src/pages/og/[slug].png.ts` renders a 1200×630 PNG at build time (`satori` + `@resvg/resvg-js`, pinned `@fontsource` fonts, no system fonts) from real data — one image per route under `/og/<slug>.png`, mirrored to `og:image` and `twitter:image`; the home keeps `/og-image.png` as the global fallback (ADR-032)
+- **JSON-LD structured data:** home emits one `@graph` (`WebSite` + `Person`); `/experience` → `WebPage`, `/projects` → `CollectionPage`, `/contact` → `ContactPage`, `/projects/<id>` → `SoftwareSourceCode` — all from real data with stable `@id`s. `ProfilePage`, `SearchAction` and `BreadcrumbList` are deliberately not emitted (ADR-031)
+- **Heading hierarchy:** h1 → h2 → h3 without skipped levels on every page (`/projects` cards and `/experience` use level 2)
 - Canonical URLs (from `SITE.url` = https://alvarocastilladev.vercel.app)
 - `robots.txt` (allow all + `Sitemap:` → `https://alvarocastilladev.vercel.app/sitemap-index.xml`)
-- Sitemap generated by `@astrojs/sitemap` (`sitemap-index.xml` + `sitemap-0.xml`, 10 URLs) — ADR-030
+- Sitemap generated by `@astrojs/sitemap` (`sitemap-index.xml` + `sitemap-0.xml`, 10 URLs) with a per-URL `lastmod` from hand-maintained content dates in `src/data/pageDates.ts` — never the build clock (ADR-030, ADR-033)
 - `meta name="generator"` (Astro)
-
-Planned (not yet implemented): JSON-LD structured data (Phase 10).
 
 ## Accessibility
 

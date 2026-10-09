@@ -38,8 +38,13 @@ The E2E suite never depends on Vercel or the Internet: `tests/e2e/fixtures.ts` b
 - `tests/unit/projects.test.ts` — integrity of the 6 projects: audited display order, unique ids/hrefs, `/projects/<id>` contract, required fields, color styles, https URLs, featured pair, plus the `getProjectRepos` / `getProjectPrimaryRepo` logic
 - `tests/unit/site.test.ts` — production URL invariant (`SITE.url`), locale, OG image and CV files exist, nav routes, real contact/social data
 - `tests/unit/dates.test.ts` — Spanish date formatting (`formatDate`, `formatRange`, `getYear`, `formatMonthYear`)
+- `tests/unit/seo.test.ts` — JSON-LD builders: `@graph` (`WebSite` + `Person`, stable `@id`s, real profile data), page types (`WebPage`/`CollectionPage`/`ContactPage`), `SoftwareSourceCode` per project (real repos, unique `@id`s); asserts `ProfilePage`/`SearchAction`/`BreadcrumbList` are never emitted (Phase 10)
+- `tests/unit/ogCard.test.ts` — OG cards: one slug per page, every card populated from real data, project cards mirror `PROJECTS`; valid 1200×630 PNG; byte-for-byte determinism; and satori `onNodeDetected` bounds prove no node overflows the canvas (no clipped text) for all 9 generated cards (Phase 10)
+- `tests/unit/pageDates.test.ts` — sitemap dates: `PAGE_LASTMOD` matches the public routes exactly, plain `YYYY-MM-DD` (no build timestamps), never in the future, trailing-slash resolution, `undefined` for unknown paths (Phase 10)
 
 Deliberately not unit-tested (covered by E2E or too trivial to be useful): `projectImages.ts` (depends on Vite / `astro:assets` transforms outside Node), Astro component conditionals, `hasCv()`.
+
+The OG rendering test is the meaningful part: because the site is built on Windows and also on Linux CI, "no clipped text" is verified **geometrically** (every laid-out node stays inside 1200×630) rather than by visually inspecting the PNG.
 
 ### Location
 
@@ -58,6 +63,7 @@ tests/unit/
 - `theme.spec.ts` — dark/light toggle with accessible name, persistence across reload
 - `responsive.spec.ts` — no horizontal overflow at 375px (3 routes), nav/menu-toggle visibility per viewport
 - `a11y.spec.ts` — all 10 routes: exactly one h1, `main#main-content`, labelled navs, skip link target, accessible names on every link/button, no duplicate ids
+- `seo.spec.ts` — Phase 10: valid JSON-LD per route (`@graph`/page types/`SoftwareSourceCode` coherent with the canonical, real repos, no `ProfilePage`/`SearchAction`/`BreadcrumbList`); heading hierarchy h1→h2→h3 with no skips on all 10 routes; one distinct absolute `og:image` per route mirrored by `twitter:image` and served as a real 1200×630 PNG; sitemap lists all 10 routes each with a content-based `lastmod` (valid ISO, never future, UTC midnight)
 
 Every E2E test also inherits two guarantees from the shared fixture: zero uncaught JavaScript errors, and no network access outside the local preview server.
 
@@ -82,7 +88,7 @@ Since Phase 9, the same commands run automatically in CI (`.github/workflows/ci.
 
 ## Status
 
-Phase 8 implemented (2026-10-07): 23 unit tests + 41 E2E tests, all green. Phase 9 (2026-10-07) runs this suite automatically on GitHub Actions for every push/PR to `main` (E2E retries 2× on CI, 0 locally). The manual baseline below still applies to what automation does not cover (visual polish, motion details, contrast values).
+Phase 8 implemented (2026-10-07): 23 unit tests + 41 E2E tests, all green. Phase 9 (2026-10-07) runs this suite automatically on GitHub Actions for every push/PR to `main` (E2E retries 2× on CI, 0 locally). Phase 10 (2026-10-07) added SEO coverage: **63 unit tests** (+`seo`, `ogCard`, `pageDates`) and **70 E2E tests** (+`seo.spec.ts`), all green. The manual baseline below still applies to what automation does not cover (visual polish, motion details, contrast values).
 
 ## Manual Validation Baseline (Phases 1-7 + final audit)
 

@@ -19,15 +19,18 @@ import { EXPERIENCE } from '../data/experience';
 import { PROJECTS } from '../data/projects';
 import { CAPABILITIES } from '../data/services';
 import { formatDate } from '../utils/dates';
+import { personSchema, websiteSchema } from '../utils/seo';
 
 const title = `${PROFILE.name} — ${PROFILE.role}`;
 const description = PROFILE.bio;
+
+const jsonLd = { '@graph': [websiteSchema(), personSchema()] };
 
 const currentExperience = EXPERIENCE.find((e) => e.endDate === null);
 const featuredProjects = PROJECTS.filter((p) => p.featured);
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} jsonLd={jsonLd}>
   <Hero />
 
   <!-- ===== ABOUT ===== -->

@@ -670,3 +670,93 @@ Use the official `@astrojs/sitemap` integration configured with `site: 'https://
 ### Status
 
 Accepted
+
+---
+
+## ADR-031 — JSON-LD Scope: Only the Approved Schemas, Real Data Only
+
+### Context
+
+Phase 10 required structured data. Structured data is easy to over-generate: `ProfilePage`, `SearchAction`, `BreadcrumbList` and other types are commonly added "because they exist", even when the page has no search, no profile-page semantics or no breadcrumb semantics that match. That produces markup that describes things the site does not actually have.
+
+### Decision
+
+Emit exactly these types, from real site data only:
+
+- Orphan/home `@graph`: `WebSite` + `Person` with stable `@id`s (`https://alvarocastilladev.vercel.app/#website`, `…/#person`).
+- `/experience` → `WebPage`; `/projects` → `CollectionPage`; `/contact` → `ContactPage` (page node `@id` = `…<path>#webpage`).
+- `/projects/<id>` → `SoftwareSourceCode` (`@id` = `…/projects/<id>#software`).
+- References use those stable `@id`s (`isPartOf`, `author`) instead of duplicating objects.
+
+`ProfilePage`, `SearchAction` and `BreadcrumbList` are explicitly **not** emitted; each page has a single JSON-LD `<script>` (the home uses one `@graph`).
+
+### Reason
+
+Every emitted node/field maps to something the site truly has (identity, pages, projects with real repositories). Stable `@id`s let crawlers connect the graph without repeating data. Skipping `ProfilePage`/`SearchAction`/`BreadcrumbList` avoids describing features that do not exist (no search, no profile semantics), and a unit test asserts these strings never appear.
+
+### Alternatives Considered
+
+- **One monolithic `@graph` of everything on every page:** rejected — bloats every page and duplicates nodes.
+- **Add `ProfilePage`/`SearchAction`/`BreadcrumbList` "for completeness":** rejected — describes non-existent features.
+
+### Status
+
+Accepted
+
+---
+
+## ADR-032 — Social Images Generated at Build Time with satori + resvg (No Runtime/Edge Image Service)
+
+### Context
+
+Phase 10 required a unique Open Graph/Twitter image per page (10 routes → 10 images) instead of a single shared `og-image.png`. Options were a hosted image service (e.g. Vercel OG / Satori on the edge), a client-side canvas, or a build-time generator.
+
+### Decision
+
+Generate the images at **build time** with `satori` (HTML/JSX-like tree → SVG) + `@resvg/resvg-js` (SVG → PNG), exposed as a static endpoint at `src/pages/og/[slug].png.ts` (one PNG per page under `/og/<slug>.png`). The card model and renderer live in `src/utils/ogCard.ts` so they are unit-testable. The home keeps the hand-made `/og-image.png` as the global fallback.
+
+Determinism and safety:
+
+- Fonts are read from pinned `@fontsource/*` packages (`space-grotesk`, `jetbrains-mono`, `.woff` — satori does not accept `.woff2`) via `process.cwd()`, and resvg runs with `loadSystemFonts: false`, so no OS/CI font is ever consulted → identical output on Windows, CI and Vercel.
+- Cards use only real data (`PROFILE`, `SITE`, `PROJECTS`, page labels); a dynamic `titleSize()` keeps long titles inside the canvas.
+- `og:image` and `twitter:image` always point to the same absolute URL; `HeadSEO` keeps `SITE.ogImage` as fallback when a page passes no `ogImage`.
+
+### Reason
+
+Build-time generation adds no runtime/edge dependency, works on a purely static Astro output, and makes the assets inspectable in `dist/og/`. Pinning fonts + disabling system fonts removes the usual cause of non-deterministic image rendering across environments. Unit tests assert valid PNG dimensions, byte-for-byte determinism, and — via satori's `onNodeDetected` bounding boxes — that no node overflows the 1200×630 canvas (i.e. no clipped text), which a visual check cannot guarantee on every machine.
+
+### Alternatives Considered
+
+- **Vercel OG / edge image functions:** rejected — ties a static site to one host and adds runtime cost.
+- **Client-side canvas generation:** rejected — requires JS, does not help crawlers that read `og:image` server-side.
+- **One shared hand-made image for all pages:** rejected — the phase explicitly requires a distinct image per page.
+
+### Status
+
+Accepted
+
+---
+
+## ADR-033 — Sitemap `lastmod` from Hand-Maintained Content Dates, Never the Build Clock
+
+### Context
+
+Phase 10 required `lastmod` in the sitemap. The naive implementation is `lastmod: new Date()` (or a build/deploy timestamp), which marks every URL as "changed" on every deploy — a signal crawlers learn to distrust, and factually wrong: a docs-only deploy does not change a page's content.
+
+### Decision
+
+Maintain explicit content dates in `src/data/pageDates.ts` (`PAGE_LASTMOD`, one `YYYY-MM-DD` per route) and set them in `@astrojs/sitemap`'s `serialize(item)` callback (`astro.config.mjs`), keyed by the URL pathname (trailing slashes normalized). The value is the real date taken from the repository history that last changed that URL's meaningful content. A unit test rejects future dates and asserts the route set matches `PAGE_LASTMOD` exactly.
+
+### Reason
+
+`lastmod` is a claim about content change; only a human-updated date keeps that claim honest. Per-route keys mean changing one page's content bumps only that page. The format (`T00:00:00.000Z`, UTC midnight) is a content date, not an arbitrary build time. `new Date()` and build timestamps are prohibited.
+
+### Alternatives Considered
+
+- **`lastmod: new Date()` / build timestamp:** rejected — fakes freshness on every deploy.
+- **Derive dates from filesystem mtimes:** rejected — mtimes change on checkout/clone and are not content events.
+- **Single global date for all URLs:** rejected — misrepresents per-page freshness.
+
+### Status
+
+Accepted

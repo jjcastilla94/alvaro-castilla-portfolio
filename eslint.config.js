@@ -20,6 +20,13 @@ export default [
     },
   },
   {
+    // Node runtime globals used by the Astro config (sitemap `serialize`).
+    files: ['astro.config.*'],
+    languageOptions: {
+      globals: { URL: 'readonly' },
+    },
+  },
+  {
     ignores: ['dist/', '.astro/', 'node_modules/'],
   },
 ];

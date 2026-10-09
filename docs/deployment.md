@@ -13,7 +13,7 @@ The portfolio is a static site deployed on Vercel (Free tier), auto-deploying fr
 | —     | Final audit + approved fixes  | completed |
 | 8     | Testing (Vitest + Playwright) | completed |
 | 9     | CI/CD (GitHub Actions)        | completed |
-| 10    | SEO / Discoverability         | planned   |
+| 10    | SEO / Discoverability         | completed |
 | 11    | Final Visual Polish           | planned   |
 | 12    | Final Audit                   | planned   |
 
@@ -62,7 +62,7 @@ Vercel automatically creates preview deployments for pull requests and non-main 
 
 - `@astrojs/sitemap` integration (configured in `astro.config.mjs` with `site: 'https://alvarocastilladev.vercel.app'`) generates at build time:
   - `/sitemap-index.xml` — sitemap index (canonical entry point)
-  - `/sitemap-0.xml` — all 10 page URLs
+  - `/sitemap-0.xml` — all 10 page URLs, each with a `<lastmod>` from the hand-maintained content dates in `src/data/pageDates.ts` (never the build clock — ADR-033)
 - `public/robots.txt` allows all crawlers and declares `Sitemap: https://alvarocastilladev.vercel.app/sitemap-index.xml`
 - A single `/sitemap.xml` is **not** produced (`@astrojs/sitemap` does not support it); no custom endpoint or Vercel rewrite is configured (ADR-030).
 
@@ -90,4 +90,4 @@ Not configured and not planned. The free `*.vercel.app` domain covers canonical/
 
 ## Status
 
-Phase 7 completed (2026-10-07): production live, canonical URL wired everywhere, sitemap + robots.txt validated (10/10 URLs, 10/10 routes 200). Phases 8 and 9 completed the same day: automated test suite (23 unit + 41 E2E, all green) and GitHub Actions CI (`.github/workflows/ci.yml`) validating format, lint, typecheck, unit tests, build and E2E on every push/PR to `main`. Next: Phase 10 (SEO / Discoverability).
+Phase 7 completed (2026-10-07): production live, canonical URL wired everywhere, sitemap + robots.txt validated (10/10 URLs, 10/10 routes 200). Phases 8 and 9 completed the same day: automated test suite and GitHub Actions CI (`.github/workflows/ci.yml`) validating format, lint, typecheck, unit tests, build and E2E on every push/PR to `main`. Phase 10 (SEO / Discoverability) completed the same day: JSON-LD per route, unique build-time social image per page, h1→h2→h3 heading hierarchy and content-based sitemap `lastmod`. Next: Phase 11 (Final Visual Polish).

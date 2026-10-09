@@ -6,12 +6,22 @@ interface Props {
   description: string;
   canonical?: string;
   ogType?: 'website' | 'article';
+  ogImage?: string;
+  jsonLd?: Record<string, unknown>;
 }
 
-const { title, description, canonical, ogType = 'website' } = Astro.props;
+const { title, description, canonical, ogType = 'website', ogImage, jsonLd } = Astro.props;
+
+const jsonLdScript = jsonLd
+  ? JSON.stringify({ '@context': 'https://schema.org', ...jsonLd })
+  : undefined;
 
 const pageCanonical = canonical ?? `${SITE.url}/`;
-const pageImage = `${SITE.url}${SITE.ogImage}`;
+const pageImage = ogImage
+  ? ogImage.startsWith('http')
+    ? ogImage
+    : `${SITE.url}${ogImage}`
+  : `${SITE.url}${SITE.ogImage}`;
 ---
 
 <!doctype html>
@@ -83,6 +93,8 @@ const pageImage = `${SITE.url}${SITE.ogImage}`;
     <meta name="twitter:image" content={pageImage} />
 
     <meta name="generator" content={Astro.generator} />
+
+    {jsonLdScript && <script type="application/ld+json" is:inline set:html={jsonLdScript} />}
   </head>
   <body class="min-h-screen font-sans antialiased overflow-x-hidden">
     <slot />

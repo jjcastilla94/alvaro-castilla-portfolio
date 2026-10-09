@@ -13,6 +13,7 @@ import { PROFILE } from '../../data/profile';
 import { SITE } from '../../data/site';
 import { getProjectImages } from '../../utils/projectImages';
 import { getProjectGradient, getProjectPattern } from '../../data/projectStyles';
+import { projectSchema } from '../../utils/seo';
 
 export function getStaticPaths() {
   return PROJECTS.map((project) => ({
@@ -35,6 +36,8 @@ const repos = getProjectRepos(project);
 const title = `${project.title} — ${PROFILE.name}`;
 const description = project.longDescription ?? project.description;
 
+const jsonLd = projectSchema(project, `/projects/${project.id}`, description);
+
 const gradient = getProjectGradient(project.color);
 const pattern = getProjectPattern(project.color);
 
@@ -50,6 +53,8 @@ const detailSections = [
   description={description}
   canonical={`${SITE.url}/projects/${project.id}`}
   ogType="article"
+  ogImage={`/og/${project.id}.png`}
+  jsonLd={jsonLd}
 >
   <section class="max-w-6xl mx-auto px-6 sm:px-8 pt-32 sm:pt-40 pb-16">
     <Breadcrumbs crumbs={[{ href: '/projects', label: 'Proyectos' }, { label: project.title }]} />

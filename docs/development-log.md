@@ -850,6 +850,54 @@ Completed — workflow active and green on `main` (2026-10-08): `npm ci`, format
 
 ---
 
+## Phase 10 — SEO / Discoverability
+
+**Date:** 2026-10-07
+**Status:** Completed
+
+### Objective
+
+Make every page legible to search engines and social crawlers: structured data (JSON-LD), a unique social image per page, a clean heading hierarchy, and a content-accurate sitemap `lastmod`. No changes to visual identity, content, or scope beyond SEO. No commit/push until user approval.
+
+### Constraint (approved scope)
+
+Only these five items: JSON-LD, heading hierarchy, unique-per-page social images, sitemap `lastmod`, docs + final validation. Audit optionals 5–9, Arcadia deployment, GitHub Actions/Node/Ubuntu changes and Phase 11 were explicitly out of scope. `new Date()` / build timestamps are prohibited for `lastmod`.
+
+### Implemented
+
+- **JSON-LD (`src/utils/seo.ts` + `HeadSEO.astro`)** — `HeadSEO`/`BaseLayout` accept a `jsonLd` prop and emit one `<script type="application/ld+json">` with the `@context` injected. Builders with stable `@id`s (`…/#website`, `…/#person`, `…<path>#webpage`, `…/projects/<id>#software`):
+  - `/` → one `@graph` (`WebSite` + `Person`, real profile data, `sameAs` from social);
+  - `/experience` → `WebPage`, `/projects` → `CollectionPage`, `/contact` → `ContactPage`;
+  - `/projects/<id>` → `SoftwareSourceCode` with `codeRepository` from the real repos, `author`/`isPartOf` by `@id`.
+  - `ProfilePage`, `SearchAction`, `BreadcrumbList` deliberately **not** emitted (ADR-031).
+- **Heading hierarchy** — `ProjectCard.astro` gained a `headingLevel?: 2 | 3` prop (dynamic tag); `/projects` passes `level={2}` and `/experience` h3→h2 no longer skips h1→h3. Verified h1→h2→h3 with no skips on all 10 routes.
+- **Unique social images** — build-time static endpoint `src/pages/og/[slug].png.ts` (`getStaticPaths` for 3 pages + 6 projects) + `src/utils/ogCard.ts` (card model + `satori` + `@resvg/resvg-js` renderer). 1200×630, brand tokens and real data only, pinned `@fontsource` fonts (`.woff`) read from `process.cwd()`, resvg `loadSystemFonts: false` → deterministic on Windows/CI/Vercel. `HeadSEO`/`BaseLayout` take `ogImage` and keep `SITE.ogImage` (`/og-image.png`) as fallback, so the home keeps the hand-made image; `og:image` and `twitter:image` always match. `deps:` `satori@0.38.2`, `@resvg/resvg-js@2.6.2`, `@fontsource/space-grotesk`, `@fontsource/jetbrains-mono` (devDependencies).
+- **Sitemap `lastmod`** — `src/data/pageDates.ts` (`PAGE_LASTMOD` + `lastmodFor`, trailing-slash normalized) with the real content dates from `git log`, wired through `@astrojs/sitemap`'s `serialize(item)` in `astro.config.mjs`. No `new Date()`, no build timestamp (ADR-033).
+- **Tests** — `tests/unit/seo.test.ts`, `tests/unit/ogCard.test.ts` (valid PNG size, byte-for-byte determinism, and satori `onNodeDetected` bounds prove no clipped text for all 9 cards), `tests/unit/pageDates.test.ts`; `tests/e2e/seo.spec.ts` (JSON-LD, headings, OG uniqueness + served 1200×630 PNG, sitemap lastmod).
+- **Docs** — `docs/decisions.md` (ADR-031/032/033), `docs/architecture.md` (SEO section, tree, data model), `docs/testing.md` (+3 unit files, +`seo.spec.ts`, counts), `docs/deployment.md` (sitemap `lastmod`, roadmap/status), this log.
+
+### Validation
+
+- format:check / lint: PASS — typecheck: PASS (61 files, 0 errors); `npm ci` compatibility re-checked on Linux.
+- Unit: **63/63 PASS**; E2E: **70/70 PASS** (offline); Build: PASS (10 pages, 9 `/og/*.png` generated).
+- `dist/`: 10/10 pages have valid JSON-LD; 9 generated OG PNGs are 1200×630 (home uses `/og-image.png`, also 1200×630); `sitemap-0.xml` lists 10 URLs each with a `<lastmod>` from content.
+
+### Decisions
+
+- ADR-031 — JSON-LD scope: only the approved schemas, real data only.
+- ADR-032 — social images generated at build with `satori` + `resvg` (no runtime/edge image service).
+- ADR-033 — sitemap `lastmod` from hand-maintained content dates, never the build clock.
+
+### Commit
+
+Pending user approval (no commit/push made).
+
+### Status
+
+Completed — all five approved items implemented and validated. Awaiting approval to commit.
+
+---
+
 ## What Remains (roadmap status)
 
 | Phase | Focus                                                                                                                                       | Status                              |
@@ -859,11 +907,11 @@ Completed — workflow active and green on `main` (2026-10-08): `npm ci`, format
 | —     | Final audit + approved fixes (this entry)                                                                                                   | ✅ completed                        |
 | 8     | Testing — Vitest (unit) + Playwright (E2E), `tests/` scaffold                                                                               | ✅ completed (`45321b7`)            |
 | 9     | CI/CD — GitHub Actions (lint + typecheck + tests + build on push/PR)                                                                        | ✅ completed (`889a6ae`, `1014a9f`) |
-| 10    | SEO / Discoverability — JSON-LD, unique-per-page social images, heading hierarchy (h1→h3 on `/projects` + `/experience`), sitemap `lastmod` | ⬜ planned (next)                   |
-| 11    | Final Visual Polish                                                                                                                         | ⬜ planned                          |
+| 10    | SEO / Discoverability — JSON-LD, unique-per-page social images, heading hierarchy (h1→h3 on `/projects` + `/experience`), sitemap `lastmod` | ✅ completed (pending commit)       |
+| 11    | Final Visual Polish                                                                                                                         | ⬜ planned (next)                   |
 | 12    | Final Audit (formal, against Phase 8–11 output)                                                                                             | ⬜ planned                          |
 
 Deferred beyond the roadmap (user decision):
 
 - Deploy Arcadia to a free host so the flagship backend project has a live demo (audit change 4).
-- Audit optionals 5–9: ES/EN copy consistency, "8+ tecnologías" wording, DetuBarrio real metrics.
+- Audit optionals 5–9 still open: ES/EN copy consistency, "8+ tecnologías" wording, DetuBarrio real metrics (the JSON-LD and heading-skip items from that list are now done in Phase 10).

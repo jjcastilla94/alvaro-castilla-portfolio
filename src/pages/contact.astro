@@ -10,14 +10,26 @@ import SocialLink from '../components/ui/SocialLink.astro';
 
 import { PROFILE, hasCv } from '../data/profile';
 import { SITE } from '../data/site';
+import { pageSchema } from '../utils/seo';
 
 const title = `Contacto — ${PROFILE.name}`;
+const description =
+  'Contacto de Alvaro Castilla: email, GitHub y LinkedIn. Hablemos de desarrollo de software, proyectos o oportunidades como Backend Developer.';
+
+const jsonLd = pageSchema({
+  path: '/contact',
+  name: title,
+  description,
+  type: 'ContactPage',
+});
 ---
 
 <BaseLayout
   title={title}
-  description="Contacto de Alvaro Castilla: email, GitHub y LinkedIn. Hablemos de desarrollo de software, proyectos o oportunidades como Backend Developer."
+  description={description}
   canonical={`${SITE.url}/contact`}
+  ogImage="/og/contact.png"
+  jsonLd={jsonLd}
 >
   <section class="max-w-6xl mx-auto px-6 sm:px-8 pt-32 sm:pt-40 pb-16">
     <Breadcrumbs crumbs={[{ label: 'Contacto' }]} />

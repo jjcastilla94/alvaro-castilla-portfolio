@@ -9,14 +9,26 @@ import { PROJECTS, getProjectPrimaryRepo } from '../data/projects';
 import { PROFILE } from '../data/profile';
 import { SITE } from '../data/site';
 import { getProjectMainImage } from '../utils/projectImages';
+import { pageSchema } from '../utils/seo';
 
 const title = `Proyectos — ${PROFILE.name}`;
+const description =
+  'Proyectos de Alvaro Castilla con Spring Boot, Vue, Docker y CI/CD: casos de estudio técnicos, galería de capturas y enlaces a GitHub y demos en producción.';
+
+const jsonLd = pageSchema({
+  path: '/projects',
+  name: title,
+  description,
+  type: 'CollectionPage',
+});
 ---
 
 <BaseLayout
   title={title}
-  description="Proyectos de Alvaro Castilla con Spring Boot, Vue, Docker y CI/CD: casos de estudio técnicos, galería de capturas y enlaces a GitHub y demos en producción."
+  description={description}
   canonical={`${SITE.url}/projects`}
+  ogImage="/og/projects.png"
+  jsonLd={jsonLd}
 >
   <section class="max-w-6xl mx-auto px-6 sm:px-8 pt-32 sm:pt-40 pb-16">
     <Breadcrumbs crumbs={[{ label: 'Proyectos' }]} />
@@ -45,6 +57,7 @@ const title = `Proyectos — ${PROFILE.name}`;
               github={getProjectPrimaryRepo(project)?.url}
               status={project.status}
               index={i + 1}
+              headingLevel={2}
             />
           </Reveal>
         ))

@@ -10,14 +10,21 @@ import { EXPERIENCE } from '../data/experience';
 import { PROFILE } from '../data/profile';
 import { SITE } from '../data/site';
 import { formatRange, getYear } from '../utils/dates';
+import { pageSchema } from '../utils/seo';
 
 const title = `Experiencia — ${PROFILE.name}`;
+const description =
+  'Experiencia de Alvaro Castilla en Cajamar Tecnología: desarrollo y mantenimiento de APIs REST, integración de sistemas, flujos de datos y validación de servicios.';
+
+const jsonLd = pageSchema({ path: '/experience', name: title, description });
 ---
 
 <BaseLayout
   title={title}
-  description="Experiencia de Alvaro Castilla en Cajamar Tecnología: desarrollo y mantenimiento de APIs REST, integración de sistemas, flujos de datos y validación de servicios."
+  description={description}
   canonical={`${SITE.url}/experience`}
+  ogImage="/og/experience.png"
+  jsonLd={jsonLd}
 >
   <section class="max-w-6xl mx-auto px-6 sm:px-8 pt-32 sm:pt-40 pb-16">
     <Breadcrumbs crumbs={[{ label: 'Experiencia' }]} />
@@ -72,9 +79,9 @@ const title = `Experiencia — ${PROFILE.name}`;
                 <Card class="p-6 sm:p-8">
                   <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                     <div>
-                      <h3 class="font-display text-lg sm:text-xl font-semibold text-text">
+                      <h2 class="font-display text-lg sm:text-xl font-semibold text-text">
                         {entry.role}
-                      </h3>
+                      </h2>
                       <p class="mt-1 font-mono text-xs text-text-muted">
                         {entry.company} · Departamento de {entry.department}
                       </p>
